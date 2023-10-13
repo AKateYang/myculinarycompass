@@ -1,9 +1,9 @@
-This is a MERN stack web app. Once the app is cloned, please setup .env file and run the command npm install in the root directory and in frontend dir
+This is a MERN stack web app. Once the app is cloned, please setup .env file and run the command npm install in the root directory & in frontend directory.
 
-Website can be found at 
-
+Website can be found at myculinarycompass.com
 
 # Group 9
+
 1. Ahal Saias
 2. Alissa Forde
 3. Ashley Yang
