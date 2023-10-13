@@ -1,6 +1,7 @@
-This is a MERN stack web app
+This is a MERN stack web app. Once the app is cloned, please setup .env file and run the command npm install in the root directory and in frontend dir
 
 Website can be found at 
+
 
 # Group 9
 1. Ahal Saias
