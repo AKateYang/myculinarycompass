@@ -39,6 +39,75 @@ app.post("/api/addcard", async (req, res, next) => {
   res.status(200).json(ret);
 });
 
+app.post("/api/addRecipe", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { recipeId, userId } = req.body;
+
+  var error = "";
+
+  try {
+    const db = client.db("COP4331Cards");
+    const user = db.collection("Users").findById(userId);
+    const recipe = db.collection("Recipes").findById(recipeId);
+  } catch (e) {
+    error = e.toString();
+  }
+
+  user.SavedRecipes.push(recipe);
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/addFriend", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { friendId, userId } = req.body;
+
+  var error = "";
+
+  try {
+    const db = client.db("COP4331Cards");
+    const user = db.collection("Users").findById(userId);
+    const friend = db.collection("Users").findById(friendId);
+  } catch (e) {
+    error = e.toString();
+  }
+
+  user.Friends.push(friend);
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/searchUsers", async (req, res, next) => {
+  // incoming: userId, search
+  // outgoing: results[], error
+
+  var error = "";
+
+  const { username } = req.body;
+
+  var _search = username.trim();
+
+  const db = client.db("COP4331Cards");
+  const results = await db
+    .collection("Users")
+    .find({ Login: { $regex: _search + ".*", $options: "i" } })
+    .toArray();
+
+  var _ret = [];
+  for (var i = 0; i < results.length; i++) {
+    _ret.push(results[i].Login);
+  }
+
+  var ret = { results: _ret, error: error };
+  res.status(200).json(ret);
+});
+
 app.post("/api/login", async (req, res, next) => {
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
