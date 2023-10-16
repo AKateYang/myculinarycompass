@@ -39,23 +39,58 @@ app.post("/api/addcard", async (req, res, next) => {
   res.status(200).json(ret);
 });
 
+app.post("/api/signup", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { login, password, firstname, lastname } = req.body;
+  const emptyFriends = [];
+  const emptyRecipes = [];
+
+  const newUser = {
+    Login: login,
+    Password: password,
+    FirstName: firstname,
+    LastName: lastname,
+    Friends: emptyFriends,
+    Recipes: emptyRecipes,
+  };
+  var error = "";
+
+  try {
+    const db = client.db("COP4331Cards");
+    const result = db.collection("Users").insertOne(newUser);
+  } catch (e) {
+    error = e.toString();
+  }
+
+  client.close();
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
 app.post("/api/addRecipe", async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
 
   const { recipeId, userId } = req.body;
 
+  const user = new ObjectId(userId);
+  const recipe = new ObjectId(recipeId);
+
   var error = "";
 
-  try {
-    const db = client.db("COP4331Cards");
-    const user = db.collection("Users").findById(userId);
-    const recipe = db.collection("Recipes").findById(recipeId);
-  } catch (e) {
-    error = e.toString();
+  const db = client.db("COP4331Cards");
+
+  const result = await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $push: { Recipes: recipe } });
+
+  if (result.matchedCount === 0) {
+    return res.status(404).json({ message: "User not found" });
   }
 
-  user.SavedRecipes.push(recipe);
+  client.close();
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -67,17 +102,22 @@ app.post("/api/addFriend", async (req, res, next) => {
 
   const { friendId, userId } = req.body;
 
+  const user = new ObjectId(userId);
+  const friend = new ObjectId(friendId);
+
   var error = "";
 
-  try {
-    const db = client.db("COP4331Cards");
-    const user = db.collection("Users").findById(userId);
-    const friend = db.collection("Users").findById(friendId);
-  } catch (e) {
-    error = e.toString();
+  const db = client.db("COP4331Cards");
+
+  const result = await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $push: { Friends: friend } });
+
+  if (result.matchedCount === 0) {
+    return res.status(404).json({ message: "User not found" });
   }
 
-  user.Friends.push(friend);
+  client.close();
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -101,9 +141,10 @@ app.post("/api/searchUsers", async (req, res, next) => {
 
   var _ret = [];
   for (var i = 0; i < results.length; i++) {
-    _ret.push(results[i].Login);
+    _ret.push(results[i].Login + " " + results[i]._id);
   }
 
+  client.close();
   var ret = { results: _ret, error: error };
   res.status(200).json(ret);
 });
@@ -132,6 +173,7 @@ app.post("/api/login", async (req, res, next) => {
     ln = results[0].LastName;
   }
 
+  client.close();
   var ret = { id: id, firstName: fn, lastName: ln, error: "" };
   res.status(200).json(ret);
 });
@@ -189,6 +231,7 @@ if (process.env.NODE_ENV === "production") {
 ///////////////////////////////////////////////////
 // For MongoDB Auth
 const MongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
 const url = process.env.MONGODB_URL;
 const client = new MongoClient(url);
 client.connect();
