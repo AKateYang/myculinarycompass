@@ -43,7 +43,7 @@ app.post("/api/signup", async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
 
-  const { login, password, firstname, lastname } = req.body;
+  const { login, password, firstname, lastname, email, phone } = req.body;
   const emptyFriends = [];
   const emptyRecipes = [];
 
@@ -52,6 +52,9 @@ app.post("/api/signup", async (req, res, next) => {
     Password: password,
     FirstName: firstname,
     LastName: lastname,
+    Email: email,
+    PhoneNumber: phone,
+    NumberOfFriends: 0,
     Friends: emptyFriends,
     Recipes: emptyRecipes,
   };
@@ -116,6 +119,41 @@ app.post("/api/addFriend", async (req, res, next) => {
   if (result.matchedCount === 0) {
     return res.status(404).json({ message: "User not found" });
   }
+
+  const results = await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $inc: { NumberOfFriends: 1 } });
+
+  client.close();
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/removeFriend", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { friendId, userId } = req.body;
+
+  const user = new ObjectId(userId);
+  const friend = new ObjectId(friendId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
+  const result = await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $pull: { Friends: friend } });
+
+  if (result.matchedCount === 0) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const results = await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $inc: { NumberOfFriends: -1 } });
 
   client.close();
 
