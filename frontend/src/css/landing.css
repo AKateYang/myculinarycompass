@@ -1,0 +1,120 @@
+@font-face {
+  font-family: "MyFont";
+  src: local("MyFont"), url(../fonts/Overpass-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: local("MyFont"), url(../fonts/Overpass-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: local("MyFont"), url(../fonts/OverpassMono-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: local("MyFont"), url(../fonts/OverpassMono-Medium.ttf) format("truetype");
+}
+
+.frame {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.frame .div {
+  background-image: url("../images/food original.jpg"); /* Go up one directory level */
+  background-position: 50% 50%;
+  background-size: cover;
+  height: 1024px;
+  position: relative;
+  width: 1440px;
+}
+
+.frame .navigation {
+  height: 30px;
+  left: 544px;
+  position: absolute;
+  top: 47px;
+  width: 405px;
+}
+
+.frame .text-wrapper {
+  color: #ffffff;
+  font-family: "MyFont", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+}
+
+.frame .text-wrapper-2 {
+  color: #ffffff;
+  font-family: "Overpass Mono-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 125px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+}
+
+.frame .text-wrapper-3 {
+  color: #ffffff;
+  font-family: "Overpass Mono-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 280px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+}
+
+.frame .title {
+  color: #ffffff;
+  font-family: "Overpass Mono-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 80px;
+  letter-spacing: 0.28px;
+  line-height: normal;
+  position: absolute;
+  top: 39px;
+}
+
+.frame .tagline {
+  color: #ffffff;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 80px;
+  font-weight: 700;
+  left: 286px;
+  letter-spacing: -0.8px;
+  line-height: 104px;
+  position: absolute;
+  text-align: center;
+  top: 160px;
+}
+
+.frame .description {
+  color: #ffffff;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  left: 418px;
+  letter-spacing: 0;
+  line-height: 38.4px;
+  opacity: 0.8;
+  position: absolute;
+  text-align: center;
+  top: 382px;
+  width: 606px;
+}
