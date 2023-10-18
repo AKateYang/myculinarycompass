@@ -42,7 +42,7 @@
   left: 0;
   background-image: url("../images/food original.jpg");
   background-position: center;
-  background-size: cover;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   filter: brightness(0.6);
   z-index: -1;
@@ -100,7 +100,7 @@ img {
   justify-content: center;
   align-items: center;
   width: auto;
-  margin-left: 120px;
+  margin-left: 140px;
   margin-top: 25px;
 }
 
@@ -112,13 +112,19 @@ img {
   font-size: 24px;
   font-weight: 700;
   margin: 0 15px;
-  padding: 10px 20px;
   cursor: pointer;
+  border-radius: 2px;
+  transition: transform 0.1s; /* This smoothens the animation */
 }
 
 .button:hover {
   text-decoration: underline;
+  background-color: grey;
   cursor: pointer;
+}
+
+.button:active {
+  transform: scale(0.95); /* Adjust this value to your preference */
 }
 
 .frame .tagline {
@@ -130,6 +136,7 @@ img {
   line-height: 104px;
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 100px;
 }
 
 .frame .description {
@@ -139,7 +146,7 @@ img {
   font-weight: 500;
   letter-spacing: 0;
   line-height: 38.4px;
-  opacity: 0.8;
+  opacity: 0.9;
   text-align: center;
   display: flex;
   justify-content: center;
