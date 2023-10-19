@@ -74,7 +74,7 @@ app.post("/api/signup", async (req, res, next) => {
     error = e.toString();
   }
 
-  // client.close();
+  client.close();
   var ret = { error: error };
   res.status(200).json(ret);
 });
