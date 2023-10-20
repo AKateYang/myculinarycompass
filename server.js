@@ -14,6 +14,13 @@ app.use(bodyParser.json());
 
 // Allows the use of .env
 require("dotenv").config();
+///////////////////////////////////////////////////
+// For MongoDB Auth
+const MongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
+const url = process.env.MONGODB_URL;
+const client = new MongoClient(url);
+client.connect();
 
 ///////////////////////////////////////////////////
 // For Api endpoints
@@ -265,14 +272,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 }
-
-///////////////////////////////////////////////////
-// For MongoDB Auth
-const MongoClient = require("mongodb").MongoClient;
-const ObjectId = require("mongodb").ObjectId;
-const url = process.env.MONGODB_URL;
-const client = new MongoClient(url);
-client.connect();
 
 ///////////////////////////////////////////////////
 // For PORT specification
