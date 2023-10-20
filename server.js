@@ -74,7 +74,7 @@ app.post("/api/signup", async (req, res, next) => {
     error = e.toString();
   }
 
-  client.close();
+  // client.close();
   var ret = { error: error };
   res.status(200).json(ret);
 });
@@ -100,7 +100,7 @@ app.post("/api/addRecipe", async (req, res, next) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  client.close();
+  // client.close();
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -131,7 +131,7 @@ app.post("/api/addFriend", async (req, res, next) => {
     .collection("Users")
     .updateOne({ _id: user }, { $inc: { NumberOfFriends: 1 } });
 
-  client.close();
+  // client.close();
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -162,7 +162,7 @@ app.post("/api/removeFriend", async (req, res, next) => {
     .collection("Users")
     .updateOne({ _id: user }, { $inc: { NumberOfFriends: -1 } });
 
-  client.close();
+  // client.close();
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -189,7 +189,7 @@ app.post("/api/searchUsers", async (req, res, next) => {
     _ret.push(results[i].Login + " " + results[i]._id);
   }
 
-  client.close();
+  // client.close();
   var ret = { results: _ret, error: error };
   res.status(200).json(ret);
 });
@@ -218,7 +218,7 @@ app.post("/api/login", async (req, res, next) => {
     ln = results[0].LastName;
   }
 
-  client.close();
+  // client.close();
   var ret = { id: id, firstName: fn, lastName: ln, error: "" };
   res.status(200).json(ret);
 });
