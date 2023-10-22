@@ -44,8 +44,9 @@ app.post("/api/signup", async (req, res, next) => {
   // outgoing: error
 
   const { login, password, firstname, lastname, email, phone } = req.body;
-  const emptyFriends = [];
+  const emptyFollowing = [];
   const emptyRecipes = [];
+  const emptyBlock = [];
 
   const newUser = {
     Login: login,
@@ -54,9 +55,10 @@ app.post("/api/signup", async (req, res, next) => {
     LastName: lastname,
     Email: email,
     PhoneNumber: phone,
-    NumberOfFriends: 0,
-    Friends: emptyFriends,
+    NumberOfFollowers: 0,
+    Following: emptyFollowing,
     Recipes: emptyRecipes,
+    Blocked: emptyBlock,
   };
   var error = "";
 
@@ -67,7 +69,6 @@ app.post("/api/signup", async (req, res, next) => {
     error = e.toString();
   }
 
-  client.close();
   var ret = { error: error };
   res.status(200).json(ret);
 });
@@ -93,8 +94,6 @@ app.post("/api/addRecipe", async (req, res, next) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  client.close();
-
   var ret = { error: error };
   res.status(200).json(ret);
 });
@@ -114,7 +113,7 @@ app.post("/api/addFriend", async (req, res, next) => {
 
   const result = await db
     .collection("Users")
-    .updateOne({ _id: user }, { $push: { Friends: friend } });
+    .updateOne({ _id: user }, { $push: { Following: friend } });
 
   if (result.matchedCount === 0) {
     return res.status(404).json({ message: "User not found" });
@@ -122,9 +121,32 @@ app.post("/api/addFriend", async (req, res, next) => {
 
   const results = await db
     .collection("Users")
-    .updateOne({ _id: user }, { $inc: { NumberOfFriends: 1 } });
+    .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: 1 } });
 
-  client.close();
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/blockUser", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { blockId, userId } = req.body;
+
+  const user = new ObjectId(userId);
+  const block = new ObjectId(blockId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
+  const result = await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $push: { Blocked: block } });
+
+  if (result.matchedCount === 0) {
+    return res.status(404).json({ message: "User not found" });
+  }
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -145,7 +167,7 @@ app.post("/api/removeFriend", async (req, res, next) => {
 
   const result = await db
     .collection("Users")
-    .updateOne({ _id: user }, { $pull: { Friends: friend } });
+    .updateOne({ _id: user }, { $pull: { Following: friend } });
 
   if (result.matchedCount === 0) {
     return res.status(404).json({ message: "User not found" });
@@ -153,9 +175,7 @@ app.post("/api/removeFriend", async (req, res, next) => {
 
   const results = await db
     .collection("Users")
-    .updateOne({ _id: user }, { $inc: { NumberOfFriends: -1 } });
-
-  client.close();
+    .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: -1 } });
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -182,7 +202,6 @@ app.post("/api/searchUsers", async (req, res, next) => {
     _ret.push(results[i].Login + " " + results[i]._id);
   }
 
-  client.close();
   var ret = { results: _ret, error: error };
   res.status(200).json(ret);
 });
@@ -211,7 +230,6 @@ app.post("/api/login", async (req, res, next) => {
     ln = results[0].LastName;
   }
 
-  client.close();
   var ret = { id: id, firstName: fn, lastName: ln, error: "" };
   res.status(200).json(ret);
 });
