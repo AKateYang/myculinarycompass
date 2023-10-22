@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import CardPage from "./pages/CardPage";
 import LandingPage from "./pages/LandingPage";
 import SavedRecipes from "./pages/SavedRecipes";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/cards" element={<CardPage />} />
         <Route path="/savedRecipes" element={<SavedRecipes />} />
         <Route path="/landing" element={<LandingPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );
