@@ -1,10 +1,12 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './App.css';
+import "./App.css";
 
-import LoginPage from './pages/LoginPage';
-import CardPage from './pages/CardPage';
-import SavedRecipes from './pages/SavedRecipes';
+import LoginPage from "./pages/LoginPage";
+import CardPage from "./pages/CardPage";
+import LandingPage from "./pages/LandingPage";
+import SavedRecipes from "./pages/SavedRecipes";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
@@ -13,9 +15,11 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/cards" element={<CardPage />} />
         <Route path="/savedRecipes" element={<SavedRecipes />} />
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
-      );
+  );
 }
 
 export default App;
