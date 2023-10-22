@@ -5,9 +5,9 @@ Website can be found at myculinarycompass.com
 
 # Group 9
 
-1. Ahal Saias
-2. Alissa Forde
-3. Ashley Yang
-4. Gabriel Antonio Alvim D Arco
-5. Naomi Mbwambo
-6. Serina Suresh Chugani
+1. Ahal Saias Frontend
+2. Alissa Forde API
+3. Ashley Yang Database
+4. Gabriel Antonio Alvim D Arco Frontend
+5. Naomi Mbwambo PM
+6. Serina Suresh Chugani API
