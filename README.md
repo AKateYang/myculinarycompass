@@ -6,7 +6,7 @@ Website can be found at myculinarycompass.com
 # Group 9
 
 1. Ahal Saias
-2. Alissa Forde
+2. Alissa Forde Frontend
 3. Ashley Yang
 4. Gabriel Antonio Alvim D Arco
 5. Naomi Mbwambo
