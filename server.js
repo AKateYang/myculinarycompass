@@ -234,6 +234,27 @@ app.post("/api/login", async (req, res, next) => {
   res.status(200).json(ret);
 });
 
+app.post("/api/getFollowing", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: id, firstName, lastName, error
+
+  var error = "";
+
+  const { userId } = req.body;
+
+  const user = new ObjectId(userId);
+
+  const db = client.db("COP4331Cards");
+  const results = await db.collection("Users").find({ _id: user });
+
+  const a = results.Following;
+
+  res.status(200);
+
+
+  return results.Following;
+});
+
 app.post("/api/searchcards", async (req, res, next) => {
   // incoming: userId, search
   // outgoing: results[], error
