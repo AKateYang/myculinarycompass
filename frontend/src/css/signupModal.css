@@ -34,7 +34,13 @@
     url(../fonts/OverpassMono-SemiBold.ttf) format("truetype");
 }
 
-.modal {
+@font-face {
+  font-family: "Overpass-Regular";
+  src: local("Overpass-Regular"),
+    url(../fonts/Overpass-Regular.ttf) format("truetype");
+}
+
+.signup-modal {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,28 +49,49 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.35); /* semi-transparent black */
   z-index: 1000; /* Ensure the modal is on top */
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.25s, opacity 0.25s ease-out,
+    transform 0.25s ease-out;
 }
 
-.modal-content {
+.signup-modal.open {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  transition: visibility 0s linear 0s, opacity 0.25s ease-in,
+    transform 0.25s ease-in;
+}
+
+.signup-modal .modal-content {
   position: relative;
   width: 80%;
   max-width: 500px;
   -webkit-backdrop-filter: blur(40px) brightness(100%);
-  backdrop-filter: blur(40px) brightness(100%);
+  backdrop-filter: blur(20px) brightness(100%);
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.12) 0%,
     rgba(255, 255, 255, 0.06) 100%
   );
   padding: 20px;
   border-radius: 14.65px;
   box-shadow: 0px 4px 24px -1px #00000033;
-  height: 747px;
+  height: 647px;
   width: 612px;
   left: 0;
   top: 0;
+  margin: auto;
+  margin-top: 120px;
+  transform: translateY(-50px);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.signup-modal.open .signup-modal-content {
+  transform: translateY(0);
 }
 
 .close-btn {
@@ -88,12 +115,12 @@
   font-family: "Overpass Mono-SemiBold", Helvetica;
   font-size: 40px;
   font-weight: 600;
-  left: 0;
+  left: 10px;
   letter-spacing: 0;
   line-height: 48px;
   position: absolute;
   text-align: center;
-  top: 0;
+  top: 25px;
   white-space: nowrap;
   width: 348px;
 }
@@ -109,7 +136,7 @@
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 58px;
+  top: 100px;
   width: 350px;
   color: #ffffff;
   font-weight: 300;
@@ -126,7 +153,7 @@
   font-family: "Overpass-Bold", Helvetica;
   font-weight: 700;
   left: 265px;
-  top: 77px;
+  top: 119px;
 }
 
 .goto-login:hover {
@@ -134,29 +161,97 @@
   cursor: pointer;
 }
 
-input {
+.signup-floating-label {
+  position: relative;
+  margin-bottom: 2rem; /* adjust as per your need */
+}
+
+.signup-input-field {
+  font-size: 16px;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.signup-input-field:focus {
+  border-color: #007bff; /* adjust for focus color */
+}
+
+.signup-input-field:not(:valid) + label {
+  top: 50%;
+  font-size: 16px; /* keep this the same as .input-field font-size */
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.signup-input-field:focus + label,
+.signup-input-field:not(:placeholder-shown):valid + label {
+  top: 120px; /* adjust for vertical placement when floated */
+  left: 50px; /* adjust for horizontal placement when floated */
+  font-size: 12px; /* adjust size when floated */
+  color: #777; /* adjust color when floated */
+}
+
+.signup-modal label {
+  position: absolute;
+  color: #777;
+  left: 50px;
+  top: 135px;
+  transition: all 0.3s;
+  pointer-events: none; /* makes click events pass through the label */
+}
+
+#target-firstname {
+  margin-top: 10px;
+}
+
+#target-lastname {
+  margin-top: 100px;
+}
+
+#target-username {
+  margin-top: 190px;
+}
+
+#target-password {
+  margin-top: 280px;
+}
+
+#target-email {
+  margin-top: 250px;
+}
+
+.signup-modal input {
   background-color: #ffffff;
   border-radius: 16px;
   position: absolute;
-  width: 518px;
-  height: 72px;
-  left: 0;
+  width: 448px;
+  height: 40px;
+  left: 20px;
+  text-indent: 18px;
 }
 
 #firstname {
-  top: 116px;
+  top: 120px;
 }
 
 #lastname {
-  top: 208px;
+  top: 200px;
 }
 
 #signup-username {
-  top: 300px;
+  top: 360px;
 }
 
 #signup-password {
-  top: 399px;
+  top: 440px;
+}
+
+#signup-email {
+  top: 280px;
 }
 
 .signup-submit {
@@ -170,11 +265,11 @@ input {
   background-color: #020305;
   border-radius: 16px;
   border: none;
-  height: 72px;
-  left: 0;
+  height: 60px;
+  left: 20px;
   position: relative;
-  top: 495px;
-  width: 518px;
+  top: 520px;
+  width: 468px;
 }
 
 .signup-submit:hover {
@@ -195,21 +290,48 @@ input {
   font-family: "Overpass-Regular", Helvetica;
   font-size: 20px;
   font-weight: 400;
-  left: 39px;
+  left: 70px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 0;
+  top: 10px;
   width: 486px;
 }
 
-.check {
-  border: 2px solid;
-  border-color: #ffffff;
-  border-radius: 8px;
-  height: 30px;
-  left: 0;
+input.check {
+  appearance: none; /* Removes default appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 2px solid #ffffff;
+  border-radius: 3px; /* Adjusted for a smaller square */
+  height: 20px; /* Decreased size */
+  width: 20px; /* Decreased size */
+  position: relative;
+  cursor: pointer;
+  outline: none; /* Removes focus outline */
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+/* This will display a white background when the checkbox is active (clicked) */
+input.check:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+input.check:checked::before {
+  content: "";
   position: absolute;
-  top: 0;
-  width: 30px;
+  width: 8px; /* Adjusted for the smaller square */
+  height: 4px; /* Adjusted for the smaller square */
+  border: solid white;
+  border-width: 0 2px 2px 0; /* Adjusted border width for the smaller square */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* When the checkbox is checked, change its background for better visibility */
+input.check:checked {
+  background-color: rgba(255, 255, 255, 0.2);
 }

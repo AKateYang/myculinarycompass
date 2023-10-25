@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/aboutModal.css";
 
-const AboutModal = ({ isOpen, onClose }) => {
+const AboutModal = ({ isOpen, onClose, className }) => {
   if (!isOpen) return null;
 
   // Handle background click to close the modal
@@ -13,7 +13,7 @@ const AboutModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="modal" onClick={handleBackgroundClick}>
+    <div className={`modal ${className}`} onClick={handleBackgroundClick}>
       <div className="modal-content">
         <span className="close-btn" onClick={onClose}>
           &times;
