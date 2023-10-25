@@ -1,32 +1,48 @@
 import React from "react";
 import "../css/loginModal.css";
+import classNames from "classnames";
 
-const LoginModal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
-  // Handle background click to close the modal
+const LoginModal = ({ isOpen, onClose, className }) => {
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
-      // Check if clicked element is the background
       onClose();
     }
   };
 
   return (
-    <div className="modal" onClick={handleBackgroundClick}>
-      <div className="modal-content">
-        <span className="close-btn" onClick={onClose}>
+    <div
+      className={classNames("custom-modal", { open: isOpen }, className)}
+      onClick={handleBackgroundClick}
+    >
+      <div className="custom-modal-content">
+        <span className="custom-close-btn" onClick={onClose}>
           &times;
         </span>
         <form>
-          <div className="login-header">
-            <h2 className="login-title">Login</h2>
-            <p className="question">Don’t have an account?</p>
-            <button className="goto-signup">Sign-Up</button>
+          <div className="custom-login-header">
+            <h2 className="custom-login-title">Login</h2>
+            <p className="custom-question">Don’t have an account?</p>
+            <button className="custom-goto-signup">Sign-Up</button>
           </div>
-          <input type="text" id="login-username" />
-          <input type="text" id="login-password" />
-          <button type="submit" className="login-submit">
+          <div className="floating-label">
+            <input
+              type="text"
+              className="input-field"
+              id="login-username"
+              placeholder=" "
+            />
+            <label for="login-username">Username</label>
+          </div>
+          <div className="floating-label">
+            <input
+              type="text"
+              className="input-field"
+              id="login-password"
+              placeholder=" "
+            />
+            <label for="login-password">Password</label>
+          </div>
+          <button type="submit" className="custom-login-submit">
             Login
           </button>
           <button id="forgot">Forgot Password?</button>
