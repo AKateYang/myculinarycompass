@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import CardPage from "./pages/CardPage";
 import LandingPage from "./pages/LandingPage";
 import SavedRecipes from "./pages/SavedRecipes";
-import SignupPage from "./pages/SignupPage";
 import RegisterPage from "./pages/RegisterPage";
 
 function App() {
