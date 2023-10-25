@@ -22,7 +22,7 @@
     url(../fonts/OverpassMono-Medium.ttf) format("truetype");
 }
 
-.frame {
+.custom-frame {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,7 +33,7 @@
   overflow-y: auto;
 }
 
-.frame::before {
+.custom-frame::before {
   content: "";
   position: absolute;
   top: 0;
@@ -47,11 +47,11 @@
   z-index: -1;
 }
 
-.frame > * {
+.custom-frame > * {
   color: #ffffff;
 }
 
-.frame .div {
+.custom-frame .custom-div {
   background-image: url("../images/food original.jpg");
   background-position: 50% 50%;
   background-size: cover;
@@ -60,20 +60,20 @@
   width: 1440px;
 }
 
-.div {
+.custom-div {
   position: relative;
   z-index: 1;
   color: #ffffff;
 }
 
-.header-container {
+.custom-header-container {
   display: flex;
   align-items: center;
   width: 100%;
   margin: 0 auto;
 }
 
-.title {
+.custom-title {
   font-size: 28px;
   color: #ffffff;
   font-family: "Overpass Mono-Medium", Helvetica;
@@ -83,7 +83,7 @@
   margin-top: 25px;
 }
 
-.navigation {
+.custom-navigation {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,7 +92,7 @@
   margin-top: 25px;
 }
 
-.button {
+.custom-button {
   background-color: transparent;
   border: none;
   color: #ffffff;
@@ -105,17 +105,17 @@
   transition: transform 0.1s; /* This smoothens the animation */
 }
 
-.button:hover {
+.custom-button:hover {
   text-decoration: underline;
   background-color: grey;
   cursor: pointer;
 }
 
-.button:active {
+.custom-button:active {
   transform: scale(0.95); /* Adjust this value to your preference */
 }
 
-.frame .tagline {
+.custom-frame .custom-tagline {
   color: #ffffff;
   font-family: "Overpass-Bold", Helvetica;
   font-size: 80px;
@@ -127,7 +127,7 @@
   margin-top: 100px;
 }
 
-.frame .description {
+.custom-frame .custom-description {
   color: #ffffff;
   font-family: "Overpass-Medium", Helvetica;
   font-size: 24px;
@@ -146,24 +146,24 @@
 }
 
 @media screen and (min-width: 1600px) {
-  .frame .navigation {
+  .custom-frame .custom-navigation {
     width: 50%;
   }
 }
 
 @media screen and (max-width: 1200px) {
-  .header-container {
+  .custom-header-container {
     flex-direction: column;
     align-items: flex-start;
   }
-  .title {
+  .custom-title {
     margin-right: 0;
     margin-bottom: 10px;
   }
 }
 
 @media (max-width: 600px) {
-  .some-element {
+  .custom-some-element {
     padding: 10px;
   }
 }

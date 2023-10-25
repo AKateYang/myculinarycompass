@@ -1,4 +1,3 @@
-/* import React from "react"; */
 import React, { useState } from "react";
 import "../css/landing.css"; // Use the correct relative path
 
@@ -12,36 +11,54 @@ export const Landing = () => {
   const [isAboutUsOpen, setAboutUsOpen] = useState(false);
 
   return (
-    <div className="frame">
-      <LoginModal isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
-      <SignupModal isOpen={isSignUpOpen} onClose={() => setSignUpOpen(false)} />
+    <div className="custom-frame">
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setLoginOpen(false)}
+        className="custom-login-modal"
+      />
+      <SignupModal
+        isOpen={isSignUpOpen}
+        onClose={() => setSignUpOpen(false)}
+        className="signup-modal"
+      />
       <AboutModal
         isOpen={isAboutUsOpen}
         onClose={() => setAboutUsOpen(false)}
+        className="custom-about-modal"
       />
 
-      <div className="div">
-        <div className="header-container">
-          <div className="title">culinary compass.</div>
-          <div className="navigation">
-            <button className="button" onClick={() => setLoginOpen(true)}>
+      <div className="custom-div">
+        <div className="custom-header-container">
+          <div className="custom-title">culinary compass.</div>
+          <div className="custom-navigation">
+            <button
+              className="custom-button"
+              onClick={() => setLoginOpen(true)}
+            >
               Login
             </button>
-            <button className="button" onClick={() => setSignUpOpen(true)}>
+            <button
+              className="custom-button"
+              onClick={() => setSignUpOpen(true)}
+            >
               Sign-Up
             </button>
-            <button className="button" onClick={() => setAboutUsOpen(true)}>
+            <button
+              className="custom-button"
+              onClick={() => setAboutUsOpen(true)}
+            >
               About Us
             </button>
           </div>
         </div>
-        <div className="content-wrapper">
-          <p className="tagline">
+        <div className="custom-content-wrapper">
+          <p className="custom-tagline">
             Lets Put A Good Tagline
             <br />
             here. It Could Work.
           </p>
-          <p className="description">
+          <p className="custom-description">
             We can put a more subtle description here. We can change around the
             background into one that work better. This page could look like this
             or maybe not..

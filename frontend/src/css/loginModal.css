@@ -34,7 +34,13 @@
     url(../fonts/OverpassMono-SemiBold.ttf) format("truetype");
 }
 
-.modal {
+@font-face {
+  font-family: "Overpass-Regular";
+  src: local("Overpass-Regular"),
+    url(../fonts/Overpass-Regular.ttf) format("truetype");
+}
+
+.custom-modal {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,32 +49,53 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
-  z-index: 1000; /* Ensure the modal is on top */
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.25s, opacity 0.25s ease-out,
+    transform 0.25s ease-out;
 }
 
-.modal-content {
-  position: relative;
+.custom-modal.open {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  transition: visibility 0s linear 0s, opacity 0.25s ease-in,
+    transform 0.25s ease-in;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.custom-login-modal .custom-modal-content {
   width: 80%;
-  max-width: 500px;
+  max-width: 1000px;
   -webkit-backdrop-filter: blur(40px) brightness(100%);
-  backdrop-filter: blur(40px) brightness(100%);
+  backdrop-filter: blur(20px) brightness(100%);
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.12) 0%,
     rgba(255, 255, 255, 0.06) 100%
   );
   border-radius: 14.65px;
   box-shadow: 0px 4px 24px -1px #00000033;
   height: 547px;
-  left: 415px;
-  top: 239px;
   width: 612px;
-  left: 0;
-  top: 0;
+  margin: auto;
+  position: relative;
+  margin-top: 120px;
+  transform: translateY(-50px);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease-in-out;
 }
 
-.close-btn {
+.custom-modal.open .custom-modal-content {
+  transform: translateY(0);
+}
+
+.custom-close-btn {
   position: absolute;
   right: 10px;
   top: 5px;
@@ -76,91 +103,133 @@
   cursor: pointer;
 }
 
-.login-header {
+.custom-login-header {
+  position: relative;
   height: 88px;
-  left: 73px;
-  position: absolute;
-  top: 0;
   width: 352px;
+  margin-left: 120px;
+  margin-bottom: 40px;
 }
 
-.login-title {
+.custom-login-title {
   color: #ffffff;
-  font-family: "Overpass Mono-SemiBold", Helvetica;
+  font-family: "Overpass Mono-SemiBold", Helvetica, sans-serif;
   font-size: 40px;
   font-weight: 600;
-  left: 0;
   letter-spacing: 0;
   line-height: 48px;
-  position: absolute;
   text-align: center;
-  top: 0;
-  white-space: nowrap;
-  width: 348px;
+  margin-top: 70px;
+  margin-bottom: 20px;
 }
 
-.question {
+.custom-question {
   color: #ffffff;
+  font-size: 20px;
+  font-family: "Overpass-Light", Helvetica, sans-serif;
+  margin-top: -10px; /* Adjust the value as needed */
   font-weight: 300;
+  margin-left: 30px;
 }
 
-.goto-signup {
+.custom-goto-signup {
   display: flex;
   align-items: center;
-  position: absolute;
   font-size: 20px;
   color: #23e858;
-  font-family: "Overpass-Bold", Helvetica;
+  font-family: "Overpass-Bold", Helvetica, sans-serif;
   border: none;
   background-color: transparent;
-  font-family: "Overpass-Bold", Helvetica;
   font-weight: 700;
-  left: 245px;
-  top: 77px;
-}
-
-.goto-signup:hover {
-  color: #a1eab4;
+  margin-top: -26px; /* Adjust this value to position it vertically */
+  margin-left: 240px; /* Same left margin as .custom-question to align it */
   cursor: pointer;
 }
 
-input {
+.custom-goto-signup:hover {
+  color: #a1eab4;
+}
+
+.floating-label {
+  position: relative;
+  margin-bottom: 2rem; /* adjust as per your need */
+}
+
+.input-field {
+  font-size: 16px; /* adjust as per your need */
+  width: 100%;
+  height: 40px; /* adjust as per your need */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px; /* optional */
+  background-color: transparent; /* to avoid overlapping with label */
+}
+
+.input-field:focus {
+  border-color: #007bff; /* adjust for focus color */
+}
+
+.input-field:not(:valid) + label {
+  top: 50%;
+  font-size: 16px; /* keep this the same as .input-field font-size */
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.input-field:focus + label,
+.input-field:not(:placeholder-shown):valid + label {
+  top: 10px; /* adjust for vertical placement when floated */
+  left: 70px; /* adjust for horizontal placement when floated */
+  font-size: 12px; /* adjust size when floated */
+  color: #777; /* adjust color when floated */
+}
+
+label {
+  position: absolute;
+  color: #777;
+  left: 70px;
+  top: 25px;
+  transition: all 0.3s;
+  pointer-events: none; /* makes click events pass through the label */
+}
+
+.custom-login-modal input {
   background-color: #ffffff;
   border-radius: 16px;
-  position: absolute;
-  width: 518px;
-  height: 72px;
-  left: 0;
+  width: 493px;
+  height: 50px;
+  margin: 20px auto;
+  display: block;
+  text-indent: 10px;
 }
 
 #login-username {
-  top: 208px;
+  margin-top: -15px;
+  left: 50px;
 }
-
 #login-password {
-  top: 300px;
+  margin-top: 30px;
+  left: 50px;
 }
 
-.login-submit {
+.custom-login-submit {
   color: white;
-  font-family: "Overpass-Medium", Helvetica;
+  font-family: "Overpass-Medium", Helvetica, sans-serif;
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: 0;
-  white-space: nowrap;
-  line-height: normal;
   background-color: #020305;
   border-radius: 16px;
   border: none;
-  height: 72px;
-  left: 0;
-  position: absolute;
-  top: 395px;
+  height: 70px;
   width: 518px;
+  left: 50px;
+  margin: 20px auto;
+  margin-top: -5px;
+  display: block;
+  cursor: pointer;
 }
 
-.login-submit:hover {
-  cursor: pointer;
+.custom-login-submit:hover {
   background-color: #00000088;
 }
 
@@ -168,18 +237,14 @@ input {
   color: #ffffff;
   background-color: transparent;
   border: none;
-  font-family: "Overpass-Regular", Helvetica;
+  font-family: "Overpass-Regular", Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 400;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  height: 30px;
-  left: 167px;
-  top: 506px;
   width: 263px;
-}
-
-#forgot:hover {
+  height: 30px;
+  margin: 20px auto;
+  display: block;
+  text-align: center;
   cursor: pointer;
+  margin-left: 170px;
 }
