@@ -205,23 +205,23 @@
 }
 
 #target-firstname {
-  margin-top: 10px;
+  margin-top: 9px;
 }
 
 #target-lastname {
-  margin-top: 100px;
+  margin-top: 87px;
 }
 
 #target-username {
-  margin-top: 190px;
+  margin-top: 247px;
 }
 
 #target-password {
-  margin-top: 280px;
+  margin-top: 327px;
 }
 
 #target-email {
-  margin-top: 250px;
+  margin-top: 168px;
 }
 
 .signup-modal input {
@@ -279,22 +279,22 @@
 
 .terms {
   height: 30px;
-  left: 0;
+  left: 10px;
   position: absolute;
-  top: 592px;
+  top: 602px;
   width: 527px;
 }
 
 .agree {
   color: #ffffff;
   font-family: "Overpass-Regular", Helvetica;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   left: 70px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 10px;
+  top: 25px;
   width: 486px;
 }
 
@@ -310,7 +310,7 @@ input.check {
   cursor: pointer;
   outline: none; /* Removes focus outline */
   transition: background-color 0.3s ease;
-  margin-top: 30px;
+  margin-top: 40px;
   margin-left: 10px;
 }
 
