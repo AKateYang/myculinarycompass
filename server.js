@@ -45,6 +45,7 @@ app.post("/api/signup", async (req, res, next) => {
 
   const { login, password, firstname, lastname, email, phone } = req.body;
   const emptyFollowing = [];
+  const emptyFollowers = [];
   const emptyRecipes = [];
   const emptyBlock = [];
 
@@ -56,6 +57,7 @@ app.post("/api/signup", async (req, res, next) => {
     Email: email,
     PhoneNumber: phone,
     NumberOfFollowers: 0,
+    Followers: emptyFollowers,
     Following: emptyFollowing,
     Recipes: emptyRecipes,
     Blocked: emptyBlock,
@@ -111,17 +113,17 @@ app.post("/api/addFriend", async (req, res, next) => {
 
   const db = client.db("COP4331Cards");
 
-  const result = await db
+  await db
     .collection("Users")
     .updateOne({ _id: user }, { $push: { Following: friend } });
 
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  const results = await db
+  await db
     .collection("Users")
     .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: 1 } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: friend }, { $push: { Followers: user } });
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -165,17 +167,17 @@ app.post("/api/removeFriend", async (req, res, next) => {
 
   const db = client.db("COP4331Cards");
 
-  const result = await db
+  await db
     .collection("Users")
     .updateOne({ _id: user }, { $pull: { Following: friend } });
 
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  const results = await db
+  await db
     .collection("Users")
     .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: -1 } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: friend }, { $pull: { Followers: user } });
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -247,12 +249,45 @@ app.post("/api/getFollowing", async (req, res, next) => {
   const db = client.db("COP4331Cards");
   const results = await db.collection("Users").find({ _id: user });
 
-  const a = results.Following;
+  res.status(200);
+
+  return results.Following;
+});
+
+app.post("/api/getNumFollowers", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: id, firstName, lastName, error
+
+  var error = "";
+
+  const { userId } = req.body;
+
+  const user = new ObjectId(userId);
+
+  const db = client.db("COP4331Cards");
+  const results = await db.collection("Users").find({ _id: user });
 
   res.status(200);
 
+  return results.NumberOfFollowers;
+});
 
-  return results.Following;
+app.post("/api/getFollowers", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: id, firstName, lastName, error
+
+  var error = "";
+
+  const { userId } = req.body;
+
+  const user = new ObjectId(userId);
+
+  const db = client.db("COP4331Cards");
+  const results = await db.collection("Users").find({ _id: user });
+
+  res.status(200);
+
+  return results.Followers;
 });
 
 app.post("/api/searchcards", async (req, res, next) => {
