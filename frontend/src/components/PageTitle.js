@@ -1,10 +1,7 @@
-import React from 'react';
+import React from "react";
 
-function PageTitle()
-{
-   return(
-     <h1 id="title">COP 4331 MERN Stack Demo</h1>
-   );
-};
+function PageTitle() {
+  return <h1 id="title">My Culinary Compass</h1>;
+}
 
 export default PageTitle;
