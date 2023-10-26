@@ -82,6 +82,62 @@ app.post("/api/signup", async (req, res, next) => {
   res.status(200).json(ret);
 });
 
+app.post("/api/updateProfile", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { userId, firstname, lastname } = req.body;
+
+  const user = new ObjectId(userId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { FirstName: firstname } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { LastName: lastname } });
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/updateUser", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { userId, newlogin, newpassword, newemail, newphone } = req.body;
+
+  const user = new ObjectId(userId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { Login: newlogin } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { Password: newpassword } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { Email: newemail } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { PhoneNumber: newphone } });
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
 app.post("/api/addRecipe", async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
