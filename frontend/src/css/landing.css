@@ -62,7 +62,9 @@ body {
 }
 
 .custom-frame .custom-div {
-  background-image: url("../images/food original.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
+    url("../images/food original.jpg");
+  /*background-image: url("../images/food original.jpg");*/
   background-position: 50% 50%;
   background-size: cover;
   position: relative;
