@@ -71,9 +71,42 @@ app.post("/api/signup", async (req, res, next) => {
   };
   var error = "";
 
+  const db = client.db("COP4331Cards");
+  const result = db.collection("Users").insertOne(newUser);
+  
+
+  const user = result._id;
+
+  saveCookie(firstname, lastname, user);
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/createPost", async (req, res, next) => {
+  // incoming: caption, video, imagesArray, userId
+  // outgoing: error
+
+  const { caption, video, imagesArray, creatorId } = req.body;
+  const postComments = [];
+  const dateCreated = new Date().toISOString();
+
+  const newPost = {
+    creatorId: creatorId,
+    caption: caption,
+    NumberOfLikes: 0,
+    NumberOfComments: 0,
+    NumberOfShares: 0,
+    PostComments: postComments,
+    Video: video,
+    Images: imagesArray,
+    DateCreated: dateCreated,
+  };
+  var error = "";
+
   try {
     const db = client.db("COP4331Cards");
-    const result = db.collection("Users").insertOne(newUser);
+    const result = db.collection("Posts").insertOne(newPost);
   } catch (e) {
     error = e.toString();
   }
@@ -408,3 +441,45 @@ if (process.env.NODE_ENV === "production") {
 app.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
+
+function saveCookie() {
+  let minutes = 20;
+  let date = new Date();
+  date.setTime(date.getTime() + minutes * 60 * 1000);
+  document.cookie =
+    "FirstName=" +
+    firstname +
+    ",LastName=" +
+    lastname +
+    ",_id=" +
+    _id +
+    ";expires=" +
+    date.toGMTString();
+
+  console.log("Hello world");
+}
+
+function readCookie() {
+  userId = -1;
+  let data = document.cookie;
+  let splits = data.split(",");
+  for (var i = 0; i < splits.length; i++) {
+    let thisOne = splits[i].trim();
+    let tokens = thisOne.split("=");
+    if (tokens[0] == "FirstName") {
+      firstName = tokens[1];
+    } else if (tokens[0] == "LastName") {
+      lastName = tokens[1];
+    } else if (tokens[0] == "UserId") {
+      userId = parseInt(tokens[1].trim());
+      return userId;
+    }
+  }
+
+  if (userId < 0) {
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("userName").innerHTML =
+      "Logged in as " + firstName + " " + lastName;
+  }
+}
