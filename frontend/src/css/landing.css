@@ -64,7 +64,6 @@ body {
 .custom-frame .custom-div {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
     url("../images/food original.jpg");
-  /*background-image: url("../images/food original.jpg");*/
   background-position: 50% 50%;
   background-size: cover;
   position: relative;
@@ -102,6 +101,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0.5vh auto;
+  margin-right: 62.5vh;
+  margin-top: 2.15rem;
 }
 
 .custom-button {
