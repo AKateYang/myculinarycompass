@@ -1,24 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
-import Login from "../components/Login";
+import Register from "../components/Register";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
-
   return (
     <div>
       <button
         onClick={() => {
-          navigate("/register");
+          navigate("/");
         }}
       >
-        Register
+        Login
       </button>
       <PageTitle />
-      <Login />
+      <Register />
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
