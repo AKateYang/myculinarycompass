@@ -76,8 +76,6 @@ app.post("/api/signup", async (req, res, next) => {
 
   const user = result._id;
 
-  saveCookie(firstname, lastname, user);
-
   var ret = { error: error };
   res.status(200).json(ret);
 });
