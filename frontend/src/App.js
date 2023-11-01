@@ -18,6 +18,7 @@ function App() {
         <Route path="/cards" element={<CardPage />} />
         <Route path="/savedRecipes" element={<SavedRecipes />} />
         <Route path="/landing" element={<LandingPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );
