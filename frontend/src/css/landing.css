@@ -22,7 +22,17 @@
     url(../fonts/OverpassMono-Medium.ttf) format("truetype");
 }
 
-.frame {
+html {
+  font-size: 16px;
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden; /* Hide horizontal overflow */
+}
+
+.custom-frame {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,14 +43,14 @@
   overflow-y: auto;
 }
 
-.frame::before {
+
+.custom-frame::before {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: url("../images/food original.jpg");
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -48,134 +58,170 @@
   z-index: -1;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-.frame > * {
+.custom-frame > * {
   color: #ffffff;
 }
 
-.background-container {
-  width: 100%;
-  height: 100%;
+.custom-frame .custom-div {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
+    url("../images/food original.jpg");
+  background-position: 50% 50%;
+  background-size: cover;
   position: relative;
-  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh; /* Set to 100% of the viewport height */
+  width: 100%; /* Set to 100% of the parent container */
 }
 
-.div {
+.custom-div {
   position: relative;
   z-index: 1;
   color: #ffffff;
 }
 
-.header-container {
+.custom-header-container {
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 0 auto;
+  margin: 1.5rem auto;
+  padding-left: 0%; /* Add padding instead of margin for title */
+  padding-right: 0%;
 }
 
-.frame .div {
-  background-position: center;
-  background-size: cover;
-  width: 100%;
-  height: 100vh;
-  position: relative;
-}
-
-.title {
-  font-size: 28px;
+.custom-title {
+  /*font-size: 1.75rem;*/
+  font-size: 2vw; /* Use viewport width for scalability */
   color: #ffffff;
   font-family: "Overpass Mono-Medium", Helvetica;
   font-weight: 500;
   flex-shrink: 0;
-  margin-left: 75px;
-  margin-top: 25px;
+  margin-left: 4.6875rem; /* 75px in rem */
+  margin-top: 1.5625rem; /* 25px in rem */
 }
 
-.navigation {
+.custom-navigation {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
-  margin-left: 140px;
-  margin-top: 25px;
+  margin: 0.5vh auto;
+  margin-right: 62.5vh;
+  margin-top: 2.15rem;
 }
 
-.button {
+.custom-button {
+
   background-color: transparent;
   border: none;
   color: #ffffff;
   font-family: "Overpass Mono-Bold", Helvetica;
-  font-size: 24px;
+  font-size: 1.5rem; /* 24px in REM */
   font-weight: 700;
-  margin: 0 15px;
+  margin: 0 0.9375rem; /* 15px in REM */
   cursor: pointer;
   border-radius: 2px;
   transition: transform 0.1s; /* This smoothens the animation */
+  font-size: 2vw; /* Use viewport width for scalability */
 }
 
-.button:hover {
+.custom-button:hover {
   text-decoration: underline;
   background-color: grey;
   cursor: pointer;
 }
 
-.button:active {
+.custom-navigation .custom-button {
+  font-size: 1.5rem;
+  margin: 0 0.9375rem; /* 15px in rem */
+}
+
+.custom-button:active {
   transform: scale(0.95); /* Adjust this value to your preference */
 }
 
-.frame .tagline {
+.custom-tagline {
   color: #ffffff;
   font-family: "Overpass-Bold", Helvetica;
-  font-size: 80px;
+  font-size: 5rem; /* 80px in REM */
   font-weight: 700;
   letter-spacing: -0.8px;
   line-height: 104px;
   text-align: center;
-  margin-bottom: 20px;
-  margin-top: 100px;
+  margin: 6.25rem 0 1.25rem; /* 100px 0 20px in REM */
+  font-size: 6vw; /* Use viewport width for scalability */
 }
 
-.frame .description {
+.custom-frame .custom-description {
   color: #ffffff;
   font-family: "Overpass-Medium", Helvetica;
-  font-size: 24px;
+  /*font-size: 1.5rem;*/
   font-weight: 500;
   letter-spacing: 0;
   line-height: 38.4px;
   opacity: 0.9;
   text-align: center;
-  display: flex;
+  /*display: flex;*/
+  display: block;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 0 20px;
-}
-
-@media screen and (min-width: 1600px) {
-  .frame .navigation {
-    width: 50%;
-  }
+  padding: 0 1.25rem; /* 20px in rem */
+  font-size: 1.75vw; /* Use viewport width for scalability */
+  max-height: 500px; /* Set a maximum height */
+  min-height: 0;
+  overflow-y: auto; /* Make it scrollable */
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff #000000;
 }
 
 @media screen and (max-width: 1200px) {
-  .header-container {
-    flex-direction: column;
-    align-items: flex-start;
+  /* Adjusted sizes for smaller screens */
+  .custom-title {
+    font-size: 4vw;
   }
-  .title {
-    margin-right: 0;
-    margin-bottom: 10px;
+  .custom-button {
+    font-size: 3vw;
+  }
+  .custom-tagline {
+    font-size: 10vw;
+  }
+  .custom-description {
+    font-size: 3vw;
   }
 }
 
-@media (max-width: 600px) {
-  .some-element {
-    padding: 10px;
+@media screen and (max-width: 768px) {
+  .custom-title {
+    font-size: 5vw;
+  }
+  .custom-navigation {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .custom-button {
+    font-size: 4vw;
+    margin: 0.5rem 0;
+  }
+  .custom-tagline {
+    font-size: 12vw;
+  }
+  .custom-description {
+    font-size: 4vw;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .custom-title {
+    font-size: 6vw;
+  }
+  .custom-button {
+    font-size: 5vw;
+  }
+  .custom-tagline {
+    font-size: 14vw;
+  }
+  .custom-description {
+    font-size: 5vw;
   }
 }

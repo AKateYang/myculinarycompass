@@ -51,8 +51,10 @@ app.post("/api/signup", async (req, res, next) => {
   // outgoing: error
 
   const { login, password, firstname, lastname, email, phone } = req.body;
-  const emptyFriends = [];
+  const emptyFollowing = [];
+  const emptyFollowers = [];
   const emptyRecipes = [];
+  const emptyBlock = [];
 
   const newUser = {
     Login: login,
@@ -61,20 +63,107 @@ app.post("/api/signup", async (req, res, next) => {
     LastName: lastname,
     Email: email,
     PhoneNumber: phone,
-    NumberOfFriends: 0,
-    Friends: emptyFriends,
+    NumberOfFollowers: 0,
+    Followers: emptyFollowers,
+    Following: emptyFollowing,
     Recipes: emptyRecipes,
+    Blocked: emptyBlock,
+  };
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+  const result = db.collection("Users").insertOne(newUser);
+
+  const user = result._id;
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/createPost", async (req, res, next) => {
+  // incoming: caption, video, imagesArray, userId
+  // outgoing: error
+
+  const { caption, video, imagesArray, creatorId } = req.body;
+  const postComments = [];
+  const dateCreated = new Date().toISOString();
+
+  const newPost = {
+    creatorId: creatorId,
+    caption: caption,
+    NumberOfLikes: 0,
+    NumberOfComments: 0,
+    NumberOfShares: 0,
+    PostComments: postComments,
+    Video: video,
+    Images: imagesArray,
+    DateCreated: dateCreated,
   };
   var error = "";
 
   try {
     const db = client.db("COP4331Cards");
-    const result = db.collection("Users").insertOne(newUser);
+    const result = db.collection("Posts").insertOne(newPost);
   } catch (e) {
     error = e.toString();
   }
 
-  // client.close();
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/updateProfile", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { userId, firstname, lastname } = req.body;
+
+  const user = new ObjectId(userId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { FirstName: firstname } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { LastName: lastname } });
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/updateUser", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { userId, newlogin, newpassword, newemail, newphone } = req.body;
+
+  const user = new ObjectId(userId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { Login: newlogin } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { Password: newpassword } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { Email: newemail } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $set: { PhoneNumber: newphone } });
+
   var ret = { error: error };
   res.status(200).json(ret);
 });
@@ -100,8 +189,6 @@ app.post("/api/addRecipe", async (req, res, next) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  // client.close();
-
   var ret = { error: error };
   res.status(200).json(ret);
 });
@@ -119,19 +206,42 @@ app.post("/api/addFriend", async (req, res, next) => {
 
   const db = client.db("COP4331Cards");
 
+  await db
+    .collection("Users")
+    .updateOne({ _id: user }, { $push: { Following: friend } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: 1 } });
+
+  await db
+    .collection("Users")
+    .updateOne({ _id: friend }, { $push: { Followers: user } });
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+app.post("/api/blockUser", async (req, res, next) => {
+  // incoming: userId, color
+  // outgoing: error
+
+  const { blockId, userId } = req.body;
+
+  const user = new ObjectId(userId);
+  const block = new ObjectId(blockId);
+
+  var error = "";
+
+  const db = client.db("COP4331Cards");
+
   const result = await db
     .collection("Users")
-    .updateOne({ _id: user }, { $push: { Friends: friend } });
+    .updateOne({ _id: user }, { $push: { Blocked: block } });
 
   if (result.matchedCount === 0) {
     return res.status(404).json({ message: "User not found" });
   }
-
-  const results = await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $inc: { NumberOfFriends: 1 } });
-
-  // client.close();
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -150,19 +260,17 @@ app.post("/api/removeFriend", async (req, res, next) => {
 
   const db = client.db("COP4331Cards");
 
-  const result = await db
+  await db
     .collection("Users")
-    .updateOne({ _id: user }, { $pull: { Friends: friend } });
+    .updateOne({ _id: user }, { $pull: { Following: friend } });
 
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  const results = await db
+  await db
     .collection("Users")
-    .updateOne({ _id: user }, { $inc: { NumberOfFriends: -1 } });
+    .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: -1 } });
 
-  // client.close();
+  await db
+    .collection("Users")
+    .updateOne({ _id: friend }, { $pull: { Followers: user } });
 
   var ret = { error: error };
   res.status(200).json(ret);
@@ -189,7 +297,6 @@ app.post("/api/searchUsers", async (req, res, next) => {
     _ret.push(results[i].Login + " " + results[i]._id);
   }
 
-  // client.close();
   var ret = { results: _ret, error: error };
   res.status(200).json(ret);
 });
@@ -221,6 +328,60 @@ app.post("/api/login", async (req, res, next) => {
   // client.close();
   var ret = { id: id, firstName: fn, lastName: ln, error: "" };
   res.status(200).json(ret);
+});
+
+app.post("/api/getFollowing", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: id, firstName, lastName, error
+
+  var error = "";
+
+  const { userId } = req.body;
+
+  const user = new ObjectId(userId);
+
+  const db = client.db("COP4331Cards");
+  const results = await db.collection("Users").find({ _id: user });
+
+  res.status(200);
+
+  return results.Following;
+});
+
+app.post("/api/getNumFollowers", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: id, firstName, lastName, error
+
+  var error = "";
+
+  const { userId } = req.body;
+
+  const user = new ObjectId(userId);
+
+  const db = client.db("COP4331Cards");
+  const results = await db.collection("Users").find({ _id: user });
+
+  res.status(200);
+
+  return results.NumberOfFollowers;
+});
+
+app.post("/api/getFollowers", async (req, res, next) => {
+  // incoming: login, password
+  // outgoing: id, firstName, lastName, error
+
+  var error = "";
+
+  const { userId } = req.body;
+
+  const user = new ObjectId(userId);
+
+  const db = client.db("COP4331Cards");
+  const results = await db.collection("Users").find({ _id: user });
+
+  res.status(200);
+
+  return results.Followers;
 });
 
 app.post("/api/searchcards", async (req, res, next) => {
@@ -278,3 +439,45 @@ if (process.env.NODE_ENV === "production") {
 app.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
 });
+
+function saveCookie() {
+  let minutes = 20;
+  let date = new Date();
+  date.setTime(date.getTime() + minutes * 60 * 1000);
+  document.cookie =
+    "FirstName=" +
+    firstname +
+    ",LastName=" +
+    lastname +
+    ",_id=" +
+    _id +
+    ";expires=" +
+    date.toGMTString();
+
+  console.log("Hello world");
+}
+
+function readCookie() {
+  userId = -1;
+  let data = document.cookie;
+  let splits = data.split(",");
+  for (var i = 0; i < splits.length; i++) {
+    let thisOne = splits[i].trim();
+    let tokens = thisOne.split("=");
+    if (tokens[0] == "FirstName") {
+      firstName = tokens[1];
+    } else if (tokens[0] == "LastName") {
+      lastName = tokens[1];
+    } else if (tokens[0] == "UserId") {
+      userId = parseInt(tokens[1].trim());
+      return userId;
+    }
+  }
+
+  if (userId < 0) {
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("userName").innerHTML =
+      "Logged in as " + firstName + " " + lastName;
+  }
+}
