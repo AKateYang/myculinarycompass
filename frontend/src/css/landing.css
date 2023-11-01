@@ -43,6 +43,7 @@ body {
   overflow-y: auto;
 }
 
+
 .custom-frame::before {
   content: "";
   position: absolute;
@@ -107,6 +108,7 @@ body {
 }
 
 .custom-button {
+
   background-color: transparent;
   border: none;
   color: #ffffff;
