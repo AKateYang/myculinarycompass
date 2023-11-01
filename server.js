@@ -66,7 +66,6 @@ app.post("/api/signup", async (req, res, next) => {
 
   const db = client.db("COP4331Cards");
   const result = db.collection("Users").insertOne(newUser);
-  
 
   const user = result._id;
 
