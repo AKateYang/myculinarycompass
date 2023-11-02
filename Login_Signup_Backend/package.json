@@ -4,8 +4,7 @@
   "description": "This is a simple login signup project api for flutter app ",
   "main": "index.js",
   "scripts": {
-    "heroku-prebuild": "cd login_signup && flutter run && ",
-    "start": "cd Login_Signup_Backend && npm start"
+    "start": "node index.js"
   },
   "author": "Ravi Taak",
   "license": "ISC",
