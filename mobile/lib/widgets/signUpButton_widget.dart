@@ -4,42 +4,31 @@ import 'package:flutter/material.dart';
 //   runApp(MyApp());
 // }
 
-class signUpButtonWidget extends StatelessWidget {
-  @override
+class SignUpButtonWidget extends StatelessWidget {
   final String hintname;
 
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: hintname,
-        ),
-        body: Center(
-          child: OvalButton(),
-        ),
-      ),
-    );
-  }
-}
+  const SignUpButtonWidget({
+    Key? key,
+    required this.hintname,
+  }) : super(key:key);
 
-class OvalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         // Handle button click here
-        print('Button Clicked');
+        print('Welcome');
       },
       child: Container(
         width: 150, // Adjust the width as needed
-        height: 60, // Adjust the height as needed
+        height: 30, // Adjust the height as needed
         decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(30), // Half of the height for an oval shape
+          color: Color.fromARGB(255, 15, 22, 15),
+          borderRadius: BorderRadius.circular(15), // Half of the height for an oval shape
         ),
-        child: Center(
+        child: const Center(
           child: Text(
-            'Click Me',
+            'Sign Up',
             style: TextStyle(color: Colors.white),
           ),
         ),

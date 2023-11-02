@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: [
         BackgroundImageWidget(
-          image: AssetImage('assets/landing.jpg'),
+          image: const AssetImage('assets/landing.jpg'),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: SafeArea(
@@ -27,20 +27,20 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Container(
                     height: 200,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'My Culinary\n  Compass',
                         style: landHeading,
                       ),
                     ),
                   ),
-                  InputBoxWidget(
+                  const InputBoxWidget(
                       hintname: "Username",
                       hintStyle: landBodyText,
                       inputType: TextInputType.text,
                       inputAction: TextInputAction.next,
                       isHide: false),
-                  InputBoxWidget(
+                  const InputBoxWidget(
                     hintname: "Password",
                     hintStyle: landBodyText,
                     inputAction: TextInputAction.next,
