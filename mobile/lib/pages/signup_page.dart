@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/palette.dart';
 import 'package:mobile/widgets/background_widget.dart';
 import 'package:mobile/widgets/inputbox_widget.dart';
+import 'package:mobile/widgets/signupbutton_widget.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SightUpPage({super.key});
+  const SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -24,38 +25,38 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Container(
                     height: 200,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'My Culinary\n  Compass',
                         style: landHeading,
                       ),
                     ),
                   ),
-                  InputBoxWidget(
+                  const InputBoxWidget(
                     hintname: "First Name",
                     hintStyle: landBodyText,
                     inputType: TextInputType.text,
                     inputAction: TextInputAction.next,
                     isHide: false),
-                  InputBoxWidget(
+                  const InputBoxWidget(
                     hintname: "Last Name",
                     hintStyle: landBodyText,
                     inputAction: TextInputAction.next,
                     inputType: TextInputType.text,
                     isHide: true),
-                  InputBoxWidget(
-                    hintname: "First Name",
+                  const InputBoxWidget(
+                    hintname: "Username",
                     hintStyle: landBodyText,
                     inputType: TextInputType.text,
                     inputAction: TextInputAction.next,
-                    isHide: false),
-                  InputBoxWidget(
-                    hintname: "Last Name",
+                    isHide: true),
+                  const InputBoxWidget(
+                    hintname: "Password",
                     hintStyle: landBodyText,
                     inputAction: TextInputAction.next,
                     inputType: TextInputType.text,
                     isHide: true),
-                  signUpButtonWidget(
+                  const SignUpButtonWidget(
                     hintname: "Sign Up",
                   ),
                 ],
