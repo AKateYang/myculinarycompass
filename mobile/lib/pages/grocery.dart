@@ -36,7 +36,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         itemBuilder: (context, sectionIndex) {
           ShoppingSection section = sections[sectionIndex];
           return Card(
-            margin: EdgeInsets.only(top: 16.0),
+            margin: const EdgeInsets.only(top: 16.0),
             color: Colors.blueGrey[800],
             child: Column(
               children: <Widget>[
