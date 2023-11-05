@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'pages/login-page.dart';
+import 'pages/grocery.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: "Exploration!",
-      home: LoginPage(),
+      home: ShoppingListScreen(),
     );
   }
 }

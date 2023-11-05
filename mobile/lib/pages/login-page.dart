@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
         BackgroundImageWidget(
           image: AssetImage('assets/landing.jpg'),
@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
             body: SafeArea(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 200,
                     child: Center(
                       child: Text(
