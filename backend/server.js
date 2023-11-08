@@ -76,7 +76,6 @@ mongoose
     // Post.insertMany(posts);
   })
   .catch((error) => console.log(`${error} did not connect`));
-<<<<<<< HEAD
 
 ///////////////////////////////////////////////////
 // For Heroku deployment
@@ -102,5 +101,3 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 }
-=======
->>>>>>> master
