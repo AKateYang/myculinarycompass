@@ -1,17 +1,9 @@
 import React from "react";
-<<<<<<< HEAD
 import "./css/SavedRecipes.css";
 
 const Cookpal = () => {
   return (
     <div className="cookpal">
-=======
-import "../css/SavedRecipies.css";
-
-const Cookpal = () => {
-    return (
-        <div className="cookpal">
->>>>>>> master
       <div className="div">
         <div className="overlap">
           <div className="text-wrapper">Saved Recipes</div>
@@ -42,15 +34,11 @@ const Cookpal = () => {
             </div>
             <div className="overlap-6">
               <div className="text-wrapper-10"></div>
-<<<<<<< HEAD
               <img
                 className="cropped-pistaciafood"
                 alt="Cropped pistaciafood"
                 src="cropped-pistaciafood-11-1.png"
               />
-=======
-              <img className="cropped-pistaciafood" alt="Cropped pistaciafood" src="cropped-pistaciafood-11-1.png" />
->>>>>>> master
               <p className="get-cooking">
                 <span className="text-wrapper-11">Get&nbsp;&nbsp;</span>
                 <span className="text-wrapper-12">Cooking!</span>
@@ -67,15 +55,11 @@ const Cookpal = () => {
           <div className="overlap-9">
             <div className="overlap-10">
               <img className="image" alt="Image" src="image-2.png" />
-<<<<<<< HEAD
               <img
                 className="rectangle"
                 alt="Rectangle"
                 src="rectangle-48.png"
               />
-=======
-              <img className="rectangle" alt="Rectangle" src="rectangle-48.png" />
->>>>>>> master
               <div className="group">
                 <div className="overlap-group-2">
                   <div className="text-wrapper-18">Recipes</div>
@@ -88,7 +72,6 @@ const Cookpal = () => {
             </div>
             <div className="group-2">
               <img className="img" alt="Rectangle" src="rectangle-27.png" />
-<<<<<<< HEAD
               <img
                 className="rectangle-2"
                 alt="Rectangle"
@@ -99,10 +82,6 @@ const Cookpal = () => {
                 alt="Rectangle"
                 src="rectangle-29.png"
               />
-=======
-              <img className="rectangle-2" alt="Rectangle" src="rectangle-28.png" />
-              <img className="rectangle-3" alt="Rectangle" src="rectangle-29.png" />
->>>>>>> master
             </div>
             <img className="chat" alt="Chat" src="chat-4.png" />
             <img className="chat-2" alt="Chat" src="chat-5.png" />
@@ -149,15 +128,7 @@ const Cookpal = () => {
         </div>
       </div>
     </div>
-<<<<<<< HEAD
   );
 };
 
 export default Cookpal;
-=======
-    
-    );
-  };
-
-  export default Cookpal;
->>>>>>> master
