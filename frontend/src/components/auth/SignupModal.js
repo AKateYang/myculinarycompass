@@ -13,16 +13,8 @@ const SignupModal = ({ isOpen, onClose, className }) => {
 
   ///////////////////////////////////////////////////
   // This section sends the parameter to backend
-  const app_name = "myculinarycompass-0c8901cce626";
-  function buildPath(route) {
-    if (process.env.NODE_ENV === "production") {
-      return "https://" + app_name + ".herokuapp.com/" + route;
-    } else {
-      return "http://localhost:5000/" + route;
-    }
-  }
 
-  var loginName;
+  var username;
   var loginPassword;
   var firstName;
   var lastName;
@@ -35,17 +27,17 @@ const SignupModal = ({ isOpen, onClose, className }) => {
     event.preventDefault();
 
     var obj = {
-      login: loginName.value,
-      password: loginPassword.value,
-      firstname: firstName.value,
-      lastname: lastName.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
       email: email.value,
-      // phone: phone.value,
+      username: username.value,
+      password: loginPassword.value,
     };
     var js = JSON.stringify(obj);
 
     try {
-      const response = await fetch(buildPath("api/signup"), {
+      var bp = require("../Path.js");
+      const response = await fetch(bp.buildPath("auth/register"), {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -131,7 +123,7 @@ const SignupModal = ({ isOpen, onClose, className }) => {
               className="signup-input-field"
               id="signup-username"
               placeholder=" "
-              ref={(c) => (loginName = c)}
+              ref={(c) => (username = c)}
             />
             <label id="target-username" for="signup-username">
               Username

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Landing from "../components/Landing";
+import Landing from "../components/auth/Landing";
 
 const LandingPage = () => {
   return (
