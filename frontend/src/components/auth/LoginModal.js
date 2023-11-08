@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../css/loginModal.css";
 import classNames from "classnames";
-import Login from "./Login";
 
 const LoginModal = ({ isOpen, onClose, className }) => {
   const handleBackgroundClick = (e) => {
@@ -10,18 +9,7 @@ const LoginModal = ({ isOpen, onClose, className }) => {
     }
   };
 
-  ///////////////////////////////////////////////////
-  // This section send the input to backend
-  const app_name = "myculinarycompass-0c8901cce626";
-  function buildPath(route) {
-    if (process.env.NODE_ENV === "production") {
-      return "https://" + app_name + ".herokuapp.com/" + route;
-    } else {
-      return "http://localhost:5000/" + route;
-    }
-  }
-
-  var loginName;
+  var email;
   var loginPassword;
 
   const [message, setMessage] = useState("");
@@ -29,11 +17,12 @@ const LoginModal = ({ isOpen, onClose, className }) => {
   const doLogin = async (event) => {
     event.preventDefault();
 
-    var obj = { login: loginName.value, password: loginPassword.value };
+    var obj = { email: email.value, password: loginPassword.value };
     var js = JSON.stringify(obj);
 
     try {
-      const response = await fetch(buildPath("api/login"), {
+      var bp = require("../Path.js");
+      const response = await fetch(bp.buildPath("auth/login"), {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -83,9 +72,9 @@ const LoginModal = ({ isOpen, onClose, className }) => {
               className="input-field"
               id="login-username"
               placeholder=" "
-              ref={(c) => (loginName = c)}
+              ref={(c) => (email = c)}
             />
-            <label for="login-username">Username</label>
+            <label for="login-username">Email</label>
           </div>
           <div className="floating-label">
             <input

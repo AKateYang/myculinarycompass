@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "../css/SavedRecipes.css";
+import "./css/SavedRecipes.css";
 
 function Saved() {
   //  var bp = require('./Path.js');
@@ -13,8 +13,6 @@ function Saved() {
       return "http://localhost:5000/" + route;
     }
   }
-
-  
 }
 
 export default Saved;
