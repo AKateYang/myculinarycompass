@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const PostSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
     {
         firstName: {
             type: String,
@@ -14,32 +14,28 @@ const PostSchema = new mongoose.Schema(
             min: 2,
             max: 50,
         },
-        description: {
+        email: {
             type: String,
             require: true,
-            min: 2,
+            max: 50,
+            unique: true,
         },
-        userPicturePath: {
+        password: {
             type: String,
-            default: []
+            require: true,
+            min: 5,
         },
         picturePath: {
             type: String,
             default: []
         },
-        likes: {
-            type: String,
-            default: []
-        },
-        picturePath: {
-            type: String,
-            default: []
-        },
-        location: String,
-        userID: Number,  
+        location: String,  
+        occupation: String,
+        viewedProfile: Number,
+        impressions: Number,
     },
     { timestamps: true }
 );
 
-const Post = mongoose.model("Post", PostSchema)
-export default Post;
+const User = mongoose.model("User", UserSchema)
+export default User;
