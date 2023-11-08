@@ -5,9 +5,9 @@ Website can be found at myculinarycompass.com
 
 # Group 9
 
-1. Ahal Saias Frontend
+1. Ahal Saias role: Backend
 2. Alissa Forde role: Frontend
-3. Ashley Yang Database
-4. Gabriel Antonio Alvim D Arco Frontend
-5. Naomi Mbwambo PM
-6. Serina Suresh Chugani API
+3. Ashley Yang role: PM, Frontend
+4. Gabriel Antonio Alvim D Arco role: Backend
+5. Naomi Mbwambo PM role: Database
+6. Serina Suresh Chugani role: Frontend
