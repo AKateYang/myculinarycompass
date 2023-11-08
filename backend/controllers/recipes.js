@@ -1,5 +1,5 @@
-app.post("/api/addRecipe", async (req, res, next) => {
-  // incoming: userId, color
+export const addRecipe = async (req, res, next) => {
+  // incoming: recipeId, userId
   // outgoing: error
 
   const { recipeId, userId } = req.body;
@@ -21,4 +21,4 @@ app.post("/api/addRecipe", async (req, res, next) => {
 
   var ret = { error: error };
   res.status(200).json(ret);
-});
+};
