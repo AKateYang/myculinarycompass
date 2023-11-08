@@ -9,6 +9,7 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
+import recipesRoutes from "./routes/recipes.js";
 // import userRoutes from "./routes/users.js";
 // import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
@@ -54,7 +55,8 @@ app.post("/api/register", register);
 
 ///////////////////////////////////////////////////
 // ROUTES
-app.use("/api", authRoutes);
+app.use("/auth", authRoutes);
+app.use("/recipes", recipesRoutes);
 // app.use("/users", userRoutes);
 // app.use("/posts", postRoutes);
 

@@ -1,24 +1,30 @@
-export const addRecipe = async (req, res, next) => {
+import Recipe from "../data-models/Recipe.js";
+
+export const createRecipe = async (req, res) => {
   // incoming: recipeId, userId
   // outgoing: error
 
-  const { recipeId, userId } = req.body;
+  try {
+    const {
+      recipeName,
+      instructions,
+      ingredients,
+      picturePath,
+      continent,
+      country,
+    } = req.body;
 
-  const user = new ObjectId(userId);
-  const recipe = new ObjectId(recipeId);
-
-  var error = "";
-
-  const db = client.db("COP4331Cards");
-
-  const result = await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $push: { Recipes: recipe } });
-
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "User not found" });
+    const newRecipe = new Recipe({
+      recipeName,
+      ingredients,
+      instructions,
+      picturePath,
+      continent,
+      country,
+    });
+    const savedRecipe = await newRecipe.save();
+    res.status(200).json(savedRecipe);
+  } catch (err) {
+    res.status(500).json({ error: "error: " + err.message });
   }
-
-  var ret = { error: error };
-  res.status(200).json(ret);
 };
