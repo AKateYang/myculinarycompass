@@ -12,34 +12,29 @@ export const register = async (req, res) => {
   if (existingUser == null) {
     // This if statement checks the confirm password. This is to make sure the user is correctly typing the password
     // that they actually want.
-    if (data.password == data.cpassword) {
-      try {
-        const { firstName, lastName, email, password, picturePath, friends } =
-          req.body;
+    try {
+      const { firstName, lastName, email, password, picturePath, friends } =
+        req.body;
 
-        // genSalt() is used to generate a random salt that is then used for hashing pw
-        // salt is a random string to make the hash unpredictable
-        const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password, salt);
+      // genSalt() is used to generate a random salt that is then used for hashing pw
+      // salt is a random string to make the hash unpredictable
+      const salt = await bcrypt.genSalt();
+      const passwordHash = await bcrypt.hash(password, salt);
 
-        const newUser = new User({
-          firstName,
-          lastName,
-          email,
-          password: passwordHash,
-          picturePath,
-          friends,
-          viewedProfile: Math.floor(Math.random() * 10000),
-          impressions: Math.floor(Math.random() * 10000),
-        });
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    } else {
-      res.statusCode = 401;
-      res.json({ status: false, msg: "Password not match!" });
+      const newUser = new User({
+        firstName,
+        lastName,
+        email,
+        password: passwordHash,
+        picturePath,
+        friends,
+        viewedProfile: Math.floor(Math.random() * 10000),
+        impressions: Math.floor(Math.random() * 10000),
+      });
+      const savedUser = await newUser.save();
+      res.status(201).json(savedUser);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
     }
   } else {
     res.statusCode = 400;
@@ -62,6 +57,6 @@ export const login = async (req, res) => {
     delete user.password;
     res.status(200).json({ token, user });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "login error: " + err.message });
   }
 };

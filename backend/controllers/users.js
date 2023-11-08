@@ -1,7 +1,7 @@
 import User from "../data-models/User.js";
 
 export const updateProfile = async (req, res) => {
-  // incoming: userId, color
+  // incoming: userId, firstname, lastname
   // outgoing: error
 
   try {
