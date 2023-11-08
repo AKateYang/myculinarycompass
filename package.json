@@ -3,11 +3,7 @@
   "version": "1.0.0",
   "description": "This is a MERN stack web app for COP4331 at UCF\r Once the app is cloned, please setup .env file and run the command npm install in the root directory & in frontend directory.",
   "main": "api.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "cd backend && node server.js"
-  },
+  "type": "module",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
@@ -24,6 +20,12 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2"
+  },
+  "scripts": {
+    "start": "npm start --prefix server",
+    "install-client": "cd frontend && npm install && npm run build && cd ..",
+    "install-server": "cd backend && npm install && cd .. ",
+    "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend && npm install --prefix backend && npm run build --prefix backend"
   },
   "keywords": [],
   "author": "",
