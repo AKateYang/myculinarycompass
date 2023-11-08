@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   String username;
   String firstname;
@@ -18,7 +20,7 @@ class User {
 
   void setLastname(lastname) => this.lastname = lastname;
 
-  get getemail(email) => email;
+  get getemail => email;
 
   void setEmail(email) => this.email = email;
 
@@ -30,14 +32,13 @@ class User {
 
   void setCpassword(cpassword) => this.cpassword = cpassword;
 
-  User({
-    required this.username,
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.password,
-    required this.cpassword
-  });
+  User(
+      {required this.username,
+      required this.firstname,
+      required this.lastname,
+      required this.email,
+      required this.password,
+      required this.cpassword});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -48,4 +49,20 @@ class User {
       'email': email,
     };
   }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      username: map['email'] as String,
+      firstname: map['firstname'] as String,
+      lastname: map['lastname'] as String,
+      email: map['email'] as String,
+      password: map['password'] as String,
+      cpassword: map['cpassword'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source) as Map<String, dynamic>);
 }
