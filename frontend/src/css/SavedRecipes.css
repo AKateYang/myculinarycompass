@@ -161,13 +161,15 @@
 }
 
 .cookpal .div-wrapper {
-  /* background-image: url(./rectangle-3.svg); */
+  background-image: url('../images/orange-bg-color.png');
   background-size: 100% 100%;
   height: 44px;
   left: 1px;
   position: absolute;
   top: 1px;
-  width: 211px;
+  width: 190px;
+  opacity: 75%;
+  border-radius: 25px;
 }
 
 .cookpal .text-wrapper-7 {
@@ -196,33 +198,30 @@
   line-height: normal;
   position: absolute;
   text-align: center;
-  top: 9px;
+  top: 11px;
   white-space: nowrap;
 }
 
 .cookpal .overlap-5 {
   background-color: #9e4c00;
-  border-radius: 22px/23px;
+  border-radius: 17px;
   height: 46px;
-  left: 682px;
+  left: 683px;
   position: absolute;
   top: 0;
   width: 44px;
 }
 
 .cookpal .text-wrapper-9 {
-  color: #000000;
-  font-family: "IcoFont-Regular", Helvetica;
-  font-size: 20px;
-  font-weight: 400;
+  color: #ffffff;
+  background-image: url('../images/search-icon.png');
+  background-size: 100% 100%;
   height: 20px;
   left: 12px;
-  letter-spacing: 0;
   line-height: normal;
   position: absolute;
   text-align: center;
   top: 10px;
-  white-space: nowrap;
 }
 
 .cookpal .overlap-6 {
@@ -283,6 +282,7 @@
 .cookpal .text-wrapper-12 {
   font-family: "Montserrat-Bold", Helvetica;
   font-weight: 700;
+  text-decoration: underline;
 }
 
 .cookpal .ellipse {
@@ -302,6 +302,15 @@
   width: 33px;
 }
 
+.cookpal .grocery-cart {
+  background-image: url('../images/grocery-cart.png');
+  background-size: 100% 100%;
+  height: 33px;
+  left: 2px;
+  position: absolute;
+  top: 10px;
+  width: 30px;
+}
 .cookpal .ellipse-2 {
   background-color: #9e4c005c;
   border-radius: 15px/13.5px;
@@ -690,17 +699,20 @@
 .cookpal .group-2 {
   height: 231px;
   left: 461px;
-  position: absolute;
-  top: 789px;
-  width: 730px;
+  /* position: absolute; */
+  position: relative;
+  top: 175px;
+  width: 410px;
+  float: left;
 }
 
 .cookpal .img {
+  background-image: url('../images/orange-bg-color.png');
   height: 230px;
-  left: 515px;
+  left: 0px;
   object-fit: cover;
-  position: absolute;
-  top: 1px;
+  position: relative;
+  top: 0px;
   width: 215px;
 }
 
@@ -751,9 +763,9 @@
 
 .cookpal .group-3 {
   height: 873px;
-  left: 97px;
+  left: 40px;
   position: absolute;
-  top: 0;
+  top: 50px;
   width: 258px;
 }
 
@@ -789,13 +801,27 @@
   top: 86px;
 }
 
+.cookpal .text-wrapper-33-1 {
+  color: #9e4c00;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-size: 30px;
+  font-weight: 500;
+  height: 37px;
+  left: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-shadow: 0px 4px 4px #00000040;
+  top: 287px;
+}
+
 .cookpal .text-wrapper-34 {
   color: #9e4c00;
   font-family: "Montserrat-Medium", Helvetica;
   font-size: 30px;
   font-weight: 500;
   height: 37px;
-  left: 19px;
+  left: 16px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
@@ -810,7 +836,7 @@
   font-size: 30px;
   font-weight: 500;
   height: 37px;
-  left: 15px;
+  left: 16px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
@@ -834,6 +860,21 @@
   white-space: nowrap;
 }
 
+.cookpal .text-wrapper-36-1 {
+  color: #000000;
+  font-family: "Montserrat-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  height: 24px;
+  left: 21px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-shadow: 0px 4px 4px #00000040;
+  top: 331px;
+  white-space: nowrap;
+}
+
 .cookpal .text-wrapper-37 {
   color: #000000;
   font-family: "Montserrat-Regular", Helvetica;
@@ -851,12 +892,12 @@
 }
 
 .cookpal .text-wrapper-38 {
-  color: #9e4c00;
+  color: #000000;
   font-family: "Montserrat-Bold", Helvetica;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   height: 24px;
-  left: 22px;
+  left: 21px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
@@ -866,17 +907,32 @@
 }
 
 .cookpal .text-wrapper-39 {
-  color: #9e4c00;
+  color: #000000;
   font-family: "Montserrat-Bold", Helvetica;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   height: 24px;
-  left: 19px;
+  left: 21px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
   text-shadow: 0px 4px 4px #00000040;
   top: 161px;
+  white-space: nowrap;
+}
+
+.cookpal .text-wrapper-39-1 {
+  color: #000000;
+  font-family: "Montserrat-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  height: 24px;
+  left: 21px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-shadow: 0px 4px 4px #00000040;
+  top: 362px;
   white-space: nowrap;
 }
 
@@ -926,13 +982,28 @@
   white-space: nowrap;
 }
 
+.cookpal .text-wrapper-42-1 {
+  color: #000000;
+  font-family: "Montserrat-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  height: 24px;
+  left: 21px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-shadow: 0px 4px 4px #00000040;
+  top: 393px;
+  white-space: nowrap;
+}
+
 .cookpal .text-wrapper-43 {
   color: #000000;
   font-family: "Montserrat-Regular", Helvetica;
   font-size: 20px;
   font-weight: 400;
   height: 24px;
-  left: 19px;
+  left: 21px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
@@ -947,7 +1018,7 @@
   font-size: 20px;
   font-weight: 400;
   height: 24px;
-  left: 23px;
+  left: 21px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
@@ -968,6 +1039,21 @@
   position: absolute;
   text-shadow: 0px 4px 4px #00000040;
   top: 223px;
+  white-space: nowrap;
+}
+
+.cookpal .text-wrapper-45-1 {
+  color: #000000;
+  font-family: "Montserrat-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  height: 24px;
+  left: 21px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-shadow: 0px 4px 4px #00000040;
+  top: 424px;
   white-space: nowrap;
 }
 
@@ -1006,6 +1092,7 @@
   position: relative;
   text-align: center;
   text-shadow: 0px 4px 4px #00000040;
+  top: 200px;
   white-space: nowrap;
   width: fit-content;
 }
@@ -1148,6 +1235,29 @@
   width: 46px;
 }
 
+.cookpal .frame-6-1 {
+  background-color: #078e1433;
+  border-radius: 8px;
+  /* height: 17px; */
+  left: 169px;
+  position: absolute;
+  top: 265px;
+  /* width: 46px; */
+  font-size: 13px;
+  text-align: center;
+}
+
+.cookpal .frame-6-2 {
+  background-color: rgba(228, 195, 61, 0.2);
+  border-radius: 8px;
+  /* height: 17px; */
+  left: 169px;
+  position: absolute;
+  top: 265px;
+  /* width: 46px; */
+  font-size: 13px;
+  text-align: center;
+}
 .cookpal .frame-7 {
   background-color: #f1722833;
   border-radius: 8px;
@@ -1166,4 +1276,80 @@
   position: absolute;
   top: 371px;
   width: 60px;
+}
+
+.cookpal .recipe-name {
+  font-family: "Montserrat-Regular", Helvetica;
+  border-radius: 8px;
+  /* height: 17px; */
+  left: 0px;
+  position: absolute;
+  top: 230px;
+  width: 165px;
+  /* font-size: 18px; */
+  text-align: left;
+}
+
+.cookpal .time-length {
+  font-family: "Montserrat-Regular", Helvetica;
+  border-radius: 8px;
+  /* height: 17px; */
+  left: 0px;
+  position: absolute;
+  top: 250px;
+  width: 165px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.cookpal .recipe-likes {
+  font-family: "Montserrat-Regular", Helvetica;
+  border-radius: 8px;
+  /* height: 17px; */
+  left: 11px;
+  position: absolute;
+  top: 265px;
+  width: 165px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.cookpal .recipe-comments {
+  font-family: "Montserrat-Regular", Helvetica;
+  border-radius: 8px;
+  /* height: 17px; */
+  left: 43px;
+  position: absolute;
+  top: 265px;
+  width: 165px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.cookpal .recipe-likes-img{
+  background-image: url('../images/thumbs-up.png');
+  background-size: 100% 100%;
+  height: 10px;
+  left: 0px;
+  position: absolute;
+  top: 269px;
+  width: 10px;
+}
+
+.cookpal .comments-img{
+  background-image: url('../images/comment.png');
+  background-size: 100% 100%;
+  height: 12px;
+  left: 31px;
+  position: absolute;
+  top: 269px;
+  width: 12px;
+}
+
+.cookpal .three-line-recipe{
+  height: 350px;
+  left: 0;
+  position: relative;
+  top: 2px;
+  width: 1548px;
 }

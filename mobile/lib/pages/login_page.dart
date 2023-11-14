@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/palette.dart';
 import 'package:mobile/widgets/background_widget.dart';
 import 'package:mobile/widgets/inputbox_widget.dart';
+import 'package:mobile/widgets/white_box_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,28 +20,30 @@ class _LoginPageState extends State<LoginPage> {
     return const Stack(
       children: [
         BackgroundImageWidget(
-          image: const AssetImage('assets/landing.jpg'),
+          image: AssetImage('assets/landing.jpg'),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: SafeArea(
-              child: Column(
+              child: OpaqueBox(
+                width: 380.0,
+                height: 380.0,
                 children: [
                   SizedBox(
-                    height: 200,
-                    child: const Center(
+                    height: 150,
+                    child: Center(
                       child: Text(
                         'My Culinary\n  Compass',
                         style: landHeading,
                       ),
                     ),
                   ),
-                  const InputBoxWidget(
+                  InputBoxWidget(
                       hintname: "Username",
                       hintStyle: landBodyText,
                       inputType: TextInputType.text,
                       inputAction: TextInputAction.next,
                       isHide: false),
-                  const InputBoxWidget(
+                  InputBoxWidget(
                     hintname: "Password",
                     hintStyle: landBodyText,
                     inputAction: TextInputAction.next,

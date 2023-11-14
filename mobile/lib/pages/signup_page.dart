@@ -3,6 +3,7 @@ import 'package:mobile/palette.dart';
 import 'package:mobile/widgets/background_widget.dart';
 import 'package:mobile/widgets/inputbox_widget.dart';
 import 'package:mobile/widgets/signupbutton_widget.dart';
+import 'package:mobile/widgets/white_box_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -21,13 +22,15 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: SafeArea(
-              child: Column(
+              child: OpaqueBox(
+                width: 380.0,
+                height: 540.0,
                 children: [
                   Container(
-                    height: 200,
+                    height: 100,
                     child: const Center(
                       child: Text(
-                        'My Culinary\n  Compass',
+                        'Sign Up!',
                         style: landHeading,
                       ),
                     ),
