@@ -5,6 +5,8 @@
   "main": "api.js",
   "type": "module",
   "dependencies": {
+    "@mui/material": "^5.14.17",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.5",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "bootstrap": "^5.3.2",
@@ -20,7 +22,8 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "styled-components": "^6.1.1"
   },
   "scripts": {
     "start": "npm start --prefix backend",
