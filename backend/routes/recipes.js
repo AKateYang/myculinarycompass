@@ -1,7 +1,8 @@
 import express from "express";
 import {
   createRecipe,   // Already existing import
-  getAllRecipes,    // Import the getAllPosts function
+  getAllRecipes,
+  getLazyLoadingRecipes,    // Import the getAllPosts function
   getRecipe,         // Import the getPost function
   updateRecipe,     // Import the updatePost function
   deleteRecipe     // Import the deletePost function
@@ -14,6 +15,8 @@ router.post("/createRecipe", createRecipe);
 
 // Route to get all posts
 router.get("/", getAllRecipes);
+
+router.get("/getLazyLoadingRecipes", getLazyLoadingRecipes);
 
 // Route to get a single post by ID
 router.get("/getRecipe/:recipeId", getRecipe);

@@ -40,6 +40,18 @@ export const getAllRecipes = async (req, res) => {
   }
 };
 
+export const getLazyLoadingRecipes = async (req, res) => {
+  try {
+    // Use the aggregate method to get a sample of 5 random recipes
+    const recipes = await Recipe.aggregate([
+      { $sample: { size: 5 } }
+    ]);
+    res.status(200).json(recipes);
+  } catch (err) {
+    res.status(500).json({ error: "Error: " + err.message });
+  }
+};
+
 export const getRecipe = async (req, res) => {
   const { recipeId } = req.params; // Extract the recipe ID from the URL parameters
 
