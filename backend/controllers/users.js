@@ -27,7 +27,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-app.post("/api/updateUser", async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
 
@@ -57,9 +57,9 @@ app.post("/api/updateUser", async (req, res, next) => {
 
   var ret = { error: error };
   res.status(200).json(ret);
-});
+};
 
-app.post("/api/addFriend", async (req, res, next) => {
+export const addFriend = async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
 
@@ -86,9 +86,9 @@ app.post("/api/addFriend", async (req, res, next) => {
 
   var ret = { error: error };
   res.status(200).json(ret);
-});
+};
 
-app.post("/api/blockUser", async (req, res, next) => {
+export const blockUser = async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
 
@@ -111,9 +111,9 @@ app.post("/api/blockUser", async (req, res, next) => {
 
   var ret = { error: error };
   res.status(200).json(ret);
-});
+};
 
-app.post("/api/removeFriend", async (req, res, next) => {
+export const removeFriend = async (req, res, next) => {
   // incoming: userId, color
   // outgoing: error
 
@@ -140,9 +140,9 @@ app.post("/api/removeFriend", async (req, res, next) => {
 
   var ret = { error: error };
   res.status(200).json(ret);
-});
+};
 
-app.post("/api/searchUsers", async (req, res, next) => {
+export const searchUsers = async (req, res, next) => {
   // incoming: userId, search
   // outgoing: results[], error
 
@@ -165,9 +165,9 @@ app.post("/api/searchUsers", async (req, res, next) => {
 
   var ret = { results: _ret, error: error };
   res.status(200).json(ret);
-});
+};
 
-app.post("/api/getFollowing", async (req, res, next) => {
+export const getFollowing = async (req, res, next) => {
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
 
@@ -183,9 +183,9 @@ app.post("/api/getFollowing", async (req, res, next) => {
   res.status(200);
 
   return results.Following;
-});
+};
 
-app.post("/api/getNumFollowers", async (req, res, next) => {
+export const getNumFollowers = async (req, res, next) => {
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
 
@@ -201,9 +201,9 @@ app.post("/api/getNumFollowers", async (req, res, next) => {
   res.status(200);
 
   return results.NumberOfFollowers;
-});
+};
 
-app.post("/api/getFollowers", async (req, res, next) => {
+export const getFollowers = async (req, res, next) => {
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
 
@@ -219,4 +219,4 @@ app.post("/api/getFollowers", async (req, res, next) => {
   res.status(200);
 
   return results.Followers;
-});
+};

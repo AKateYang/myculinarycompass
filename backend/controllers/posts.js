@@ -1,4 +1,7 @@
-app.post("/api/createPost", async (req, res, next) => {
+import Post from "../data-models/Post.js";
+import User from "../data-models/User.js";
+
+export const createPost = async (req, res, next) => {
   // incoming: caption, video, imagesArray, userId
   // outgoing: error
 
@@ -28,4 +31,4 @@ app.post("/api/createPost", async (req, res, next) => {
 
   var ret = { error: error };
   res.status(200).json(ret);
-});
+};

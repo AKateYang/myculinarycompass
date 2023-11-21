@@ -1,5 +1,7 @@
 import Recipe from "../data-models/Recipe.js";
 
+///////////////////////////////////////////////////
+// CREATES A NEW RECIPE
 export const createRecipe = async (req, res) => {
   // incoming: recipeId, userId
   // outgoing: error
