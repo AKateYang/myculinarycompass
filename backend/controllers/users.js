@@ -123,6 +123,18 @@ export const getNumFollowers = async (req, res) => {
   }
 };
 
+export const getNumFollowing = async (req, res) => {
+  const { userId } = req.body;
+  const userObjectId = toObjectId(userId);
+
+  try {
+    const user = await User.findById(userObjectId);
+    res.status(200).json({ numberOfFollowers: user.NumberOfFollowers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const getFollowers = async (req, res) => {
   const { userId } = req.body;
   const userObjectId = toObjectId(userId);
@@ -130,6 +142,28 @@ export const getFollowers = async (req, res) => {
   try {
     const user = await User.findById(userObjectId);
     res.status(200).json({ followers: user.Followers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await User.findByIdAndDelete(userId);
+    res.status(200).json({ message: "User successfully deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteFriend = async (req, res) => {
+  const { friendId } = req.params;
+
+  try {
+    await Friend.findByIdAndDelete(friendId);
+    res.status(200).json({ message: "Friend successfully deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
