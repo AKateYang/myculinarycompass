@@ -215,7 +215,7 @@
 }
 
 .desktop .frame {
-  background-image: url(/Users/alissaforde/myculinarycompass/frontend/src/components/images/food-1.jpeg);
+  background-image: url(../images/food-1.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 10px;
@@ -227,7 +227,7 @@
 }
 
 .desktop .frame-2 {
-  background-image: url(/Users/alissaforde/myculinarycompass/frontend/src/components/images/food-2.jpeg);
+  background-image: url(../images/food-2.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 10px;
@@ -239,7 +239,7 @@
 }
 
 .desktop .frame-3 {
-  background-image: url(/Users/alissaforde/myculinarycompass/frontend/src/components/images/food-3.jpeg);
+  background-image: url(../images/food-3.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 10px;
@@ -251,7 +251,7 @@
 }
 
 .desktop .frame-4 {
-  background-image: url(/Users/alissaforde/myculinarycompass/frontend/src/components/images/food-4.jpeg);
+  background-image: url(../images/food-4.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 10px;

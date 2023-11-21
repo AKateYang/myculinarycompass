@@ -6,13 +6,13 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { themeSettings } from "/Users/alissaforde/myculinarycompass/frontend/src/components/theme.js";
+import { themeSettings } from "./components/theme.js";
 
 import CardPage from "./pages/CardPage";
 import LandingPage from "./pages/LandingPage";
 import UserPage from "./pages/UserPage";
 import SavedRecipes from "./pages/SavedRecipes";
-import HomePage from "/Users/alissaforde/myculinarycompass/frontend/src/scenes/homePage/index.jsx";
+import HomePage from "./scenes/homePage/index.jsx";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -25,7 +25,7 @@ function App() {
         <CssBaseline />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/cards" element={<CardPage />} />
+          <Route path="/homepage" element={<HomePage />} />
           <Route path="/savedRecipes" element={<SavedRecipes />} />
           <Route
             path="/home"

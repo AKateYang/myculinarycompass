@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "../css/loginModal.css";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogin } from "../../state";
 import classNames from "classnames";
 
 const LoginModal = ({ isOpen, onClose, className }) => {
@@ -13,6 +16,8 @@ const LoginModal = ({ isOpen, onClose, className }) => {
   var loginPassword;
 
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const doLogin = async (event) => {
     event.preventDefault();
@@ -38,10 +43,19 @@ const LoginModal = ({ isOpen, onClose, className }) => {
           lastName: res.lastName,
           id: res.id,
         };
-        localStorage.setItem("user_data", JSON.stringify(user));
 
+        localStorage.setItem("user_data", JSON.stringify(user));
+        //This may not be needed. can delete later if we don't use it
+        // dispatch(
+        //   setLogin({
+        //     user: res.user,
+        //     token: res.token,
+        //   })
+        // );
+        // navigate("/home");
         setMessage("");
-        window.location.href = "/cards";
+
+        window.location.href = "/homepage";
       }
     } catch (e) {
       alert(e.toString());

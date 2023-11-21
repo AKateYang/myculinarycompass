@@ -17,13 +17,13 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
-import FlexBetween from "/Users/alissaforde/myculinarycompass/frontend/src/components/FlexBetween.jsx";
+import FlexBetween from "../../components/FlexBetween.jsx";
 import Dropzone from "react-dropzone";
-import UserImage from "/Users/alissaforde/myculinarycompass/frontend/src/components/UserImage.jsx";
-import WidgetWrapper from "/Users/alissaforde/myculinarycompass/frontend/src/components/WidgetWrapper.jsx";
+import UserImage from "../../components/UserImage.jsx";
+import WidgetWrapper from "../../components/WidgetWrapper.jsx";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "/Users/alissaforde/myculinarycompass/frontend/src/state/index.jsx";
+import { setPosts } from "../../state/index.jsx";
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Landing from "/Users/alissaforde/myculinarycompass/frontend/src/components/User.js";
+import Landing from "../components/User.js";
 
 const UserPage = () => {
   return (

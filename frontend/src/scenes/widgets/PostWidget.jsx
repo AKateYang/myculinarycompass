@@ -5,12 +5,12 @@ import {
   ShareOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
-import FlexBetween from "/Users/alissaforde/myculinarycompass/frontend/src/components/FlexBetween.jsx";
-import Friend from "/Users/alissaforde/myculinarycompass/frontend/src/components/Friend.jsx";
-import WidgetWrapper from "/Users/alissaforde/myculinarycompass/frontend/src/components/WidgetWrapper.jsx";
+import FlexBetween from "../../components/FlexBetween.jsx";
+import Friend from "../../components/Friend.jsx";
+import WidgetWrapper from "../../components/WidgetWrapper.jsx";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "/Users/alissaforde/myculinarycompass/frontend/src/state/index.jsx";
+import { setPost } from "../../state/index.jsx";
 
 const PostWidget = ({
   postId,

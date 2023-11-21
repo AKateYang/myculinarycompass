@@ -1,5 +1,5 @@
 import React from "react";
-import "/Users/alissaforde/myculinarycompass/frontend/src/css/user.css";
+import "./css/user.css";
 
 export const User = () => {
   return (

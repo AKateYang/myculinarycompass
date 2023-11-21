@@ -1,9 +1,9 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import Friend from "/Users/alissaforde/myculinarycompass/frontend/src/components/Friend.jsx";
-import WidgetWrapper from "/Users/alissaforde/myculinarycompass/frontend/src/components/WidgetWrapper.jsx";
+import Friend from "../../components/Friend.jsx";
+import WidgetWrapper from "../../components/WidgetWrapper.jsx";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "/Users/alissaforde/myculinarycompass/frontend/src/state/index.jsx";
+import { setFriends } from "../../state/index.jsx";
 
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();

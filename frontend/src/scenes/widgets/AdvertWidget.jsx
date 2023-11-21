@@ -1,6 +1,6 @@
 import { Typography, useTheme } from "@mui/material";
-import FlexBetween from "/Users/alissaforde/myculinarycompass/frontend/src/components/FlexBetween.jsx";
-import WidgetWrapper from "/Users/alissaforde/myculinarycompass/frontend/src/components/WidgetWrapper.jsx";
+import FlexBetween from "../../components/FlexBetween.jsx";
+import WidgetWrapper from "../../components/WidgetWrapper.jsx";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();
