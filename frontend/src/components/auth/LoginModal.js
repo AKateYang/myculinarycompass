@@ -34,9 +34,9 @@ const LoginModal = ({ isOpen, onClose, className }) => {
         setMessage("User/Password combination incorrect");
       } else {
         var user = {
-          firstName: res.firstName,
-          lastName: res.lastName,
-          id: res.id,
+          firstName: res.user.firstName,
+          lastName: res.user.lastName,
+          id: res.user._id,
         };
         localStorage.setItem("user_data", JSON.stringify(user));
 
