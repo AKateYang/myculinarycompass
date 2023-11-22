@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../css/loginModal.css";
 import classNames from "classnames";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const LoginModal = ({ isOpen, onClose, className }) => {
+  const navigate = useNavigate();
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -41,7 +43,8 @@ const LoginModal = ({ isOpen, onClose, className }) => {
         localStorage.setItem("user_data", JSON.stringify(user));
 
         setMessage("");
-        window.location.href = "/cards";
+        navigate("/cards");
+        // window.location.href = "/cards";
       }
     } catch (e) {
       alert(e.toString());
