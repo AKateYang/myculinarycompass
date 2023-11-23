@@ -25,9 +25,6 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
-  "devDependencies": {
-    
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && (cd ../backend && npm install)",
