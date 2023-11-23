@@ -42,6 +42,7 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
           firstName: res.user.firstName,
           lastName: res.user.lastName,
           id: res.user._id,
+          picturePath: res.user.picturePath,
         };
 
         localStorage.setItem("user_data", JSON.stringify(user));

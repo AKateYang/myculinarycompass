@@ -15,7 +15,8 @@ const HomePage = () => {
   var userId = ud.id;
   var firstName = ud.firstName;
   var lastName = ud.lastName;
-  const { picturePath } = useSelector((state) => state.user);
+  var picturePath = ud.picturePath;
+  // const { picturePath } = useSelector((state) => state.user);
 
   return (
     <div>
