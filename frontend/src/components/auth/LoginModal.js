@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setLogin } from "../../state";
 import classNames from "classnames";
 
-const LoginModal = ({ isOpen, onClose, className }) => {
+const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -78,7 +78,9 @@ const LoginModal = ({ isOpen, onClose, className }) => {
           <div className="custom-login-header">
             <h2 className="custom-login-title">Login</h2>
             <p className="custom-question">Don’t have an account?</p>
-            <button className="custom-goto-signup">Sign-Up</button>
+            <button className="custom-goto-signup" onClick={onOpenSignup}>
+              Sign-Up
+            </button>
           </div>
           <div className="floating-label">
             <input
