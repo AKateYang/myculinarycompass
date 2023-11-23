@@ -11,9 +11,13 @@ import {
   getFollowers,
   deleteUser,
   removeFriend,
+  getUser,
 } from "../controllers/users.js";
+import { verifyToken } from "../middleware/verifytoken.js";
 
 const router = express.Router();
+
+router.get("/:id", verifyToken, getUser);
 
 // Route to block a user
 router.post("/blockUser", blockUser);

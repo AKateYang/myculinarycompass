@@ -3,6 +3,16 @@ import User from "../data-models/User.js";
 // Helper function to convert string ID to MongoDB ObjectId
 const toObjectId = (id) => mongoose.Types.ObjectId(id);
 
+export const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 export const updateProfile = async (req, res) => {
   const { userId, firstname, lastname } = req.body;
   const userObjectId = toObjectId(userId);
