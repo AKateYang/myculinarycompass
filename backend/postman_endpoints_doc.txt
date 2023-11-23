@@ -1,0 +1,145 @@
+////////////////////////////////////////////
+// AUTH
+////////////////////////////////////////////
+********************************************
+POST: localhost:5000/auth/login
+BODY:
+{
+    "email" : "daisylove31@gmail.com",
+    "password" : "secret"
+}
+********************************************
+POST: localhost:5000/auth/register
+BODY:
+{
+  "firstName": "ashley",
+  "lastName": "yang",
+  "email": "daisylove31",
+  "password": "secret",
+  "friends": [],
+  "viewedProfile": 1,
+  "impressions": 1
+}
+********************************************
+
+
+
+
+
+////////////////////////////////////////////
+// USER POSTS
+////////////////////////////////////////////
+********************************************
+// This gets all posts from all users. This is to populate the feed so it is not empty
+GET: localhost:5000/posts/
+BODY: (NONE ARE NEEDED)
+
+********************************************
+// replace userId with specific userId we want to find
+GET: localhost:5000/posts/:userId
+    EXAMPLE: localhost:5000/posts/6525e33438b4fe3303190844
+BODY: (NONE ARE NEEDED)
+
+********************************************
+// Route to get a single post by ID. Replace :postId with post id number we want
+GET: localhost:5000/posts/getPost/:postId
+    EXAMPLE: localhost:5000/posts/getPost/6525e3b69075348c79907462
+BODY: (NONE ARE NEEDED)
+
+********************************************
+// Updates post. Replace :postId with actual postID number
+PUT: localhost:5000/posts/updatePost/:postId
+    EXAMPLE: localhost:5000/posts/updatePost/6525e3b69075348c79907462
+BODY: 
+{
+    
+}
+
+********************************************
+DELETE: localhost:5000/posts/deletePost/:postId
+BODY:
+
+********************************************
+PATCH: localhost:5000/posts/:id/like
+BODY:
+
+********************************************
+
+
+////////////////////////////////////////////
+// USER 
+////////////////////////////////////////////
+********************************************
+GET: localhost:5000/users/searchUsers
+BODY:
+
+********************************************
+GET: localhost:5000/users/getFollowing
+BODY:
+
+********************************************
+GET: localhost:5000/users/getFollowers
+BODY:
+
+********************************************
+GET: localhost:5000/users/getNumFollowers
+BODY:
+
+********************************************
+GET: localhost:5000/users/getNumFollowing
+BODY:
+
+
+********************************************
+POST: localhost:5000/users/blockUser
+BODY:
+
+********************************************
+POST: localhost:5000/users/addFriend/:friendId/:userId
+BODY:
+
+********************************************
+DELETE: localhost:5000/users/removeFriend/:friendId
+BODY:
+
+********************************************
+DELETE: localhost:5000/users/deleteUser/:userId
+BODY:
+
+********************************************
+PUT: localhost:5000/users/updateUser
+BODY:
+
+********************************************
+PUT: localhost:5000/users/updateProfile
+BODY:
+
+
+
+////////////////////////////////////////////
+// RECIPE
+////////////////////////////////////////////
+********************************************
+GET: localhost:5000/recipes
+BODY:
+
+********************************************
+GET: localhost:5000/recipes/getLazyLoadingRecipes
+BODY:
+
+********************************************
+GET: localhost:5000/recipes/getRecipe/:recipeId
+BODY:
+
+
+********************************************
+POST: localhost:5000/recipes/createRecipe
+BODY:
+
+********************************************
+DELETE: localhost:5000/recipes/deleteRecipe/:recipeId
+BODY:
+
+********************************************
+PUT: localhost:5000/recipes/updateRecipe/:recipeId
+BODY:
