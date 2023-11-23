@@ -16,42 +16,6 @@ const LoginModal = ({ isOpen, onClose, className }) => {
 
   const [message, setMessage] = useState("");
 
-  const doLogin = async (event) => {
-    event.preventDefault();
-
-    var obj = { email: email.value, password: loginPassword.value };
-    var js = JSON.stringify(obj);
-
-    try {
-      var bp = require("../Path.js");
-      const response = await fetch(bp.buildPath("auth/login"), {
-        method: "POST",
-        body: js,
-        headers: { "Content-Type": "application/json" },
-      });
-
-      var res = JSON.parse(await response.text());
-
-      if (res.id <= 0) {
-        setMessage("User/Password combination incorrect");
-      } else {
-        var user = {
-          firstName: res.user.firstName,
-          lastName: res.user.lastName,
-          id: res.user._id,
-        };
-        localStorage.setItem("user_data", JSON.stringify(user));
-
-        setMessage("");
-        navigate("/cards");
-        // window.location.href = "/cards";
-      }
-    } catch (e) {
-      alert(e.toString());
-      return;
-    }
-  };
-
   ///////////////////////////////////////////////////
   // This section contains the html/react/input form
   return (
