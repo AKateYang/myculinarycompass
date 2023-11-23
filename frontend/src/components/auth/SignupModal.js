@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../css/signupModal.css";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 const SignupModal = ({ isOpen, onClose, className }) => {
@@ -20,6 +21,7 @@ const SignupModal = ({ isOpen, onClose, className }) => {
   var lastName;
   var email;
   // var phone;
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
 
@@ -56,7 +58,7 @@ const SignupModal = ({ isOpen, onClose, className }) => {
         localStorage.setItem("user_data", JSON.stringify(user));
 
         setMessage("");
-        window.location.href = "/";
+        navigate("/");
       }
     } catch (e) {
       alert(e.toString());
