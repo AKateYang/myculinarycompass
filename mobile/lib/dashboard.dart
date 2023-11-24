@@ -14,7 +14,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   void _navigate(int index) {
     setState(() {
