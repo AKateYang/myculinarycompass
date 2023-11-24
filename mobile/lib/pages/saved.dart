@@ -48,7 +48,10 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
                 "What you want to cook today ?",
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AppColor.white),
               ),
             ),
             Container(
@@ -127,7 +130,10 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Suggested Recipes",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(color: AppColor.white),
                   ),
                   // TextButton(
                   //   onPressed: () {},
@@ -159,7 +165,10 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Saved Recipes",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(color: AppColor.white),
                   ),
                   TextButton(
                     onPressed: () {},
