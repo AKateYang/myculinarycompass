@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Image.asset("assets/shopping_cart.png"),
-                    iconSize: 20,
+                    iconSize: 10,
                     onPressed: () {
                       // Navigate to grocery list
                     },
@@ -52,22 +52,32 @@ class HomeScreen extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: AppColor.backgroundGray,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.search),
+                  //const Icon(Icons.search),
+                  const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      "Search Recipes",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: AppColor.blackGrey),
+                    child: TextField(
+                      style: TextStyle(
+                        color: AppColor.blackGrey,
+                        fontSize: 17,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: "Search Recipes",
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: AppColor.blackGrey),
+                      ),
                     ),
                   ),
                 ],
