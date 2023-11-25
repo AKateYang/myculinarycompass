@@ -30,9 +30,9 @@ export const register = async (req, res) => {
       const info = await transporter.sendMail({
         from: "verification@myculinarycompass.com", // sender address
         to: email, // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        subject: "Verification Email", // Subject line
+        text: "Click this link in order to verify your account with us:", // plain text body
+        html: "<b>Click this link in order to verify your account with us:</b>", // html body
       });
 
       // genSalt() is used to generate a random salt that is then used for hashing pw
