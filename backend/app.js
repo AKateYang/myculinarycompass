@@ -51,7 +51,7 @@ const upload = multer({ storage });
 // ROUTES WITH FILES (NEEDED FOR UPLOADING IMAGES & VIDEO. DO NOT REMOVE)
 // app.post("/auth/register", upload.single("picture"), register);
 app.post(
-  "posts/createPost",
+  "/posts/createPost",
   verifyToken,
   upload.single("picture"),
   upload.single("video"),
@@ -64,5 +64,6 @@ app.use("/auth", authRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+// app.use("/posts/createPost", createPost);
 
 export default app;

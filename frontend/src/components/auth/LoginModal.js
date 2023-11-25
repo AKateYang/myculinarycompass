@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../css/loginModal.css";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLogin } from "../../state";
 import classNames from "classnames";
+
+import Popover from "../Popover"; // Adjust the path as necessary
 
 const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
   const handleBackgroundClick = (e) => {
@@ -12,17 +14,69 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
     }
   };
 
-  var email;
-  var loginPassword;
+  var emailRef;
+  var loginPasswordRef;
 
-  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [showEmailPopover, setShowEmailPopover] = useState(false);
+  const [showPasswordPopover, setShowPasswordPopover] = useState(false);
+
+  const [loginAttempted, setLoginAttempted] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetLoginForm();
+    }
+  }, [isOpen]);
+
+  const resetLoginForm = () => {
+    setEmail("");
+    setPassword("");
+    setMessage("");
+    setShowEmailPopover(false);
+    setShowPasswordPopover(false);
+    setLoginAttempted(false);
+  };
+
+  // Separate handlers for email and password changes
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (loginAttempted) {
+      setShowEmailPopover(false);
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (loginAttempted) {
+      setShowPasswordPopover(false);
+    }
+  };
 
   const doLogin = async (event) => {
     event.preventDefault();
 
-    var obj = { email: email.value, password: loginPassword.value };
+    setLoginAttempted(true); // Set the flag when login is attempted
+
+    // Check if email or password fields are empty and show popovers accordingly
+    const isEmailEmpty = !email;
+    const isPasswordEmpty = !password;
+
+    if (isEmailEmpty || isPasswordEmpty) {
+      setShowEmailPopover(isEmailEmpty);
+      setShowPasswordPopover(isPasswordEmpty);
+      return;
+    }
+
+    var obj = {
+      email: email,
+      password: password,
+    };
     var js = JSON.stringify(obj);
 
     try {
@@ -88,9 +142,14 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
               className="input-field"
               id="login-username"
               placeholder=" "
-              ref={(c) => (email = c)}
+              value={email}
+              onChange={handleEmailChange}
+              /*ref={emailRef} /*{(c) => (email = c)}*/
             />
             <label for="login-username">Email</label>
+            {showEmailPopover && (
+              <Popover className="show">Please enter an email.</Popover>
+            )}
           </div>
           <div className="floating-label">
             <input
@@ -98,9 +157,14 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
               className="input-field"
               id="login-password"
               placeholder=" "
-              ref={(c) => (loginPassword = c)}
+              value={password}
+              onChange={handlePasswordChange}
+              /*ref={loginPasswordRef} /*{(c) => (loginPassword = c)}*/
             />
             <label for="login-password">Password</label>
+            {showPasswordPopover && (
+              <Popover className="show">Please enter a password.</Popover>
+            )}
           </div>
           <button
             type="submit"

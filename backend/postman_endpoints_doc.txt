@@ -36,6 +36,20 @@ BODY:
 GET: localhost:5000/posts/
 BODY: (NONE ARE NEEDED)
 
+// create post
+POST: localhost:5000/posts/createPost
+BODY:
+{
+    "userId": "654b468a9567b1da3c33b285",
+    "firstName": "ashley",
+    "lastName": "yang",
+    "caption": "hi test",
+    "videoPath": "",
+    "picturePath": "",
+    "likes": {},
+    "comments": [],
+}
+
 ********************************************
 // replace userId with specific userId we want to find
 GET: localhost:5000/posts/:userId

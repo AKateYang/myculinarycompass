@@ -13,8 +13,15 @@ export const register = async (req, res) => {
     // This if statement checks the confirm password. This is to make sure the user is correctly typing the password
     // that they actually want.
     try {
-      const { firstName, lastName, email, password, picturePath, friends } =
-        req.body;
+      const {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+        picturePath,
+        friends,
+      } = req.body;
 
       // genSalt() is used to generate a random salt that is then used for hashing pw
       // salt is a random string to make the hash unpredictable
@@ -22,11 +29,12 @@ export const register = async (req, res) => {
       const passwordHash = await bcrypt.hash(password, salt);
 
       const newUser = new User({
-        firstName,
-        lastName,
-        email,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        username: username,
         password: passwordHash,
-        picturePath: user.picturePath,
+        picturePath: picturePath,
         friends,
         viewedProfile: Math.floor(Math.random() * 10000),
         impressions: Math.floor(Math.random() * 10000),
@@ -48,6 +56,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
+    const username = await User.findOne({ email: email });
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
 
     const isMatch = await bcrypt.compare(password, user.password);
