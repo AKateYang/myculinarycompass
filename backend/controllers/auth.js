@@ -28,7 +28,7 @@ export const register = async (req, res) => {
         req.body;
 
       const info = await transporter.sendMail({
-        from: "verification@myculinarycompass.com", // sender address
+        from: EMAIL, // sender address
         to: email, // list of receivers
         subject: "Verification Email", // Subject line
         text: "Click this link in order to verify your account with us:", // plain text body
