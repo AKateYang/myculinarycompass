@@ -23,7 +23,7 @@ class SignUpButtonWidget extends StatelessWidget {
         width: 150, // Adjust the width as needed
         height: 30, // Adjust the height as needed
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 15, 22, 15),
+          color: const Color.fromARGB(255, 15, 22, 15),
           borderRadius: BorderRadius.circular(15), // Half of the height for an oval shape
         ),
         child: const Center(

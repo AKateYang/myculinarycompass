@@ -1,13 +1,12 @@
 // server.js
 import app from "./app.js";
-import multer from 'multer';
+import multer from "multer";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 6001;
-const bucket = new mongodb.GridFSBucket(db);
 mongoose
   .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,

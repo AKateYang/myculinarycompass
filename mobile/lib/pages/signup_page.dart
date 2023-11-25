@@ -14,7 +14,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
         BackgroundImageWidget(
           image: AssetImage('assets/landing.jpg'),
@@ -23,40 +23,40 @@ class _SignUpPageState extends State<SignUpPage> {
             body: SafeArea(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 200,
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'My Culinary\n  Compass',
                         style: landHeading,
                       ),
                     ),
                   ),
-                  const InputBoxWidget(
+                  InputBoxWidget(
                     hintname: "First Name",
                     hintStyle: landBodyText,
                     inputType: TextInputType.text,
                     inputAction: TextInputAction.next,
                     isHide: false),
-                  const InputBoxWidget(
+                  InputBoxWidget(
                     hintname: "Last Name",
                     hintStyle: landBodyText,
                     inputAction: TextInputAction.next,
                     inputType: TextInputType.text,
                     isHide: true),
-                  const InputBoxWidget(
+                  InputBoxWidget(
                     hintname: "Username",
                     hintStyle: landBodyText,
                     inputType: TextInputType.text,
                     inputAction: TextInputAction.next,
                     isHide: true),
-                  const InputBoxWidget(
+                  InputBoxWidget(
                     hintname: "Password",
                     hintStyle: landBodyText,
                     inputAction: TextInputAction.next,
                     inputType: TextInputType.text,
                     isHide: true),
-                  const SignUpButtonWidget(
+                  SignUpButtonWidget(
                     hintname: "Sign Up",
                   ),
                 ],

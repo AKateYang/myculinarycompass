@@ -9,7 +9,10 @@ export const updateProfile = async (req, res) => {
 
   try {
     // Use the User model to update the user's first and last names
-    await User.updateOne({ _id: userObjectId }, { $set: { FirstName: firstname, LastName: lastname } });
+    await User.updateOne(
+      { _id: userObjectId },
+      { $set: { FirstName: firstname, LastName: lastname } }
+    );
     res.status(200).json({ message: "Profile updated successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -23,14 +26,17 @@ export const updateUser = async (req, res) => {
 
   try {
     // Update all the fields in a single query to avoid multiple operations
-    await User.updateOne({ _id: userObjectId }, { 
-      $set: { 
-        Login: newlogin, 
-        Password: newpassword, 
-        Email: newemail, 
-        PhoneNumber: newphone 
-      } 
-    });
+    await User.updateOne(
+      { _id: userObjectId },
+      {
+        $set: {
+          Login: newlogin,
+          Password: newpassword,
+          Email: newemail,
+          PhoneNumber: newphone,
+        },
+      }
+    );
     res.status(200).json({ message: "User updated successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -45,8 +51,14 @@ export const addFriend = async (req, res) => {
 
   try {
     // Add friend reference to the user's Following array and increment friend's NumberOfFollowers
-    await User.updateOne({ _id: userObjectId }, { $push: { Following: friendObjectId } });
-    await User.updateOne({ _id: friendObjectId }, { $inc: { NumberOfFollowers: 1 }, $push: { Followers: userObjectId } });
+    await User.updateOne(
+      { _id: userObjectId },
+      { $push: { Following: friendObjectId } }
+    );
+    await User.updateOne(
+      { _id: friendObjectId },
+      { $inc: { NumberOfFollowers: 1 }, $push: { Followers: userObjectId } }
+    );
     res.status(200).json({ message: "Friend added successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -60,7 +72,10 @@ export const blockUser = async (req, res) => {
   const blockObjectId = toObjectId(blockId);
 
   try {
-    const result = await User.updateOne({ _id: userObjectId }, { $push: { Blocked: blockObjectId } });
+    const result = await User.updateOne(
+      { _id: userObjectId },
+      { $push: { Blocked: blockObjectId } }
+    );
     if (result.matchedCount === 0) {
       res.status(404).json({ error: "User not found" });
     } else {
@@ -77,8 +92,14 @@ export const removeFriend = async (req, res) => {
   const friendObjectId = toObjectId(friendId);
 
   try {
-    await User.updateOne({ _id: userObjectId }, { $pull: { Following: friendObjectId } });
-    await User.updateOne({ _id: friendObjectId }, { $inc: { NumberOfFollowers: -1 }, $pull: { Followers: userObjectId } });
+    await User.updateOne(
+      { _id: userObjectId },
+      { $pull: { Following: friendObjectId } }
+    );
+    await User.updateOne(
+      { _id: friendObjectId },
+      { $inc: { NumberOfFollowers: -1 }, $pull: { Followers: userObjectId } }
+    );
     res.status(200).json({ message: "Friend removed successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -90,8 +111,13 @@ export const searchUsers = async (req, res) => {
   const search = username.trim();
 
   try {
-    const results = await User.find({ Login: { $regex: new RegExp(search, 'i') } });
-    const formattedResults = results.map(user => ({ login: user.Login, id: user._id }));
+    const results = await User.find({
+      Login: { $regex: new RegExp(search, "i") },
+    });
+    const formattedResults = results.map((user) => ({
+      login: user.Login,
+      id: user._id,
+    }));
 
     res.status(200).json({ results: formattedResults });
   } catch (err) {

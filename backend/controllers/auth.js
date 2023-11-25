@@ -1,12 +1,23 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../data-models/User.js";
-
+import nodemailer from "nodemailer";
 ///////////////////////////////////////////////////
 // REGISTER USER
 export const register = async (req, res) => {
   let data = new User(req.body);
   let existingUser = await User.findOne({ email: data.email });
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.forwardemail.net",
+    port: 465,
+    secure: true,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: "verification@myculinarycompass.com",
+      pass: "16b1496800133da651564baa",
+    },
+  });
 
   // The outer if loop checks to see if there is an existing user with same email
   if (existingUser == null) {
@@ -15,6 +26,14 @@ export const register = async (req, res) => {
     try {
       const { firstName, lastName, email, password, picturePath, friends } =
         req.body;
+
+      const info = await transporter.sendMail({
+        from: "verification@myculinarycompass.com", // sender address
+        to: email, // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+      });
 
       // genSalt() is used to generate a random salt that is then used for hashing pw
       // salt is a random string to make the hash unpredictable
