@@ -14,8 +14,8 @@ export const register = async (req, res) => {
     secure: true,
     auth: {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-      user: "verification@myculinarycompass.com",
-      pass: "16b1496800133da651564baa",
+      user: EMAIL,
+      pass: PASS,
     },
   });
 
