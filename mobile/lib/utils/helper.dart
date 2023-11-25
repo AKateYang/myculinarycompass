@@ -37,7 +37,7 @@ Future<bool> loginUserWithEmail(String email, String pass) async {
         };
         Get.showSnackbar(GetSnackBar(
           title: "Login Successful",
-          message: "Loading",
+          message: "Loading...",
           snackPosition: SnackPosition.TOP,
           duration: const Duration(seconds: 2),
         ));

@@ -52,7 +52,6 @@ const upload = multer({ storage });
 // app.post("/auth/register", upload.single("picture"), register);
 app.post(
   "/posts/createPost",
-  verifyToken,
   upload.single("picture"),
   upload.single("video"),
   createPost

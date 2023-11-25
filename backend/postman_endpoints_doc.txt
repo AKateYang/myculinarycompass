@@ -137,6 +137,14 @@ BODY:
 ********************************************
 POST: localhost:5000/recipes/createRecipe
 BODY:
+{
+  "recipeName": "chili",
+  "ingredients": [],
+  "instructions": "chop veggies",
+  "picturePath": "",
+  "continent": "North Americas",
+  "country": "USA"
+}
 
 ********************************************
 DELETE: localhost:5000/recipes/deleteRecipe/:recipeId
