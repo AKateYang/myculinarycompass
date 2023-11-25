@@ -1,16 +1,16 @@
 import Post from "../data-models/Post.js";
 import User from "../data-models/User.js";
 
-export const createPost = async (req, res, next) => {
+export const createPost = async (req, res) => {
   try {
     // incoming: caption, video, imagesArray, userId
     // outgoing: error
 
-    const { userId, caption, picturePath, videoPath } = req.body;
+    const { userId, picturePath, videoPath, caption } = req.body;
     const user = await User.findById(userId);
 
-    const newPost = newPost({
-      userId: userId,
+    const newPost = new Post({
+      userId,
       firstName: user.firstName,
       lastName: user.lastName,
       caption: caption,
@@ -23,7 +23,7 @@ export const createPost = async (req, res, next) => {
 
     const post = await Post.find();
     res.status(201).json(post);
-  } catch (e) {
+  } catch (err) {
     res.status(409).json({ message: err.message });
   }
 };
