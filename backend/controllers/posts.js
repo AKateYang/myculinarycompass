@@ -115,13 +115,11 @@ export const updatePost = async (req, res) => {
   }
 };
 
-// Updates the likes of a post
-// Need help understanding how this is set up.
 export const likePost = async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { id } = req.params;
     const { userId } = req.body;
-    const post = await Post.findById(postId);
+    const post = await Post.findById(id);
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {
@@ -137,8 +135,15 @@ export const likePost = async (req, res) => {
     );
 
     res.status(200).json(updatedPost);
+  } catch (err) {}
+};
+
+export const getLazyLoadingPosts = async (req, res) => {
+  try {
+    // Use the aggregate method to get a sample of 5 random recipes
+    const posts = await Post.aggregate([{ $sample: { size: 5 } }]);
+    res.status(200).json(posts);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "An error occurred" });
+    res.status(500).json({ error: "Error: " + err.message });
   }
 };

@@ -6,10 +6,13 @@ import {
   getPost,
   likePost,
   getUserPosts,
+  getLazyLoadingPosts,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
 const router = express.Router();
+
+router.get("/getLazyLoadingPosts", getLazyLoadingPosts);
 
 // Route to get all posts
 router.get("/", getAllPosts);

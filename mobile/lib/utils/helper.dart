@@ -13,7 +13,8 @@ import '../models/user.dart';
 // The 10.0.2.2:5000 is for localhost
 // '10.0.2.2:5000'
 // localhost:5000
-const addr = 'myculinarycompass-0c8901cce626.herokuapp.com';
+const addr = "10.0.2.2:5000";
+//const addr = 'myculinarycompass-0c8901cce626.herokuapp.com';
 // const addr = 'localhost:5000';
 
 Future<bool> loginUserWithEmail(String email, String pass) async {
