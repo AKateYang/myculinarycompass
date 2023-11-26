@@ -21,17 +21,17 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const isFriend = friends.find((friend) => friend._id === friendId);
 
+  // UPDATED patchFRIEND
   const patchFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/users/${_id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    var bp = require("./Path.js");
+    const json = JSON.stringify({ friendId: friendId });
+    const response = await fetch(`/users/${_id}/${friendId}`, {
+      method: "PATCH",
+      body: json,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
   };

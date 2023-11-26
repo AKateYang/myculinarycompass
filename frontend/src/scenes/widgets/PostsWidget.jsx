@@ -3,28 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../state/index.jsx";
 import PostWidget from "./PostWidget";
 
-const PostsWidget = ({ userId, isProfile = false }) => {
+const PostsWidget = ({ userId, _id, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
+  // UPDATED getPosts
+  // Loading in all posts
   const getPosts = async () => {
-    const response = await fetch("http://localhost:3001/posts", {
+    var bp = require("../../components/Path.js");
+    const response = await fetch(bp.buildPath("/posts/"), {
       method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
   };
 
+  // UPDATED getUserPosts
   const getUserPosts = async () => {
-    const response = await fetch(
-      `http://localhost:3001/posts/${userId}/posts`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    var bp = require("../../components/Path.js");
+    const response = await fetch(bp.buildPath(`/posts/getPost/${_id}`), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
   };

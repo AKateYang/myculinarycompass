@@ -5,8 +5,8 @@ const toObjectId = (id) => mongoose.Types.ObjectId(id);
 
 export const getUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+    const { userId } = req.params;
+    const user = await User.findById(userId);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -116,16 +116,17 @@ export const removeFriend = async (req, res) => {
   }
 };
 
+// WORKING
 export const searchUsers = async (req, res) => {
-  const { username } = req.body;
-  const search = username.trim();
+  const search = req.params.username.trim();
 
   try {
     const results = await User.find({
-      Login: { $regex: new RegExp(search, "i") },
+      username: { $regex: new RegExp(search, "i") },
     });
+
     const formattedResults = results.map((user) => ({
-      login: user.Login,
+      username: user.username,
       id: user._id,
     }));
 
@@ -144,6 +145,25 @@ export const getFollowing = async (req, res) => {
     res.status(200).json({ following: user.Following });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const getUserFriends = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    const friends = await Promise.all(
+      user.friends.map((id) => User.findById(id))
+    );
+    const formattedFriends = friends.map(
+      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation, location, picturePath };
+      }
+    );
+    res.status(200).json(formattedFriends);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
   }
 };
 

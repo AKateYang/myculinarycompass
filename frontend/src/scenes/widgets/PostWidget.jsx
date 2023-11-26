@@ -34,26 +34,14 @@ const PostWidget = ({
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
+  // UPDATED API to link to likePost in posts.js
   const patchLike = async () => {
     var bp = require("../../components/Path.js");
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
-    /*
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+    const response = await fetch(bp.buildPath(`/posts/${postId}/likePost`), {
       method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
-    */
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
@@ -75,7 +63,8 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          // UPDATED to go to public assets for pictures
+          src={`public/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
