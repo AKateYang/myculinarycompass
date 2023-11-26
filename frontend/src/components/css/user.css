@@ -1,0 +1,264 @@
+.desktop {
+  background-color: #131418;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.desktop .div {
+  background-color: #131418;
+  height: 1024px;
+  position: relative;
+  width: 1440px;
+}
+
+.desktop .text-wrapper {
+  color: #fffbf6;
+  font-family: "Overpass Mono-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 48px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 54px;
+  width: 318px;
+}
+
+.desktop .search {
+  height: 24px;
+  left: 738px;
+  position: absolute;
+  top: 62px;
+  width: 24px;
+}
+
+.desktop .light-mode {
+  height: 35px;
+  left: 1111px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .chat {
+  height: 35px;
+  left: 1187px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .notifications {
+  height: 35px;
+  left: 1263px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .help {
+  height: 35px;
+  left: 1339px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .ellipse {
+  background-color: #000000;
+  border-radius: 50px;
+  height: 100px;
+  left: 71px;
+  position: absolute;
+  top: 184px;
+  width: 100px;
+}
+
+.desktop .group {
+  height: 78px;
+  left: 62px;
+  position: absolute;
+  top: 340px;
+  width: 543px;
+}
+
+.desktop .text-wrapper-2 {
+  color: #ffffff;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  width: 54px;
+}
+
+.desktop .text-wrapper-3 {
+  color: #ffffff;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 90px;
+}
+
+.desktop .text-wrapper-4 {
+  color: #ffffff;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  left: 205px;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  width: 54px;
+}
+
+.desktop .text-wrapper-5 {
+  color: #ffffff;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 214px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 90px;
+}
+
+.desktop .text-wrapper-6 {
+  color: #ffffff;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  left: 432px;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  width: 71px;
+}
+
+.desktop .text-wrapper-7 {
+  color: #ffffff;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 441px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 90px;
+}
+
+.desktop .text-wrapper-8 {
+  color: #ffffff;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 28px;
+  font-weight: 700;
+  left: 238px;
+  letter-spacing: 0;
+  line-height: 44.8px;
+  position: absolute;
+  text-align: center;
+  top: 215px;
+  white-space: nowrap;
+  width: 225px;
+}
+
+.desktop .overlap-group-wrapper {
+  height: 62px;
+  left: 1179px;
+  position: absolute;
+  top: 204px;
+  width: 162px;
+}
+
+.desktop .overlap-group {
+  background-color: #23e858;
+  border-radius: 10px;
+  height: 62px;
+  position: relative;
+  width: 160px;
+}
+
+.desktop .text-wrapper-9 {
+  color: #131518;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 17px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 16px;
+}
+
+.desktop .frame {
+  background-image: url(../images/food-1.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 10px;
+  height: 350px;
+  left: 71px;
+  position: absolute;
+  top: 505px;
+  width: 300px;
+}
+
+.desktop .frame-2 {
+  background-image: url(../images/food-2.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 10px;
+  height: 350px;
+  left: 412px;
+  position: absolute;
+  top: 505px;
+  width: 300px;
+}
+
+.desktop .frame-3 {
+  background-image: url(../images/food-3.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 10px;
+  height: 350px;
+  left: 753px;
+  position: absolute;
+  top: 505px;
+  width: 300px;
+}
+
+.desktop .frame-4 {
+  background-image: url(../images/food-4.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 10px;
+  height: 350px;
+  left: 1085px;
+  opacity: 0.5;
+  position: absolute;
+  top: 505px;
+  width: 300px;
+}

@@ -70,8 +70,11 @@ p {
 }
 
 .custom-login-modal .custom-modal-content {
-  width: 80%;
+  width: 40%;
   max-width: 1000px;
+  min-width: 300px;
+  height: auto;
+  margin: 5% auto;
   -webkit-backdrop-filter: blur(40px) brightness(100%);
   backdrop-filter: blur(20px) brightness(100%);
   background: linear-gradient(
@@ -81,9 +84,6 @@ p {
   );
   border-radius: 14.65px;
   box-shadow: 0px 4px 24px -1px #00000033;
-  height: 547px;
-  width: 612px;
-  margin: auto;
   position: relative;
   margin-top: 120px;
   transform: translateY(-50px);
@@ -105,9 +105,11 @@ p {
 
 .custom-login-header {
   position: relative;
-  height: 88px;
-  width: 352px;
-  margin-left: 120px;
+  height: 88px; /* Keep the height or make it responsive if needed */
+  width: 100%; /* Full width for small screens */
+  max-width: 352px; /* Maximum width */
+  margin-left: auto; /* Center align */
+  margin-right: auto; /* Center align */
   margin-bottom: 40px;
 }
 
@@ -119,30 +121,34 @@ p {
   letter-spacing: 0;
   line-height: 48px;
   text-align: center;
-  margin-top: 70px;
+  margin-top: 60px;
   margin-bottom: 20px;
 }
 
 .custom-question {
   color: #ffffff;
-  font-size: 20px;
+  position: relative; /* Switch to relative positioning */
+  font-size: 1.1rem; /* Changed to rem for scalability */
   font-family: "Overpass-Light", Helvetica, sans-serif;
   margin-top: -10px; /* Adjust the value as needed */
   font-weight: 300;
-  margin-left: 30px;
+  margin-left: 13%; /* Changed to percentage */
 }
 
 .custom-goto-signup {
+  position: relative; /* Switch to relative positioning */
+  left: 65%; /* Adjust as needed */
+  top: -29%; /* Adjust as needed */
   display: flex;
   align-items: center;
-  font-size: 20px;
+  font-size: 1.1rem; /* Changed to rem */
   color: #23e858;
   font-family: "Overpass-Bold", Helvetica, sans-serif;
   border: none;
   background-color: transparent;
   font-weight: 700;
-  margin-top: -26px; /* Adjust this value to position it vertically */
-  margin-left: 240px; /* Same left margin as .custom-question to align it */
+  /*margin-top: -26px; Adjust this value to position it vertically */
+  /*margin-left: 2%;Changed to percentage */
   cursor: pointer;
 }
 
@@ -152,77 +158,80 @@ p {
 
 .floating-label {
   position: relative;
-  margin-bottom: 2rem; /* adjust as per your need */
+  margin: 30px 0;
 }
 
 .input-field {
-  font-size: 16px; /* adjust as per your need */
+  font-size: 1em; /* Using em for scalability */
   width: 100%;
-  height: 40px; /* adjust as per your need */
-  padding: 10px;
+  height: 2.5em; /* Relative height */
+  padding: 0.5em; /* Relative padding */
   border: 1px solid #ccc;
-  border-radius: 4px; /* optional */
-  background-color: transparent; /* to avoid overlapping with label */
+  border-radius: 4px; /* Keep or adjust as per your design */
+  background-color: transparent; /* To avoid overlapping with label */
 }
 
 .input-field:focus {
   border-color: #007bff; /* adjust for focus color */
 }
 
-.input-field:not(:valid) + label {
+.floating-label .input-field:not(:valid) + label {
   top: 50%;
   font-size: 16px; /* keep this the same as .input-field font-size */
   transform: translateY(-50%);
   color: #777;
 }
 
-.input-field:focus + label,
+.floating-label .input-field:focus + label,
 .input-field:not(:placeholder-shown):valid + label {
-  top: 10px; /* adjust for vertical placement when floated */
-  left: 70px; /* adjust for horizontal placement when floated */
-  font-size: 12px; /* adjust size when floated */
+  top: 10px;
+  left: 75px;
+  font-size: 12px;
   color: #777; /* adjust color when floated */
 }
 
-label {
+.floating-label label {
   position: absolute;
   color: #777;
-  left: 70px;
-  top: 25px;
+  top: 18px;
+  left: 75px;
   transition: all 0.3s;
-  pointer-events: none; /* makes click events pass through the label */
+  pointer-events: none; /* Allows click events to pass through the label */
 }
 
 .custom-login-modal input {
   background-color: #ffffff;
   border-radius: 16px;
-  width: 493px;
-  height: 50px;
-  margin: 20px auto;
+  width: 80%; /* Use percentage instead of fixed pixels */
+  max-width: 493px; /* Maximum width to maintain design */
+  height: 60px; /* Consider making height relative as well */
+  margin: 1em auto; /* Use em for consistent scaling with font size */
   display: block;
   text-indent: 10px;
+  padding-top: 20px;
+  font-size: 15px;
 }
 
 #login-username {
-  margin-top: -15px;
-  left: 50px;
-}
-#login-password {
-  margin-top: 30px;
-  left: 50px;
+  margin-top: -1em; /* Adjusted to em */
+  left: 3em; /* Adjusted to em for relative positioning */
 }
 
+#login-password {
+  margin-top: 0em; /* Adjusted to em */
+  left: 3em; /* Consistent with above */
+}
 .custom-login-submit {
   color: white;
   font-family: "Overpass-Medium", Helvetica, sans-serif;
-  font-size: 22px;
+  font-size: 1.375rem; /* Converted to rem for responsiveness */
   font-weight: 500;
   background-color: #020305;
   border-radius: 16px;
   border: none;
-  height: 70px;
-  width: 518px;
-  left: 50px;
+  height: 2.5em; /* Consider making this relative as well */
+  width: 80%; /* Use percentage instead of fixed pixels */
+  max-width: 518px; /* Maximum width */
   margin: 20px auto;
   margin-top: -5px;
   display: block;
@@ -238,13 +247,140 @@ label {
   background-color: transparent;
   border: none;
   font-family: "Overpass-Regular", Helvetica, sans-serif;
-  font-size: 20px;
+  font-size: 1.2rem; /* Converted to rem for scalability */
   font-weight: 400;
-  width: 263px;
+  width: 80%; /* Use percentage instead of fixed pixels */
+  max-width: 263px; /* Maximum width */
   height: 30px;
   margin: 20px auto;
   display: block;
   text-align: center;
   cursor: pointer;
-  margin-left: 170px;
+  margin-left: auto; /* Center align the button */
+  margin-right: auto; /* Center align the button */
+  margin-bottom: 40px;
+}
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  .custom-login-modal .custom-modal-content {
+    width: 90%; /* Increase width on smaller screens */
+    min-width: 250px;
+  }
+  .custom-login-title,
+  .custom-question,
+  .custom-goto-signup,
+  .input-field,
+  .custom-login-submit {
+    font-size: 1.2rem; /* Adjust font size */
+    height: 60px; /* Adjust height */
+    width: 90%; /* Adjust width */
+  }
+  .custom-login-title {
+    font-size: 32px; /* Slightly smaller font size */
+    line-height: 40px; /* Adjust line height accordingly */
+    margin-top: 50px; /* Reduced top margin */
+    margin-bottom: 15px; /* Reduced bottom margin */
+  }
+  .custom-login-header {
+    margin-left: auto; /* Adjust the left margin */
+    margin-right: auto; /* Adjust the right margin */
+    margin-bottom: 20px; /* Smaller bottom margin */
+  }
+  .custom-question,
+  .custom-goto-signup {
+    font-size: 1rem; /* Smaller font size */
+    margin-left: 5%; /* Adjust left margin */
+  }
+  .custom-goto-signup {
+    left: 5%; /* Adjust horizontal position */
+    top: -10px; /* Adjust vertical position if needed */
+  }
+  .custom-login-modal input {
+    width: 90%; /* Increase width percentage for smaller screens */
+  }
+  #login-username,
+  #login-password {
+    left: 2em; /* Slightly adjust positioning for smaller screens */
+  }
+  label {
+    left: 1em; /* Adjust for smaller screens */
+    top: 0.8em; /* Adjust top position */
+  }
+  .input-field {
+    padding: 15px 10px 10px; /* Adjust padding for smaller screens */
+  }
+
+  label {
+    font-size: 0.9em; /* Adjust label font size for smaller screens */
+  }
+  #forgot {
+    font-size: 1.1rem; /* Slightly smaller font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-modal-content {
+    margin-top: 10%; /* More margin at the top */
+  }
+  p,
+  .custom-question,
+  .custom-goto-signup {
+    font-size: 0.9rem; /* Smaller text */
+  }
+  .custom-login-submit {
+    font-size: 1rem; /* Further adjust font size */
+    height: 50px; /* Adjust height for smaller screens */
+    width: 95%; /* Adjust width */
+  }
+  .custom-login-title {
+    font-size: 24px; /* Even smaller font size for mobile */
+    line-height: 30px; /* Adjust line height for mobile */
+    margin-top: 30px; /* Further reduced top margin for mobile */
+    margin-bottom: 10px; /* Reduced bottom margin for mobile */
+  }
+  .custom-login-header {
+    margin-left: 10px; /* Smaller left margin */
+    margin-right: 10px; /* Smaller right margin */
+    margin-bottom: 10px; /* Smaller bottom margin */
+  }
+  .custom-question,
+  .custom-goto-signup {
+    font-size: 0.9rem; /* Even smaller font size */
+    margin-left: 10%; /* Increase left margin */
+  }
+  .custom-goto-signup {
+    left: 10%; /* Further adjust for smaller screens */
+    top: -15px; /* Adjust vertical position if needed */
+  }
+  .input-field {
+    font-size: 0.9em; /* Slightly smaller font size for small screens */
+    padding: 0.4em; /* Slightly less padding */
+    border-radius: 3px; /* Adjust if needed for smaller screens */
+  }
+  .custom-login-modal input {
+    width: 95%; /* Further increase width for mobile screens */
+    height: 40px; /* Optional: Adjust height for smaller screens */
+    border-radius: 12px; /* Optional: Adjust border radius for aesthetics */
+  }
+  #login-username,
+  #login-password {
+    left: 1em; /* Further adjust for mobile screens */
+    margin-top: 1em; /* Adjust margin-top for tighter spaces */
+  }
+  label {
+    left: 0.5em; /* Further adjust for mobile screens */
+    top: 0.7em; /* Adjust top position */
+  }
+  .input-field {
+    padding: 12px 8px 8px; /* Further adjust for mobile screens */
+  }
+
+  label {
+    font-size: 0.8em; /* Further adjust label font size for mobile screens */
+  }
+  #forgot {
+    font-size: 1rem; /* Further adjust font size for mobile screens */
+    width: 90%; /* Adjust width */
+  }
 }

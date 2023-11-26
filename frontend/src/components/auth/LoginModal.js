@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "../css/loginModal.css";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogin } from "../../state";
 import classNames from "classnames";
 
-const LoginModal = ({ isOpen, onClose, className }) => {
+const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -13,6 +16,8 @@ const LoginModal = ({ isOpen, onClose, className }) => {
   var loginPassword;
 
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const doLogin = async (event) => {
     event.preventDefault();
@@ -34,14 +39,23 @@ const LoginModal = ({ isOpen, onClose, className }) => {
         setMessage("User/Password combination incorrect");
       } else {
         var user = {
-          firstName: res.firstName,
-          lastName: res.lastName,
-          id: res.id,
+          firstName: res.user.firstName,
+          lastName: res.user.lastName,
+          id: res.user._id,
+          picturePath: res.user.picturePath,
         };
-        localStorage.setItem("user_data", JSON.stringify(user));
 
+        localStorage.setItem("user_data", JSON.stringify(user));
+        //This may not be needed. can delete later if we don't use it
+        // dispatch(
+        //   setLogin({
+        //     user: res.user,
+        //     token: res.token,
+        //   })
+        // );
+        navigate("/homepage");
         setMessage("");
-        window.location.href = "/cards";
+        // window.location.href = "/homepage";
       }
     } catch (e) {
       alert(e.toString());
@@ -64,7 +78,9 @@ const LoginModal = ({ isOpen, onClose, className }) => {
           <div className="custom-login-header">
             <h2 className="custom-login-title">Login</h2>
             <p className="custom-question">Don’t have an account?</p>
-            <button className="custom-goto-signup">Sign-Up</button>
+            <button className="custom-goto-signup" onClick={onOpenSignup}>
+              Sign-Up
+            </button>
           </div>
           <div className="floating-label">
             <input

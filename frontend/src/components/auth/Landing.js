@@ -10,11 +10,17 @@ export const Landing = () => {
   const [isSignUpOpen, setSignUpOpen] = useState(false);
   const [isAboutUsOpen, setAboutUsOpen] = useState(false);
 
+  const openSignup = () => {
+    setLoginOpen(false); // Close the login modal
+    setSignUpOpen(true); // Open the signup modal
+  };
+
   return (
     <div className="custom-frame">
       <LoginModal
         isOpen={isLoginOpen}
         onClose={() => setLoginOpen(false)}
+        onOpenSignup={openSignup}
         className="custom-login-modal"
       />
       <SignupModal

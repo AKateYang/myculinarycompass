@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/dashboard.dart';
+import 'package:mobile/pages/saved.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   const ShoppingListScreen({super.key});
@@ -23,13 +25,16 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
             fontSize: 30, // Adjust the font size as needed
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Back arrow icon
-          onPressed: () {
-            // Add navigation or back button functionality here
-            // For example, you can use Navigator to navigate back
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back), // Back arrow icon
+        //   onPressed: () {
+        //     // Navigator.of(context).push(MaterialPageRoute(
+        //     //   builder: (context) {
+        //     //     return const _DashboardPageState;
+        //     //   },
+        //     // ));
+        //   },
+        // ),
       ),
       body: ListView.builder(
         itemCount: sections.length,

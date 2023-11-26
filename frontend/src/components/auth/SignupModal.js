@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/signupModal.css";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 
 const SignupModal = ({ isOpen, onClose, className }) => {
   // Handle background click to close the modal
@@ -20,6 +21,7 @@ const SignupModal = ({ isOpen, onClose, className }) => {
   var lastName;
   var email;
   // var phone;
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
 
@@ -56,7 +58,8 @@ const SignupModal = ({ isOpen, onClose, className }) => {
         localStorage.setItem("user_data", JSON.stringify(user));
 
         setMessage("");
-        window.location.href = "/";
+        navigate("/");
+        // window.location.href = "/";
       }
     } catch (e) {
       alert(e.toString());

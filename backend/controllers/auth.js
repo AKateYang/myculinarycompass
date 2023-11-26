@@ -26,7 +26,7 @@ export const register = async (req, res) => {
         lastName,
         email,
         password: passwordHash,
-        picturePath,
+        picturePath: user.picturePath,
         friends,
         viewedProfile: Math.floor(Math.random() * 10000),
         impressions: Math.floor(Math.random() * 10000),
@@ -59,4 +59,26 @@ export const login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "login error: " + err.message });
   }
+};
+
+export const dashboard = async (req, res) => {
+  try {
+    res.json({
+      msg: "profile accessed",
+      email: authData.oldUser.email,
+    });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+  // jwt.verify(req.token, secretKey, (err, authData) => {
+  //   if (err) {
+  //   } else {
+  //     res.json({
+  //       status: true,
+  //       msg: "profile accessed",
+  //       email: authData.oldUser.email,
+  //     });
+  //   }
+  // });
 };

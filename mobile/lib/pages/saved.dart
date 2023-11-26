@@ -2,12 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/app_color.dart';
-//import 'package:food_recipe/feature/home/model/recipe_model.dart';
-//import 'package:food_recipe/feature/home/presentation/widget/recipe_item.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class SavedRecipes extends StatefulWidget {
+  const SavedRecipes({super.key});
 
+  @override
+  State<SavedRecipes> createState() => _SavedRecipesState();
+}
+
+class _SavedRecipesState extends State<SavedRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +35,28 @@ class HomeScreen extends StatelessWidget {
                         .titleLarge
                         ?.copyWith(color: AppColor.primaryColor),
                   ),
-                  IconButton(
-                    icon: Image.asset("assets/shopping_cart.png"),
-                    iconSize: 10,
-                    onPressed: () {
-                      // Navigate to grocery list
-                    },
-                  )
+                  // InkWell(
+                  //   onTap: () {
+                  //     //nav to new Page
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) {
+                  //         return const ShoppingListScreen();
+                  //       },
+                  //     ));
+                  //   },
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(8),
+                  //     child: Image.asset(
+                  //       "assets/shopping_cart.png",
+                  //       width: 30, // Adjust the width as needed
+                  //       height: 30, // Adjust the height as needed
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 1),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
@@ -87,42 +100,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Container(
-            //   margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-            //   padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-            //   decoration: BoxDecoration(
-            //     color: AppColor.primaryColor.withOpacity(0.3),
-            //     borderRadius: BorderRadius.circular(16),
-            //   ),
-            //   child: Row(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       //const Icon(Icons.info_outline),
-            //       const SizedBox(width: 8),
-            //       Expanded(
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             Text(
-            //               "New Recipes the Categorires you are subscribed.",
-            //               style: Theme.of(context).textTheme.bodyMedium,
-            //             ),
-            //             TextButton(
-            //               onPressed: () {},
-            //               child: Text(
-            //                 "See Recipes",
-            //                 style: Theme.of(context).textTheme.button?.copyWith(
-            //                       color: AppColor.primaryColor,
-            //                       decoration: TextDecoration.underline,
-            //                     ),
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Row(

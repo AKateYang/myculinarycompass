@@ -1,222 +1,206 @@
 import User from "../data-models/User.js";
 
-export const updateProfile = async (req, res) => {
-  // incoming: userId, firstname, lastname
-  // outgoing: error
+// Helper function to convert string ID to MongoDB ObjectId
+const toObjectId = (id) => mongoose.Types.ObjectId(id);
 
+export const getUser = async (req, res) => {
   try {
-    const { userId, firstname, lastname } = req.body;
-    const user = new ObjectId(userId);
-
-    var error = "";
-
-    const db = client.db("COP4331Cards");
-
-    await db
-      .collection("Users")
-      .updateOne({ _id: user }, { $set: { FirstName: firstname } });
-
-    await db
-      .collection("Users")
-      .updateOne({ _id: user }, { $set: { LastName: lastname } });
-
-    res.status(200).json(ret);
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.status(200).json(user);
   } catch (err) {
-    // var ret = { error: error };
     res.status(404).json({ message: err.message });
   }
 };
 
-app.post("/api/updateUser", async (req, res, next) => {
-  // incoming: userId, color
-  // outgoing: error
+export const updateProfile = async (req, res) => {
+  const { userId, firstname, lastname } = req.body;
+  const userObjectId = toObjectId(userId);
 
+  try {
+    // Use the User model to update the user's first and last names
+    await User.updateOne(
+      { _id: userObjectId },
+      { $set: { FirstName: firstname, LastName: lastname } }
+    );
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// User update handler
+export const updateUser = async (req, res) => {
   const { userId, newlogin, newpassword, newemail, newphone } = req.body;
+  const userObjectId = toObjectId(userId);
 
-  const user = new ObjectId(userId);
+  try {
+    // Update all the fields in a single query to avoid multiple operations
+    await User.updateOne(
+      { _id: userObjectId },
+      {
+        $set: {
+          Login: newlogin,
+          Password: newpassword,
+          Email: newemail,
+          PhoneNumber: newphone,
+        },
+      }
+    );
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  var error = "";
-
-  const db = client.db("COP4331Cards");
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $set: { Login: newlogin } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $set: { Password: newpassword } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $set: { Email: newemail } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $set: { PhoneNumber: newphone } });
-
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
-
-app.post("/api/addFriend", async (req, res, next) => {
-  // incoming: userId, color
-  // outgoing: error
-
+// Add a friend handler
+export const addFriend = async (req, res) => {
   const { friendId, userId } = req.body;
+  const userObjectId = toObjectId(userId);
+  const friendObjectId = toObjectId(friendId);
 
-  const user = new ObjectId(userId);
-  const friend = new ObjectId(friendId);
+  try {
+    // Add friend reference to the user's Following array and increment friend's NumberOfFollowers
+    await User.updateOne(
+      { _id: userObjectId },
+      { $push: { Following: friendObjectId } }
+    );
+    await User.updateOne(
+      { _id: friendObjectId },
+      { $inc: { NumberOfFollowers: 1 }, $push: { Followers: userObjectId } }
+    );
+    res.status(200).json({ message: "Friend added successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  var error = "";
-
-  const db = client.db("COP4331Cards");
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $push: { Following: friend } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: 1 } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: friend }, { $push: { Followers: user } });
-
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
-
-app.post("/api/blockUser", async (req, res, next) => {
-  // incoming: userId, color
-  // outgoing: error
-
+// Block user handler
+export const blockUser = async (req, res) => {
   const { blockId, userId } = req.body;
+  const userObjectId = toObjectId(userId);
+  const blockObjectId = toObjectId(blockId);
 
-  const user = new ObjectId(userId);
-  const block = new ObjectId(blockId);
-
-  var error = "";
-
-  const db = client.db("COP4331Cards");
-
-  const result = await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $push: { Blocked: block } });
-
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "User not found" });
+  try {
+    const result = await User.updateOne(
+      { _id: userObjectId },
+      { $push: { Blocked: blockObjectId } }
+    );
+    if (result.matchedCount === 0) {
+      res.status(404).json({ error: "User not found" });
+    } else {
+      res.status(200).json({ message: "User blocked successfully" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
+};
 
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
-
-app.post("/api/removeFriend", async (req, res, next) => {
-  // incoming: userId, color
-  // outgoing: error
-
+export const removeFriend = async (req, res) => {
   const { friendId, userId } = req.body;
+  const userObjectId = toObjectId(userId);
+  const friendObjectId = toObjectId(friendId);
 
-  const user = new ObjectId(userId);
-  const friend = new ObjectId(friendId);
-
-  var error = "";
-
-  const db = client.db("COP4331Cards");
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: user }, { $pull: { Following: friend } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: friend }, { $inc: { NumberOfFollowers: -1 } });
-
-  await db
-    .collection("Users")
-    .updateOne({ _id: friend }, { $pull: { Followers: user } });
-
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
-
-app.post("/api/searchUsers", async (req, res, next) => {
-  // incoming: userId, search
-  // outgoing: results[], error
-
-  var error = "";
-
-  const { username } = req.body;
-
-  var _search = username.trim();
-
-  const db = client.db("COP4331Cards");
-  const results = await db
-    .collection("Users")
-    .find({ Login: { $regex: _search + ".*", $options: "i" } })
-    .toArray();
-
-  var _ret = [];
-  for (var i = 0; i < results.length; i++) {
-    _ret.push(results[i].Login + " " + results[i]._id);
+  try {
+    await User.updateOne(
+      { _id: userObjectId },
+      { $pull: { Following: friendObjectId } }
+    );
+    await User.updateOne(
+      { _id: friendObjectId },
+      { $inc: { NumberOfFollowers: -1 }, $pull: { Followers: userObjectId } }
+    );
+    res.status(200).json({ message: "Friend removed successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
+};
 
-  var ret = { results: _ret, error: error };
-  res.status(200).json(ret);
-});
+export const searchUsers = async (req, res) => {
+  const { username } = req.body;
+  const search = username.trim();
 
-app.post("/api/getFollowing", async (req, res, next) => {
-  // incoming: login, password
-  // outgoing: id, firstName, lastName, error
+  try {
+    const results = await User.find({
+      Login: { $regex: new RegExp(search, "i") },
+    });
+    const formattedResults = results.map((user) => ({
+      login: user.Login,
+      id: user._id,
+    }));
 
-  var error = "";
+    res.status(200).json({ results: formattedResults });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
+export const getFollowing = async (req, res) => {
   const { userId } = req.body;
+  const userObjectId = toObjectId(userId);
 
-  const user = new ObjectId(userId);
+  try {
+    const user = await User.findById(userObjectId);
+    res.status(200).json({ following: user.Following });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  const db = client.db("COP4331Cards");
-  const results = await db.collection("Users").find({ _id: user });
-
-  res.status(200);
-
-  return results.Following;
-});
-
-app.post("/api/getNumFollowers", async (req, res, next) => {
-  // incoming: login, password
-  // outgoing: id, firstName, lastName, error
-
-  var error = "";
-
+export const getNumFollowers = async (req, res) => {
   const { userId } = req.body;
+  const userObjectId = toObjectId(userId);
 
-  const user = new ObjectId(userId);
+  try {
+    const user = await User.findById(userObjectId);
+    res.status(200).json({ numberOfFollowers: user.NumberOfFollowers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  const db = client.db("COP4331Cards");
-  const results = await db.collection("Users").find({ _id: user });
-
-  res.status(200);
-
-  return results.NumberOfFollowers;
-});
-
-app.post("/api/getFollowers", async (req, res, next) => {
-  // incoming: login, password
-  // outgoing: id, firstName, lastName, error
-
-  var error = "";
-
+export const getNumFollowing = async (req, res) => {
   const { userId } = req.body;
+  const userObjectId = toObjectId(userId);
 
-  const user = new ObjectId(userId);
+  try {
+    const user = await User.findById(userObjectId);
+    res.status(200).json({ numberOfFollowers: user.NumberOfFollowers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  const db = client.db("COP4331Cards");
-  const results = await db.collection("Users").find({ _id: user });
+export const getFollowers = async (req, res) => {
+  const { userId } = req.body;
+  const userObjectId = toObjectId(userId);
 
-  res.status(200);
+  try {
+    const user = await User.findById(userObjectId);
+    res.status(200).json({ followers: user.Followers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  return results.Followers;
-});
+export const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await User.findByIdAndDelete(userId);
+    res.status(200).json({ message: "User successfully deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteFriend = async (req, res) => {
+  const { friendId } = req.params;
+
+  try {
+    await Friend.findByIdAndDelete(friendId);
+    res.status(200).json({ message: "Friend successfully deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

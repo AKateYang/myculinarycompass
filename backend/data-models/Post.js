@@ -14,8 +14,9 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    caption: String,
     location: String,
-    description: String,
+    videoPath: String,
     picturePath: String,
     userPicturePath: String,
     likes: {

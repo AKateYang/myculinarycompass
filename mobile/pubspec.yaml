@@ -40,6 +40,8 @@ dependencies:
   google_fonts: ^6.1.0
   font_awesome_flutter: ^10.6.0
   web_socket_channel: ^2.4.0
+  shared_preferences: ^2.2.2
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
