@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/pages/newfeed.dart';
-import 'package:mobile/pages/profile.dart';
+import 'package:mobile/pages/account/profile.dart';
 import 'package:mobile/pages/saved.dart';
 
 import 'utils/helper.dart';

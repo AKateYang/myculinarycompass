@@ -1,5 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:mobile/pages/account/image_tab.dart';
+import 'package:mobile/pages/account/liked_tab.dart';
+import 'package:mobile/pages/account/post_tab.dart';
+import 'package:mobile/pages/account/video_tab.dart';
 import 'package:mobile/widgets/round_button.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -33,62 +38,113 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(60.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    shape: BoxShape.circle,
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 50, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Column(children: [
+                  Text(
+                    "Name Here",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  )
+                ]),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 35),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "Followers",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text("num data"),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "Following",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text("num data"),
+                    ],
+                  ),
+                  RoundedButton(
+                    backgroundColor: Colors.white,
+                    textColor: Colors.black,
+                    onPressed: () {
+                      // Handle button press
+                      print('Button Pressed!');
+                    },
+                    text: 'Edit Profile',
+                  ),
+                ],
+              ),
+            ),
+            TabBar(
+              tabs: [
+                Tab(
+                  icon: Icon(Icons.photo_camera),
+                ),
+                Tab(
+                  icon: Icon(Icons.video_collection_rounded),
+                ),
+                Tab(
+                  icon: Text(
+                    "Liked",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+                Tab(
+                  icon: Text(
+                    "Posts",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
               ],
             ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "Followers",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    ),
-                    Text("num data"),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "Followers",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    ),
-                    Text("num data"),
-                  ],
-                ),
-                RoundedButton(
-                  backgroundColor: const Color.fromARGB(255, 34, 34, 34),
-                  onPressed: () {
-                    // Handle button press
-                    print('Button Pressed!');
-                  },
-                  text: 'Edit Profile',
-                ),
-              ],
-            ),
-          )
-        ],
+            Expanded(
+              child: TabBarView(
+                children: [
+                  ImageTab(),
+                  VideoTab(),
+                  LikedTab(),
+                  PostTab(),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
 
