@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/dashboard.dart';
 import 'package:mobile/pages/saved.dart';
 
 class ShoppingListScreen extends StatefulWidget {

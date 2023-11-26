@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/saved.dart';
 
-import 'pages/login_page.dart';
-import 'pages/signup_page.dart';
-
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
