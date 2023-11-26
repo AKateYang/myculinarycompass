@@ -79,14 +79,14 @@
   padding: 20px;
   border-radius: 14.65px;
   box-shadow: 0px 4px 24px -1px #00000033;
-  height: 647px;
+  /* height: 700px;
   width: 612px;
   left: 0;
-  top: 0;
+  top: 0; */
   margin: auto;
-  margin-top: 120px;
+  height: 85%;
   transform: translateY(-50px);
-  transform: translateY(-20px);
+  transform: translateY(-5px);
   transition: transform 0.3s ease-in-out;
 }
 
@@ -103,43 +103,54 @@
 }
 
 .signup-header {
-  height: 88px;
+  /* height: 88px;
   left: 73px;
   position: absolute;
   top: 0;
-  width: 352px;
+  width: 352px; */
+  position: absolute;
+  top: 8%;
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for perfect centering */
+  width: 90%; /* Relative width */
+  max-width: 352px; /* Maximum width */
+  height: auto; /* Auto height for flexibility */
+  padding: 10px; /* Padding for smaller screens */
 }
 
 .signup-title {
   color: #ffffff;
   font-family: "Overpass Mono-SemiBold", Helvetica;
-  font-size: 40px;
+  font-size: 2.5em; /* Dynamic font size */
   font-weight: 600;
-  left: 10px;
+  text-align: center;
+  margin: 0 auto; /* Centering */
+  letter-spacing: 0;
+  line-height: 1.2; /* Relative line height */
+  /* left: 0%;
   letter-spacing: 0;
   line-height: 48px;
   position: absolute;
   text-align: center;
   top: 25px;
   white-space: nowrap;
-  width: 348px;
+  width: 348px; */
 }
 
 .question {
   display: flex;
   align-items: center;
-  color: transparent;
   font-family: "Overpass-Light", Helvetica;
-  font-size: 20px;
-  font-weight: 400;
-  left: 37px;
+  font-size: 1.25em; /* Dynamic font size */
+  left: 14.5%; /* Relative positioning */
+  right: 5%; /* Ensuring it stays within boundaries */
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 100px;
-  width: 350px;
+  top: 65px;
   color: #ffffff;
   font-weight: 300;
+  margin: auto;
 }
 
 .goto-login {
@@ -147,13 +158,14 @@
   align-items: center;
   position: absolute;
   color: #23e858;
-  font-size: 20px;
+  font-size: 1.25em; /* Dynamic font size */
   border: none;
   background-color: transparent;
   font-family: "Overpass-Bold", Helvetica;
   font-weight: 700;
-  left: 265px;
-  top: 119px;
+  left: 77.5%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for perfect centering */
+  top: 64px;
 }
 
 .goto-login:hover {
@@ -167,7 +179,7 @@
 }
 
 .signup-input-field {
-  font-size: 16px;
+  font-size: 1em; /* Responsive font size */
   width: 100%;
   height: 40px;
   padding: 10px;
@@ -182,82 +194,99 @@
 
 .signup-input-field:not(:valid) + label {
   top: 50%;
-  font-size: 16px; /* keep this the same as .input-field font-size */
+  /* font-size: 16px; keep this the same as .input-field font-size */
   transform: translateY(-50%);
   color: #777;
 }
 
 .signup-input-field:focus + label,
 .signup-input-field:not(:placeholder-shown):valid + label {
-  top: 120px; /* adjust for vertical placement when floated */
-  left: 50px; /* adjust for horizontal placement when floated */
-  font-size: 12px; /* adjust size when floated */
+  top: 50%; /* Position above the input */
+  left: 60px; /* Small horizontal offset */
+  font-size: 0.75em; /* Smaller font size */
   color: #777; /* adjust color when floated */
 }
 
 .signup-modal label {
   position: absolute;
   color: #777;
-  left: 50px;
-  top: 135px;
+  left: 60px; /* Adjust to align with the input text */
+  top: 77%; /* Center vertically */
   transition: all 0.3s;
   pointer-events: none; /* makes click events pass through the label */
 }
 
+/* Position labels relative to the input fields */
+.floating-label label {
+  position: absolute;
+  left: 0; /* Align with the start of the input field */
+  top: 0; /* Align with the top of the input field */
+  transform: translateY(-100%); /* Move above the input field */
+  /* other styles... */
+}
+
 #target-firstname {
-  margin-top: 9px;
+  margin-top: 1%; /* Fixed small margin */
 }
 
 #target-lastname {
-  margin-top: 87px;
+  margin-top: -6%; /* Responsive margin */
 }
 
 #target-username {
-  margin-top: 247px;
+  margin-top: -6%; /* Responsive margin */
 }
 
 #target-password {
-  margin-top: 327px;
+  margin-top: -6%; /* Responsive margin */
 }
 
 #target-email {
-  margin-top: 168px;
+  margin-top: -6%; /* Responsive margin */
+}
+
+#firstname:focus + #target-firstname,
+#firstname:not(:placeholder-shown):valid + #target-firstname {
+  transform: translateY(280%); /* Move above the input field */
+  font-size: 0.75em; /* Smaller font size */
+  /* Add other styles as needed */
 }
 
 .signup-modal input {
   background-color: #ffffff;
   border-radius: 16px;
-  position: absolute;
-  width: 448px;
-  height: 40px;
-  left: 20px;
-  text-indent: 18px;
+  position: relative;
+  width: 85%; /* Relative width */
+  height: 60px;
+  left: 7.5%; /* Center align */
+  padding-top: 25px;
+  text-indent: 23px;
 }
 
 #firstname {
-  top: 120px;
+  margin-top: 30%; /* Adjusted for position */
 }
 
 #lastname {
-  top: 200px;
-}
-
-#signup-username {
-  top: 360px;
-}
-
-#signup-password {
-  top: 440px;
+  margin-top: -2%; /* Adjusted for position */
 }
 
 #signup-email {
-  top: 280px;
+  margin-top: -2%; /* Adjusted for position */
+}
+
+#signup-username {
+  margin-top: -2%; /* Adjusted for position */
+}
+
+#signup-password {
+  margin-top: -2%; /* Adjusted for position */
 }
 
 .signup-submit {
   color: white;
   font-family: "Overpass-Medium", Helvetica;
-  font-size: 22px;
+  font-size: 1.375rem; /* 22px converted to rem for scalability */
   font-weight: 500;
   letter-spacing: 0;
   white-space: nowrap;
@@ -266,10 +295,11 @@
   border-radius: 16px;
   border: none;
   height: 60px;
-  left: 20px;
+  left: 7%; /* Center the button */
   position: relative;
-  top: 520px;
-  width: 468px;
+  width: 86%; /* Relative width */
+  max-width: 448px; /* Maximum width */
+  margin-top: -2%;
 }
 
 .signup-submit:hover {
@@ -279,23 +309,27 @@
 
 .terms {
   height: 30px;
-  left: 10px;
+  left: 55%; /* Center horizontally */
   position: absolute;
-  top: 602px;
-  width: 527px;
+  top: auto; /* Adjusted */
+  transform: translateX(-50%); /* Adjust for perfect centering */
+  width: 90%; /* Relative width */
+  max-width: 527px; /* Maximum width */
+  bottom: -50px; /* Position from the bottom */
+  height: auto; /* Allow height to adjust */
 }
 
 .agree {
   color: #ffffff;
   font-family: "Overpass-Regular", Helvetica;
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px converted to rem */
   font-weight: 400;
-  left: 70px;
   letter-spacing: 0;
   line-height: normal;
-  position: absolute;
-  top: 25px;
-  width: 486px;
+  position: relative;
+  width: 100%; /* Full width */
+  text-align: center; /* Center the text */
+  padding: 5px; /* Add some padding */
 }
 
 input.check {
@@ -304,14 +338,14 @@ input.check {
   -moz-appearance: none;
   border: 2px solid #ffffff;
   border-radius: 3px; /* Adjusted for a smaller square */
-  height: 20px; /* Decreased size */
-  width: 20px; /* Decreased size */
+  height: 1.25em; /* Adjusted for relative size */
+  width: 1.25em; /* Adjusted for relative size */
   position: relative;
   cursor: pointer;
   outline: none; /* Removes focus outline */
   transition: background-color 0.3s ease;
-  margin-top: 40px;
-  margin-left: 10px;
+  margin-top: 2em; /* Adjusted for relative positioning */
+  margin-left: -2.5em; /* Adjusted for relative positioning */
 }
 
 /* This will display a white background when the checkbox is active (clicked) */
@@ -322,8 +356,8 @@ input.check:active {
 input.check:checked::before {
   content: "";
   position: absolute;
-  width: 8px; /* Adjusted for the smaller square */
-  height: 4px; /* Adjusted for the smaller square */
+  width: 0.4em; /* Adjusted for relative size */
+  height: 0.2em; /* Adjusted for relative size */
   border: solid white;
   border-width: 0 2px 2px 0; /* Adjusted border width for the smaller square */
   top: 50%;
@@ -334,4 +368,148 @@ input.check:checked::before {
 /* When the checkbox is checked, change its background for better visibility */
 input.check:checked {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .signup-modal .modal-content {
+    width: 90%; /* Wider on smaller screens */
+    max-width: none; /* Removes max-width restriction */
+    padding: 15px; /* Slightly less padding */
+  }
+  .signup-title,
+  .question,
+  .goto-login {
+    font-size: 1em; /* Smaller font size for smaller screens */
+    left: 10%;
+    right: 10%;
+  }
+  .signup-input-field,
+  .signup-modal label {
+    font-size: 0.9em; /* Slightly smaller font size */
+    padding: 8px; /* Slightly smaller padding */
+    /* Adjust other properties as needed */
+  }
+  #target-firstname {
+    margin-top: 5px; /* Keep the small margin */
+  }
+
+  #target-lastname {
+    margin-top: 10%; /* Increase margin */
+  }
+
+  #target-username {
+    margin-top: 30%; /* Increase margin */
+  }
+
+  #target-password {
+    margin-top: 40%; /* Increase margin */
+  }
+
+  #target-email {
+    margin-top: 20%; /* Increase margin */
+  }
+  .signup-modal input {
+    width: 90%; /* Increase width */
+    left: 5%; /* Adjust left to center align */
+    padding-top: 20px; /* Adjust padding */
+    text-indent: 20px; /* Adjust text indent */
+  }
+  #firstname {
+    top: 12%;
+  }
+
+  #lastname {
+    top: 22%;
+  }
+
+  #signup-username {
+    top: 38%;
+  }
+
+  #signup-password {
+    top: 46%;
+  }
+
+  #signup-email {
+    top: 30%;
+  }
+  .signup-submit {
+    font-size: 1.25rem; /* Slightly smaller font size */
+  }
+
+  .agree {
+    font-size: 1rem; /* Slightly smaller font size */
+  }
+}
+
+/* Further adjustments for very small screens */
+@media (max-width: 480px) {
+  .signup-modal .modal-content {
+    width: 95%; /* Even wider on very small screens */
+  }
+  .signup-title,
+  .question,
+  .goto-login {
+    font-size: 0.9em; /* Adjusting font size for very small screens */
+    left: 15%;
+    right: 15%;
+  }
+  .signup-input-field,
+  .signup-modal label {
+    font-size: 0.8em; /* Even smaller font size for very small screens */
+    padding: 6px; /* Reduced padding */
+    /* Adjust other properties as needed */
+  }
+  #target-firstname {
+    margin-top: 5px; /* Keep the small margin */
+  }
+
+  #target-lastname {
+    margin-top: 12%; /* Further increase margin */
+  }
+
+  #target-username {
+    margin-top: 35%; /* Further increase margin */
+  }
+
+  #target-password {
+    margin-top: 45%; /* Further increase margin */
+  }
+
+  #target-email {
+    margin-top: 22%; /* Further increase margin */
+  }
+  .signup-modal input {
+    width: 95%; /* Further increase width */
+    left: 2.5%; /* Further adjust left */
+    padding-top: 18px; /* Further adjust padding */
+    text-indent: 18px; /* Further adjust text indent */
+  }
+  #firstname {
+    top: 14%;
+  }
+
+  #lastname {
+    top: 28%;
+  }
+
+  #signup-email {
+    top: 42%;
+  }
+
+  #signup-username {
+    top: 56%;
+  }
+
+  #signup-password {
+    top: 70%;
+  }
+  .signup-submit {
+    font-size: 1rem; /* Even smaller font size */
+  }
+
+  .agree {
+    font-size: 0.875rem; /* Even smaller font size */
+  }
 }

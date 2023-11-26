@@ -1,16 +1,18 @@
 import Post from "../data-models/Post.js";
 import User from "../data-models/User.js";
 
-export const createPost = async (req, res, next) => {
+// WORKING
+// create a post
+export const createPost = async (req, res) => {
   try {
     // incoming: caption, video, imagesArray, userId
     // outgoing: error
 
-    const { userId, caption, picturePath, videoPath } = req.body;
+    const { userId, picturePath, videoPath, caption } = req.body;
     const user = await User.findById(userId);
 
-    const newPost = newPost({
-      userId: userId,
+    const newPost = new Post({
+      userId,
       firstName: user.firstName,
       lastName: user.lastName,
       caption: caption,
@@ -23,12 +25,13 @@ export const createPost = async (req, res, next) => {
 
     const post = await Post.find();
     res.status(201).json(post);
-  } catch (e) {
+  } catch (err) {
     res.status(409).json({ message: err.message });
   }
 };
 
 // This gets all posts regardless of user
+// WORKING
 export const getAllPosts = async (req, res) => {
   try {
     // Assuming Post is a Mongoose model you would find all documents in the posts collection.
@@ -40,6 +43,7 @@ export const getAllPosts = async (req, res) => {
 };
 
 // Gets posts specific to a user
+// WORKING
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -50,11 +54,12 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
+// WORKING
+// search for a specific post but unique Id
 export const getPost = async (req, res) => {
-  const { postId } = req.params; // Extract the post ID from the URL parameters
-
   try {
-    const post = await Post.findById(postId);
+    const { postId } = req.params; // Extract the post ID from the URL parameters
+    const post = await Post.findById(postId); // Pass postId directly
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
@@ -66,6 +71,8 @@ export const getPost = async (req, res) => {
   }
 };
 
+// WORKING
+// deletes a post
 export const deletePost = async (req, res) => {
   try {
     const { postId } = req.params; // Assuming the postId is passed as a URL parameter
@@ -81,6 +88,8 @@ export const deletePost = async (req, res) => {
   }
 };
 
+// WORKING
+// Updates post caption, picture, and or video
 export const updatePost = async (req, res) => {
   try {
     const { postId } = req.params; // Assuming the postId is passed as a URL parameter
@@ -107,6 +116,7 @@ export const updatePost = async (req, res) => {
 };
 
 // Updates the likes of a post
+// Need help understanding how this is set up.
 export const likePost = async (req, res) => {
   try {
     const { postId } = req.params;
@@ -127,5 +137,8 @@ export const likePost = async (req, res) => {
     );
 
     res.status(200).json(updatedPost);
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "An error occurred" });
+  }
 };

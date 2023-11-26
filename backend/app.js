@@ -19,6 +19,11 @@ import postRoutes from "./routes/posts.js";
 // Imports to routes with image paths
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
+import { getPost } from "./controllers/posts.js";
+import { deletePost } from "./controllers/posts.js";
+import { likePost } from "./controllers/posts.js";
+import { getUser } from "./controllers/users.js";
+import { searchUsers } from "./controllers/users.js";
 
 ///////////////////////////////////////////////////
 // CONFIGURATIONS
@@ -51,12 +56,31 @@ const upload = multer({ storage });
 // ROUTES WITH FILES (NEEDED FOR UPLOADING IMAGES & VIDEO. DO NOT REMOVE)
 // app.post("/auth/register", upload.single("picture"), register);
 app.post(
-  "posts/createPost",
-  verifyToken,
+  "/posts/createPost",
   upload.single("picture"),
   upload.single("video"),
   createPost
 );
+
+app.get(
+  "/posts/:postId",
+  upload.single("picture"),
+  upload.single("video"),
+  getPost
+);
+
+app.delete(
+  "/posts/:postId",
+  upload.single("picture"),
+  upload.single("video"),
+  deletePost
+);
+
+app.patch("/posts/:postId/likePost", likePost);
+
+app.get("/users/getUser/:userId", upload.single("picture"), getUser);
+
+app.get("/users/searchUsers/:username", searchUsers);
 
 ///////////////////////////////////////////////////
 // ROUTES
@@ -64,5 +88,6 @@ app.use("/auth", authRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+// app.use("/posts/createPost", createPost);
 
 export default app;

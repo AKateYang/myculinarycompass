@@ -11,12 +11,14 @@ const FriendListWidget = ({ userId }) => {
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
 
+  // UPDATED getFriends path
   const getFriends = async () => {
+    var bp = require("../../components/Path.js");
     const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
+      bp.buildPath(`users/${userId}/getUserFriends`),
       {
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "appplication:json" },
       }
     );
     const data = await response.json();

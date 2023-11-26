@@ -1,0 +1,44 @@
+.popover {
+  position: absolute;
+  top: 0.8em;
+  left: 101%; /* This positions the popover at the end of the input box */
+  min-width: 150px; /* Set a minimum width */
+  max-width: 300px; /* Set a maximum width for responsiveness */
+  white-space: nowrap; /* Prevent text wrapping */
+  border: 1px solid #ddd;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: underline;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0; /* Start with the popover invisible */
+  visibility: hidden; /* Start with the popover not visible */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition for opacity and visibility */
+}
+
+.popover::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -20px; /* Positioning the tail outside and to the left of the popover */
+  margin-top: 0px; /* Half the height of the border to vertically center the tail */
+  border-style: solid;
+  border-width: 10px 30px 10px 0; /* Creates a left-pointing triangle */
+  border-color: transparent white transparent transparent; /* The right border is colored, others are transparent */
+  transform: translateY(-50%);
+}
+
+.popover.show {
+  opacity: 1; /* Fully visible */
+  visibility: visible; /* Make it visible */
+}
+
+/* Use media queries for smaller screens */
+@media (max-width: 600px) {
+  .popover {
+    left: auto;
+    right: 10px; /* Adjust as necessary */
+    max-width: 90%; /* Allow it to take more width on small screens */
+  }
+}

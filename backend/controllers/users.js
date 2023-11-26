@@ -1,12 +1,12 @@
 import User from "../data-models/User.js";
 
 // Helper function to convert string ID to MongoDB ObjectId
-const toObjectId = (id) => mongoose.Types.ObjectId(id);
+// const toObjectId = (_id) => mongoose.Types.ObjectId(_id);
 
 export const getUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+    const { userId } = req.params;
+    const user = await User.findById(userId);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -53,25 +53,104 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Add a friend handler
-export const addFriend = async (req, res) => {
-  const { friendId, userId } = req.body;
-  const userObjectId = toObjectId(userId);
-  const friendObjectId = toObjectId(friendId);
-
+export const getUserFriends = async (req, res) => {
   try {
-    // Add friend reference to the user's Following array and increment friend's NumberOfFollowers
-    await User.updateOne(
-      { _id: userObjectId },
-      { $push: { Following: friendObjectId } }
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    const friends = await Promise.all(
+      user.friends.map((id) => User.findById(id))
     );
-    await User.updateOne(
-      { _id: friendObjectId },
-      { $inc: { NumberOfFollowers: 1 }, $push: { Followers: userObjectId } }
-    );
-    res.status(200).json({ message: "Friend added successfully" });
+    const formattedFriends = friends.map(({ _id }) => {
+      return { _id };
+    });
+    res.status(200).json(formattedFriends);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(404).json({ message: err.message });
+  }
+};
+
+// adding & removing who the current user wants to follow and updates/keeps track of the total followers of the
+// account that the current user wants to follow.
+export const addRemoveUserFollowings = async (req, res) => {
+  try {
+    const { id, friendId } = req.params;
+    const user = await User.findById(id);
+    const follower = await User.findById(friendId);
+
+    // (id != friendId) was added so that we can get the total followers/follow of current user by passing in the id for
+    // both id and friend with out affecting follower table.
+    if (user.following.includes(friendId) && id != friendId) {
+      // user starts following the friend
+      user.following = user.following.filter((id) => id !== friendId);
+      // the friend gets a new follower
+      follower.followers = follower.followers.filter((id) => id !== id);
+    } else if (id != friendId) {
+      // This else is used for toggling. The user unfollows a friend
+      user.following.push(friendId);
+      // The friend loses a follower
+      follower.followers.push(id);
+    }
+    await user.save();
+    await follower.save();
+
+    // Keeps track of total follower/following for both friend and current user
+    const currentUserFollowing = user.following.length;
+    const currentUserFollowers = user.followers.length;
+
+    // const otherUserFollowing = follower.following.length;
+    // const otherUserFollowers = follower.followers.length;
+
+    const following = await Promise.all(
+      user.following.map((id) => User.findById(id))
+    );
+    const formattedFollowing = following.map(
+      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation, location, picturePath };
+      }
+    );
+
+    res.status(200).json({
+      nowFollowing: formattedFollowing,
+      currentUserFollowing: currentUserFollowing,
+      currentUserFollowers: currentUserFollowers,
+      // otherUserFollowing: otherUserFollowing,
+      // otherUserFollowers: otherUserFollowers,
+    });
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+// adding & removing when someone follows / unfollows current user
+export const addRemoveUserFollowers = async (req, res) => {
+  try {
+    const { id, friendId } = req.params;
+    const user = await User.findById(friendId);
+    // const friend = await User.findById(friendId);
+
+    if (user.followers.includes(id)) {
+      user.followers = user.followers.filter((friendId) => friendId !== id);
+      // friend.friends = friend.friends.filter((id) => id !== id);
+    } else {
+      user.followers.push(id);
+      // friend.friends.push(id);
+    }
+    await user.save();
+    // await friend.save();
+
+    const followers = await Promise.all(
+      user.followers.map((friendId) => User.findById(friendId))
+    );
+    const formattedFollowers = followers.map(
+      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation, location, picturePath };
+      }
+    );
+
+    res.status(200).json(formattedFollowers);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
   }
 };
 
@@ -116,16 +195,17 @@ export const removeFriend = async (req, res) => {
   }
 };
 
+// WORKING
 export const searchUsers = async (req, res) => {
-  const { username } = req.body;
-  const search = username.trim();
+  const search = req.params.username.trim();
 
   try {
     const results = await User.find({
-      Login: { $regex: new RegExp(search, "i") },
+      username: { $regex: new RegExp(search, "i") },
     });
+
     const formattedResults = results.map((user) => ({
-      login: user.Login,
+      username: user.username,
       id: user._id,
     }));
 

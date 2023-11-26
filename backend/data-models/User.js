@@ -26,6 +26,11 @@ const UserSchema = new mongoose.Schema(
       max: 50,
       unique: true,
     },
+    username: {
+      type: String,
+      max: 50,
+      unique: true,
+    },
     password: {
       type: String,
       required: true,
@@ -35,10 +40,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    friends: {
+    following: {
       type: Array,
       default: [],
     },
+    followers: {
+      type: Array,
+      default: [],
+    },
+    totalFollowers: Number,
+    totalFollowing: Number,
     location: String,
     occupation: String,
     viewedProfile: Number,

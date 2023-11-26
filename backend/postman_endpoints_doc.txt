@@ -17,6 +17,7 @@ BODY:
   "firstName": "ashley",
   "lastName": "yang",
   "email": "daisylove31",
+  "username": "youneedthis",
   "password": "secret",
   "friends": [],
   "viewedProfile": 1,
@@ -36,6 +37,20 @@ BODY:
 GET: localhost:5000/posts/
 BODY: (NONE ARE NEEDED)
 
+// create post
+POST: localhost:5000/posts/createPost
+BODY:
+{
+    "userId": "654b468a9567b1da3c33b285",
+    "firstName": "ashley",
+    "lastName": "yang",
+    "caption": "hi test",
+    "videoPath": "",
+    "picturePath": "",
+    "likes": {},
+    "comments": [],
+}
+
 ********************************************
 // replace userId with specific userId we want to find
 GET: localhost:5000/posts/:userId
@@ -54,12 +69,20 @@ PUT: localhost:5000/posts/updatePost/:postId
     EXAMPLE: localhost:5000/posts/updatePost/6525e3b69075348c79907462
 BODY: 
 {
-
+    "userId": "654b468a9567b1da3c33b285",
+    "firstName": "ashley",
+    "lastName": "yang",
+    "newCaption": "i want to change this post",
+    "newVidPath": "",
+    "newPicPath": "",
+    "likes": {},
+    "comments": [],
 }
 
 ********************************************
 DELETE: localhost:5000/posts/deletePost/:postId
-BODY:
+    EXAMPLE: localhost:5000/posts/updatePost/6525e3b69075348c79907462
+BODY: (NONE ARE NEEDED)
 
 ********************************************
 PATCH: localhost:5000/posts/:id/like
@@ -72,8 +95,14 @@ BODY:
 // USER 
 ////////////////////////////////////////////
 ********************************************
-GET: localhost:5000/users/searchUsers
-BODY:
+GET: localhost:5000/users/getUser/:userId
+    EXAMPLE: localhost:5000/users/getUser/6525e33438b4fe3303190848
+BODY:(NONE ARE NEEDED)
+
+********************************************
+GET: localhost:5000/users/searchUsers/:username
+    EXAMPLE: localhost:5000/users/searchUsers/youneedthis
+BODY: (NONE ARE NEEDED)
 
 ********************************************
 GET: localhost:5000/users/getFollowing
@@ -90,7 +119,6 @@ BODY:
 ********************************************
 GET: localhost:5000/users/getNumFollowing
 BODY:
-
 
 ********************************************
 POST: localhost:5000/users/blockUser
@@ -137,6 +165,14 @@ BODY:
 ********************************************
 POST: localhost:5000/recipes/createRecipe
 BODY:
+{
+  "recipeName": "chili",
+  "ingredients": [],
+  "instructions": "chop veggies",
+  "picturePath": "",
+  "continent": "North Americas",
+  "country": "USA"
+}
 
 ********************************************
 DELETE: localhost:5000/recipes/deleteRecipe/:recipeId

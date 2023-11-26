@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "../css/signupModal.css";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSignup } from "../../state";
 
-const SignupModal = ({ isOpen, onClose, className }) => {
+const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
   // Handle background click to close the modal
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -21,6 +23,7 @@ const SignupModal = ({ isOpen, onClose, className }) => {
   var lastName;
   var email;
   // var phone;
+
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
@@ -51,15 +54,14 @@ const SignupModal = ({ isOpen, onClose, className }) => {
         setMessage("User/Password combination incorrect");
       } else {
         var user = {
-          firstName: res.firstName,
-          lastName: res.lastName,
-          id: res.id,
+          firstName: res.user.firstName,
+          lastName: res.user.lastName,
+          id: res.user.id,
         };
         localStorage.setItem("user_data", JSON.stringify(user));
 
         setMessage("");
         navigate("/");
-        // window.location.href = "/";
       }
     } catch (e) {
       alert(e.toString());
@@ -82,7 +84,9 @@ const SignupModal = ({ isOpen, onClose, className }) => {
           <div className="signup-header">
             <h2 className="signup-title">Create Account</h2>
             <p className="question">Already have an account?</p>
-            <button className="goto-login">Login</button>
+            <button className="goto-login" onClick={onOpenLogin}>
+              Login
+            </button>
           </div>
           <div className="signup-floating-label">
             <input
