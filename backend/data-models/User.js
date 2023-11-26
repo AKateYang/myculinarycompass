@@ -33,6 +33,14 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    token: {
+      type: String,
+      default: "",
+    },
     location: String,
     occupation: String,
     viewedProfile: Number,
