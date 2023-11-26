@@ -37,6 +37,7 @@ const MyPostWidget = ({ picturePath }) => {
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
+  // WHAT IS THIS FOR?? Assuming to edit a post
   const handlePost = async () => {
     const formData = new FormData();
     formData.append("userId", _id);
@@ -46,11 +47,28 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`http://localhost:3001/posts`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
+    var userId, firstname, lastname, newCaption, newVidPath, newPicPath;
+
+    var obj = {
+      userId: userId,
+      firstName: firstname,
+      lastName: lastname,
+      newCaption: newCaption,
+      newVidPath: newVidPath,
+      newPicPath: newPicPath,
+      likes: {},
+      comments: [],
+    };
+    var js = JSON.stringify(obj);
+
+    // UPDATED format but don't know where to put it
+    var bp = require("../../components/Path.js");
+    const response = await fetch(bp.buildPath("posts/"), {
+      method: "PUT",
+      body: js,
+      headers: { "Content-Type": "application/json" },
     });
+
     const posts = await response.json();
     dispatch(setPosts({ posts }));
     setImage(null);

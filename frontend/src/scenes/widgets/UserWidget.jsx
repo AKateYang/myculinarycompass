@@ -21,10 +21,12 @@ const UserWidget = ({ userId, picturePath }) => {
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
 
+  // UPDATED getUser
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/users/${userId}`, {
+    var user = require("../../components/Path.js");
+    const response = await fetch(user.buildPath(`users/getUser/${userId}`), {
       method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
     setUser(data);
