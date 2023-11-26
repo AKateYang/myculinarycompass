@@ -14,6 +14,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    recipeId: String,
     caption: String,
     location: String,
     videoPath: String,

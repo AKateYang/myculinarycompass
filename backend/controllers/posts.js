@@ -8,11 +8,12 @@ export const createPost = async (req, res) => {
     // incoming: caption, video, imagesArray, userId
     // outgoing: error
 
-    const { userId, picturePath, videoPath, caption } = req.body;
+    const { userId, picturePath, videoPath, caption, recipeId } = req.body;
     const user = await User.findById(userId);
 
     const newPost = new Post({
       userId,
+      recipeId: recipeId,
       firstName: user.firstName,
       lastName: user.lastName,
       caption: caption,
