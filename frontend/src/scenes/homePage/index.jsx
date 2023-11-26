@@ -7,12 +7,15 @@ import PostsWidget from "../widgets/PostsWidget.jsx";
 import AdvertWidget from "../widgets/AdvertWidget.jsx";
 import FriendListWidget from "../widgets/FriendListWidget.jsx";
 import LoggedInName from "../../components/LoggedInName";
+import React, { useEffect } from "react";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const user = useSelector((state) => state.user);
-  const _id = user?._id;
-  const picturePath = user?.picturePath;
+
+  var _id = localStorage.getItem("user_data");
+  var _id = JSON.parse(_id);
+  var userId = _id._id;
+  var picturePath = _id.picturePath;
 
   return (
     <div>
@@ -28,20 +31,20 @@ const HomePage = () => {
           justifyContent="space-between"
         >
           <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-            <UserWidget userId={_id} picturePath={picturePath} />
+            <UserWidget userId={userId} picturePath={picturePath} />
           </Box>
           <Box
             flexBasis={isNonMobileScreens ? "42%" : undefined}
             mt={isNonMobileScreens ? undefined : "2rem"}
           >
             <MyPostWidget picturePath={picturePath} />
-            <PostsWidget userId={_id} />
+            <PostsWidget _id={userId} />
           </Box>
           {isNonMobileScreens && (
             <Box flexBasis="26%">
               <AdvertWidget />
               <Box m="2rem 0" />
-              <FriendListWidget userId={_id} />
+              <FriendListWidget userId={userId} />
             </Box>
           )}
         </Box>

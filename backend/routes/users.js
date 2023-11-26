@@ -46,7 +46,7 @@ router.patch("/follower/:id/:friendId", addRemoveUserFollowers);
 router.delete("/removeFriend/:friendId", removeFriend);
 
 // Route to get the list of users someone is following
-router.get("/getFollowing", getFollowing);
+router.get("/getFollowing/:_id", getFollowing);
 
 // Route to get the list of followers for a user
 router.get("/getFollowers", getFollowers);

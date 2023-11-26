@@ -31,44 +31,30 @@ const MyPostWidget = ({ picturePath }) => {
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
-  const { _id } = useSelector((state) => state.user);
+  // const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
-  // WHAT IS THIS FOR?? Assuming to edit a post
+  var _id = localStorage.getItem("user_data");
+  var _id = JSON.parse(_id);
+  var userId = _id._id;
+
   const handlePost = async () => {
     const formData = new FormData();
-    formData.append("userId", _id);
+    formData.append("userId", userId);
     formData.append("description", post);
     if (image) {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
 
-    var userId, firstname, lastname, newCaption, newVidPath, newPicPath;
-
-    var obj = {
-      userId: userId,
-      firstName: firstname,
-      lastName: lastname,
-      newCaption: newCaption,
-      newVidPath: newVidPath,
-      newPicPath: newPicPath,
-      likes: {},
-      comments: [],
-    };
-    var js = JSON.stringify(obj);
-
-    // UPDATED format but don't know where to put it
-    var bp = require("../../components/Path.js");
-    const response = await fetch(bp.buildPath("posts/"), {
-      method: "PUT",
-      body: js,
+    const response = await fetch(`/posts/createPost`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: formData,
     });
-
     const posts = await response.json();
     dispatch(setPosts({ posts }));
     setImage(null);
