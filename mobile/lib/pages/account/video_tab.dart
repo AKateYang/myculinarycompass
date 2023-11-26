@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile/utils/helper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
@@ -32,7 +35,7 @@ class VideoTab extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: VideoWidget(
-                  videoUrl: '$backendUrl/${videoUrls[index]}',
+                  videoUrl: Uri.parse('$backendUrl/${videoUrls[index]}'),
                 ),
               );
             },
@@ -44,7 +47,7 @@ class VideoTab extends StatelessWidget {
 }
 
 class VideoWidget extends StatefulWidget {
-  final String videoUrl;
+  final Uri videoUrl;
 
   const VideoWidget({required this.videoUrl, Key? key}) : super(key: key);
 
@@ -55,22 +58,45 @@ class VideoWidget extends StatefulWidget {
 class _VideoWidgetState extends State<VideoWidget> {
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
+  bool autoplay = false; // Track autoplay state
 
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
+    _videoPlayerController = VideoPlayerController.network(
+      widget.videoUrl.toString(),
+    );
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
-      aspectRatio: 16 / 9, // Adjust the aspect ratio based on your videos
+      aspectRatio: 4 / 3,
       autoInitialize: true,
-      looping: false,
+      looping: true,
+      autoPlay: autoplay,
+      showControls: false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Chewie(controller: _chewieController);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          // Toggle autoplay on tap
+          autoplay = !autoplay;
+          _chewieController = ChewieController(
+            videoPlayerController: _videoPlayerController,
+            aspectRatio: 4 / 3,
+            autoInitialize: true,
+            looping: true,
+            autoPlay: autoplay,
+            showControls: false,
+          );
+        });
+      },
+      child: Chewie(
+        controller: _chewieController,
+      ),
+    );
   }
 
   @override
