@@ -42,6 +42,8 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    totalFollowers: Number,
+    totalFollowing: Number,
     location: String,
     occupation: String,
     viewedProfile: Number,

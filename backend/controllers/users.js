@@ -70,22 +70,36 @@ export const getUserFriends = async (req, res) => {
   }
 };
 
-// adding & removing who the current user follows
+// adding & removing who the current user wants to follow and updates/keeps track of the total followers of the
+// account that the current user wants to follow.
 export const addRemoveUserFollowings = async (req, res) => {
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);
-    // const friend = await User.findById(friendId);
+    const follower = await User.findById(friendId);
 
-    if (user.following.includes(friendId)) {
+    // (id != friendId) was added so that we can get the total followers/follow of current user by passing in the id for
+    // both id and friend with out affecting follower table.
+    if (user.following.includes(friendId) && id != friendId) {
+      // user starts following the friend
       user.following = user.following.filter((id) => id !== friendId);
-      // friend.friends = friend.friends.filter((id) => id !== id);
-    } else {
+      // the friend gets a new follower
+      follower.followers = follower.followers.filter((id) => id !== id);
+    } else if (id != friendId) {
+      // This else is used for toggling. The user unfollows a friend
       user.following.push(friendId);
-      // friend.friends.push(id);
+      // The friend loses a follower
+      follower.followers.push(id);
     }
     await user.save();
-    // await friend.save();
+    await follower.save();
+
+    // Keeps track of total follower/following for both friend and current user
+    const currentUserFollowing = user.following.length;
+    const currentUserFollowers = user.followers.length;
+
+    // const otherUserFollowing = follower.following.length;
+    // const otherUserFollowers = follower.followers.length;
 
     const following = await Promise.all(
       user.following.map((id) => User.findById(id))
@@ -96,7 +110,13 @@ export const addRemoveUserFollowings = async (req, res) => {
       }
     );
 
-    res.status(200).json(formattedFollowing);
+    res.status(200).json({
+      nowFollowing: formattedFollowing,
+      currentUserFollowing: currentUserFollowing,
+      currentUserFollowers: currentUserFollowers,
+      // otherUserFollowing: otherUserFollowing,
+      // otherUserFollowers: otherUserFollowers,
+    });
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
