@@ -133,7 +133,7 @@ Future<List<String>> fetchImageUrls() async {
     Map<String, String> headers = {'Content-type': 'application/json'};
     var userId = userData['id'];
 
-    var url = Uri.http(addr, 'posts/$userId');
+    var url = Uri.http(addr, 'posts/getUserPosts/$userId');
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
@@ -155,4 +155,51 @@ Future<List<String>> fetchImageUrls() async {
   }
   throw Exception('Failed to load image URLs');
   // return null;
+}
+
+Future<List<String>> fetchVideoUrls() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? userDataString = prefs.getString('user_data');
+
+  if (userDataString != null) {
+    Map<String, dynamic> userData = jsonDecode(userDataString);
+    Map<String, String> headers = {'Content-type': 'application/json'};
+    var userId = userData['id'];
+
+    var url = Uri.http(addr, 'posts/getUserPosts/$userId');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      // Extract 'filePath' from each post object, handling null values
+      final List<String> videoUrls = data
+          .map((post) => post['videoPath']
+              as String?) // Use String? to handle potential null values
+          .where((filePath) => filePath != null) // Filter out null values
+          .cast<String>() // Cast to non-nullable String
+          .toList();
+
+      return videoUrls;
+    }
+    //   } else {
+    //     // throw Exception('Failed to load image URLs');
+    //   }
+  }
+  throw Exception('Failed to load video URLs');
+  // return null;
+}
+
+Future<List<String>> fetchData(String apiUrl) async {
+  final response = await http.get(Uri.parse(apiUrl));
+
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response, parse the JSON
+    List<dynamic> data = json.decode(response.body);
+    List<String> followersList = List<String>.from(data);
+    return followersList;
+  } else {
+    // If the server did not return a 200 OK response, throw an exception
+    throw Exception('Failed to load followers');
+  }
 }

@@ -47,8 +47,8 @@ export const getAllPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
-    const post = await Post.find({ userId });
-    res.status(200).json(post);
+    const posts = await Post.find({ userId: userId });
+    res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -118,8 +118,10 @@ export const updatePost = async (req, res) => {
 export const likePost = async (req, res) => {
   try {
     const { id } = req.params;
+
     const { userId } = req.body;
     const post = await Post.findById(id);
+
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {

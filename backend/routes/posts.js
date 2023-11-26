@@ -18,7 +18,7 @@ router.get("/getLazyLoadingPosts", getLazyLoadingPosts);
 router.get("/", getAllPosts);
 
 // Route to get all posts specfic to a user
-router.get("/:userId", getUserPosts);
+router.get("/getUserPosts/:userId", getUserPosts);
 
 // Route to get a single post by ID
 router.get("/getPost/:postId", getPost);

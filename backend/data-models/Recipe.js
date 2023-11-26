@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 
 const RecipeSchema = new mongoose.Schema(
   {
-    recipeId: {
+    userId: {
       type: String,
+      // required: true,
     },
     recipeName: {
       type: String,
@@ -21,6 +22,10 @@ const RecipeSchema = new mongoose.Schema(
       min: 2,
     },
     picturePath: {
+      type: String,
+      default: "",
+    },
+    videoPath: {
       type: String,
       default: "",
     },

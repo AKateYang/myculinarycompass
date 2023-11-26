@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    saveRecipesId: {
+      type: Array,
+      default: [],
+    },
     following: {
       type: Array,
       default: [],
@@ -42,6 +46,8 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    totalFollowers: Number,
+    totalFollowing: Number,
     verified: {
       type: Boolean,
       default: false,
