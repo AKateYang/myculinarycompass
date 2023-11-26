@@ -188,3 +188,17 @@ Future<List<String>> fetchVideoUrls() async {
   throw Exception('Failed to load video URLs');
   // return null;
 }
+
+Future<List<String>> fetchData(String apiUrl) async {
+  final response = await http.get(Uri.parse(apiUrl));
+
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response, parse the JSON
+    List<dynamic> data = json.decode(response.body);
+    List<String> followersList = List<String>.from(data);
+    return followersList;
+  } else {
+    // If the server did not return a 200 OK response, throw an exception
+    throw Exception('Failed to load followers');
+  }
+}

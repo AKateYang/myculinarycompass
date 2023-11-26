@@ -70,7 +70,7 @@ class _VideoWidgetState extends State<VideoWidget> {
       videoPlayerController: _videoPlayerController,
       aspectRatio: 4 / 3,
       autoInitialize: true,
-      looping: true,
+      looping: false,
       autoPlay: autoplay,
       showControls: false,
     );
@@ -87,7 +87,7 @@ class _VideoWidgetState extends State<VideoWidget> {
             videoPlayerController: _videoPlayerController,
             aspectRatio: 4 / 3,
             autoInitialize: true,
-            looping: true,
+            looping: false,
             autoPlay: autoplay,
             showControls: false,
           );
