@@ -2,8 +2,9 @@ import express from "express";
 import {
   updateProfile,
   updateUser,
-  addFriend,
+  // addFriend,
   blockUser,
+  addRemoveUserFollowings,
   searchUsers,
   getFollowing,
   getNumFollowers,
@@ -12,6 +13,7 @@ import {
   deleteUser,
   removeFriend,
   getUser,
+  addRemoveUserFollowers,
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -34,8 +36,11 @@ router.put("/updateUser", updateUser);
 // Route to delete a user
 router.delete("deleteUser/:userId", deleteUser);
 
-// Route to add a friend
-router.post("/addFriend/:friendId/:userId", addFriend);
+// Route to add / remove a friend
+router.patch("/:id/:friendId", addRemoveUserFollowings);
+
+// Route to add / remove a friend
+router.patch("/follower/:id/:friendId", addRemoveUserFollowers);
 
 // Route to delete a friend
 router.delete("/removeFriend/:friendId", removeFriend);

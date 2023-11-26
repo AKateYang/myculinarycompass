@@ -120,7 +120,6 @@ BODY:
 GET: localhost:5000/users/getNumFollowing
 BODY:
 
-
 ********************************************
 POST: localhost:5000/users/blockUser
 BODY:

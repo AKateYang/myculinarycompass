@@ -22,7 +22,6 @@ const UserSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: true,
       max: 50,
       unique: true,
     },
@@ -35,7 +34,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    friends: {
+    following: {
+      type: Array,
+      default: [],
+    },
+    followers: {
       type: Array,
       default: [],
     },
