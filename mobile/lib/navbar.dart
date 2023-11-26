@@ -27,7 +27,7 @@ class _DashboardPageState extends State<DashboardPage> {
     //dashboard
     ProfilePage(),
 
-    NewfeedPage(),
+    News(),
 
     SavedRecipes(),
   ];
