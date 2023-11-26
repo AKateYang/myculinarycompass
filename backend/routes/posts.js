@@ -27,6 +27,6 @@ router.put("/updatePost/:postId", updatePost);
 router.delete("/deletePost/:postId", deletePost);
 
 // Updates likes on a post
-router.patch("/:id/like", likePost);
+router.patch("/:userId/like", likePost);
 
 export default router;

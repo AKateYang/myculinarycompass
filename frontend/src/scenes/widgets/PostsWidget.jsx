@@ -12,7 +12,7 @@ const PostsWidget = ({ userId, _id, isProfile = false }) => {
   // Loading in all posts
   const getPosts = async () => {
     var bp = require("../../components/Path.js");
-    const response = await fetch(bp.buildPath("/posts/"), {
+    const response = await fetch(bp.buildPath("posts/"), {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -23,7 +23,7 @@ const PostsWidget = ({ userId, _id, isProfile = false }) => {
   // UPDATED getUserPosts
   const getUserPosts = async () => {
     var bp = require("../../components/Path.js");
-    const response = await fetch(bp.buildPath(`/posts/getPost/${_id}`), {
+    const response = await fetch(bp.buildPath(`posts/getPost/${_id}`), {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });

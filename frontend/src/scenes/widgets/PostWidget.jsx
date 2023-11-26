@@ -13,11 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../state/index.jsx";
 
 const PostWidget = ({
-  postId,
-  postUserId,
-  name,
-  description,
+  _id,
+  userId,
+  firstName,
+  lastName,
+  caption,
   location,
+  videoPath,
   picturePath,
   userPicturePath,
   likes,
@@ -25,9 +27,12 @@ const PostWidget = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.token);
-  const loggedInUserId = useSelector((state) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
+
+  var _id = localStorage.getItem("user_data");
+  var _id = JSON.parse(_id);
+  var userId = _id._id;
+
+  const isLiked = Boolean(likes[userId]);
   const likeCount = Object.keys(likes).length;
 
   const { palette } = useTheme();
@@ -37,10 +42,10 @@ const PostWidget = ({
   // UPDATED API to link to likePost in posts.js
   const patchLike = async () => {
     var bp = require("../../components/Path.js");
-    const response = await fetch(bp.buildPath(`/posts/${postId}/likePost`), {
+    const response = await fetch(bp.buildPath(`posts/${userId}/like`), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: loggedInUserId }),
+      body: JSON.stringify({ userId: userId }),
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
@@ -49,13 +54,13 @@ const PostWidget = ({
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
-        friendId={postUserId}
-        name={name}
+        friendId={userId}
+        name={firstName}
         subtitle={location}
         userPicturePath={userPicturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
-        {description}
+        {caption}
       </Typography>
       {picturePath && (
         <img
@@ -95,7 +100,7 @@ const PostWidget = ({
       {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
+            <Box key={`${firstName}-${i}`}>
               <Divider />
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
                 {comment}

@@ -25,7 +25,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const patchFriend = async () => {
     var bp = require("./Path.js");
     const json = JSON.stringify({ friendId: friendId });
-    const response = await fetch(`/users/${_id}/${friendId}`, {
+    const response = await fetch(`users/${_id}/${friendId}`, {
       method: "PATCH",
       body: json,
       headers: {
