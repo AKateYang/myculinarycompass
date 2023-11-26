@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mobile/utils/helper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
@@ -63,8 +60,8 @@ class _VideoWidgetState extends State<VideoWidget> {
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = VideoPlayerController.network(
-      widget.videoUrl.toString(),
+    _videoPlayerController = VideoPlayerController.networkUrl(
+      Uri.parse(widget.videoUrl.toString()),
     );
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
