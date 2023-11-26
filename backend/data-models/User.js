@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    saveRecipesId: {
+      type: Array,
+      default: [],
+    },
     following: {
       type: Array,
       default: [],
