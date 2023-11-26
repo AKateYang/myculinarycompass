@@ -36,12 +36,9 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News Feed'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // TODO: Implement back button functionality
-          },
+        title: const Text(
+          'My Culinary Feed',
+          textAlign: TextAlign.center,
         ),
       ),
       body: NotificationListener<ScrollNotification>(
@@ -57,25 +54,76 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
           itemCount: _stories.length + 1,
           itemBuilder: (context, index) {
             if (index < _stories.length) {
-              return GestureDetector(
-                onTap: () {
-                  // TODO: Implement story click functionality
-                },
-                child: Card(
-                  margin: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Image.network(_stories[index].imageUrl),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          _stories[index].title,
-                          style: const TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
+              return Card(
+                margin: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Image.network(_stories[index].imageUrl),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                _stories[index].isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color:
+                                    _stories[index].isLiked ? Colors.red : null,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _stories[index].isLiked =
+                                      !_stories[index].isLiked;
+                                });
+                                // TODO: Implement like functionality
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.comment),
+                              onPressed: () {
+                                // TODO: Implement comments functionality
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.open_in_new),
+                              onPressed: () {
+                                // TODO: Implement redirection functionality
+                              },
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            _stories[index].isBookmarked
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
+                            color: _stories[index].isBookmarked
+                                ? Colors.yellow
+                                : null,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _stories[index].isBookmarked =
+                                  !_stories[index].isBookmarked;
+                            });
+                            // TODO: Implement save functionality
+                          },
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        _stories[index].title,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             } else {
@@ -157,6 +205,14 @@ class Story {
   final String id;
   final String title;
   final String imageUrl;
+  bool isLiked;
+  bool isBookmarked;
 
-  Story({required this.id, required this.title, required this.imageUrl});
+  Story({
+    required this.id,
+    required this.title,
+    required this.imageUrl,
+    this.isLiked = false,
+    this.isBookmarked = false,
+  });
 }

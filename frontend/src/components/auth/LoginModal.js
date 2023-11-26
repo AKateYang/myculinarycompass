@@ -11,13 +11,21 @@ const LoginModal = ({ isOpen, onClose, className }) => {
 
   var email;
   var loginPassword;
+  var verification_token;
 
   const [message, setMessage] = useState("");
 
   const doLogin = async (event) => {
     event.preventDefault();
 
-    var obj = { email: email.value, password: loginPassword.value };
+    var obj = {
+      email: email.value,
+      password: loginPassword.value,
+    };
+
+    if (verification_token && verification_token.value) {
+      obj.verification_token = verification_token.value;
+    }
     var js = JSON.stringify(obj);
 
     try {
@@ -29,6 +37,15 @@ const LoginModal = ({ isOpen, onClose, className }) => {
       });
 
       var res = JSON.parse(await response.text());
+
+      if (res.verification == false) {
+        const response = await fetch(bp.buildPath("auth/verification"), {
+          method: "POST",
+          body: js,
+          headers: { "Content-Type": "application/json" },
+        });
+        setMessage("Not verified! Please enter your verification code.");
+      }
 
       if (res.id <= 0) {
         setMessage("User/Password combination incorrect");
@@ -85,6 +102,16 @@ const LoginModal = ({ isOpen, onClose, className }) => {
               ref={(c) => (loginPassword = c)}
             />
             <label for="login-password">Password</label>
+          </div>
+          <div className="floating-label" style={{ display: "none" }}>
+            <input
+              type="Verification Token"
+              className="input-field"
+              id="login-password"
+              placeholder=" "
+              ref={(c) => (loginPassword = c)}
+            />
+            <label for="login-password">Verification Token</label>
           </div>
           <button
             type="submit"

@@ -49,7 +49,8 @@ export const register = async (req, res) => {
         to: email, // list of receivers
         subject: "Verification Email", // Subject line
         text: "Welcome to your Culinary Compass!",
-        html: `<div>Here is your verification token: ${number}</div>`,
+        html: `<div>Here is your verification token: ${number}. 
+        You will use this when you log in for the first time!</div>`,
       });
 
       res.status(201).json(savedUser);
@@ -74,7 +75,7 @@ export const login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
 
     const isVerified = user.verified;
-    if (!isVerified) return res.status(400).json({ msg: "User not Verified" });
+    if (!isVerified) return false;
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     delete user.password;
