@@ -119,9 +119,9 @@ export const updatePost = async (req, res) => {
 // Need help understanding how this is set up.
 export const likePost = async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { id } = req.params;
     const { userId } = req.body;
-    const post = await Post.findById(postId);
+    const post = await Post.findById(id);
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {
@@ -137,8 +137,5 @@ export const likePost = async (req, res) => {
     );
 
     res.status(200).json(updatedPost);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "An error occurred" });
-  }
+  } catch (err) {}
 };
