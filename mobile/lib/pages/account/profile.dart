@@ -18,12 +18,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late Future<String> _userNameFuture;
   late Future<List<String>> _postsFuture;
+  late Future<Map<String, dynamic>> _followFuture;
 
   @override
   void initState() {
     super.initState();
     _userNameFuture = fetchUserName();
     _postsFuture = fetchPosts();
+    _followFuture = fetchUserFollow();
   }
 
   @override
@@ -80,39 +82,59 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 35),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        "Followers",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      Text("num data"),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "Following",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      Text("num data"),
-                    ],
-                  ),
-                  RoundedButton(
-                    backgroundColor: Colors.white,
-                    textColor: Colors.black,
-                    onPressed: () {
-                      // Handle button press
-                      print('Button Pressed!');
-                    },
-                    text: 'Edit Profile',
-                  ),
-                ],
+              child: FutureBuilder<Map<String, dynamic>>(
+                future: _followFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    var data = snapshot.data!;
+
+                    var followers = data['currentUserFollowers'];
+                    var following = data['currentUserFollowing'];
+
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "Followers",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text("$followers"),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              "Following",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text("$following"),
+                          ],
+                        ),
+                        RoundedButton(
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          onPressed: () {
+                            // Handle button press
+                            print('Edit Profile Button Pressed!');
+                          },
+                          text: 'Edit Profile',
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
             ),
             TabBar(
