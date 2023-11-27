@@ -111,7 +111,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                               _stories[index].isBookmarked =
                                   !_stories[index].isBookmarked;
                             });
-
+                            _saveRecipe(_stories[index].id);
                             // TODO: Implement save functionality
                           },
                         ),
@@ -139,6 +139,33 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         ),
       ),
     );
+  }
+
+  void _saveRecipe(String postId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      var userId = userData['id'];
+
+      final apiUrl = 'http://10.0.2.2:5000/posts/savePost/$userId/$postId';
+
+      try {
+        final response = await http.patch(Uri.parse(apiUrl));
+
+        if (response.statusCode == 200) {
+          // Post liked successfully, you may want to update the UI accordingly
+          print('Recipe from post saved!');
+        } else {
+          // Handle error
+          print('Failed to save recipe!');
+        }
+      } catch (error) {
+        // Handle network or other errors
+        print('Error: $error');
+      }
+    }
   }
 
   void _likePost(String postId) async {

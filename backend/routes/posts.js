@@ -7,6 +7,8 @@ import {
   likePost,
   getUserPosts,
   getLazyLoadingPosts,
+  saveAndUnsavePosts,
+  getComments,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -31,5 +33,9 @@ router.delete("/deletePost/:postId", deletePost);
 
 // Updates likes on a post
 router.patch("/:id/like", likePost);
+
+router.patch("/savePost/:userId/:postId", saveAndUnsavePosts);
+
+router.get("/getComments/:postId", getComments);
 
 export default router;

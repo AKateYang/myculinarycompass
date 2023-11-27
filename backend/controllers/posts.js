@@ -8,11 +8,12 @@ export const createPost = async (req, res) => {
     // incoming: caption, video, imagesArray, userId
     // outgoing: error
 
-    const { userId, picturePath, videoPath, caption } = req.body;
+    const { userId, recipeId, picturePath, videoPath, caption } = req.body;
     const user = await User.findById(userId);
 
     const newPost = new Post({
       userId,
+      recipeId: recipeId,
       firstName: user.firstName,
       lastName: user.lastName,
       caption: caption,
@@ -145,6 +146,48 @@ export const getLazyLoadingPosts = async (req, res) => {
     // Use the aggregate method to get a sample of 5 random recipes
     const posts = await Post.aggregate([{ $sample: { size: 5 } }]);
     res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ error: "Error: " + err.message });
+  }
+};
+
+export const saveAndUnsavePosts = async (req, res) => {
+  try {
+    const { userId, postId } = req.params;
+
+    // Find the user and recipe using findById
+    const user = await User.findById(userId);
+    const post = await Post.findById(postId);
+
+    // Check if the recipe is already saved by the user
+    const isSaved = user.saveRecipesId.includes(post.recipeId);
+
+    // Update user's saved recipes
+    if (isSaved) {
+      user.saveRecipesId = user.saveRecipesId.filter(
+        (id) => id !== post.recipeId
+      );
+    } else {
+      user.saveRecipesId.push(post.recipeId);
+    }
+
+    // Save the updated user
+    await user.save();
+
+    // Send the updated recipe as a response
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json({ error: "Error: " + err.message });
+  }
+};
+
+export const getComments = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    res.status(200).json(post.comments);
   } catch (err) {
     res.status(500).json({ error: "Error: " + err.message });
   }
