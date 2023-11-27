@@ -176,7 +176,8 @@ class _PostTab extends State<PostTab> {
       Map<String, dynamic> userData = jsonDecode(userDataString);
       var userId = userData['id'];
 
-      final apiUrl = 'http://10.0.2.2:5000/posts/savePost/$userId/$postId';
+      final apiUrl =
+          'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/savePost/$userId/$postId';
 
       try {
         final response = await http.patch(Uri.parse(apiUrl));
@@ -204,7 +205,8 @@ class _PostTab extends State<PostTab> {
       var userId = userData['id'];
 
       // Replace the API URL with your actual API endpoint
-      final apiUrl = 'http://10.0.2.2:5000/posts/$postId/like';
+      final apiUrl =
+          'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/$postId/like';
 
       try {
         final response = await http.patch(
@@ -273,7 +275,8 @@ class _PostTab extends State<PostTab> {
   }
 
   void _addComment(Story story, String postId, String comment) async {
-    final apiUrl = 'http://10.0.2.2:5000/posts/addComment/$postId';
+    final apiUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/addComment/$postId';
 
     try {
       final response = await http.post(
@@ -297,7 +300,8 @@ class _PostTab extends State<PostTab> {
   }
 
   Future<void> _reloadComments(Story story, String postId) async {
-    final apiUrl = 'http://10.0.2.2:5000/posts/getComments/$postId';
+    final apiUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/getComments/$postId';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -316,7 +320,8 @@ class _PostTab extends State<PostTab> {
 
   void _loadStories() async {
     // Replace the API URL with your actual API endpoint
-    const apiUrl = 'http://10.0.2.2:5000/posts/lazyLoading/getLazyLoadingPosts';
+    const apiUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/lazyLoading/getLazyLoadingPosts';
 
     try {
       final response = await http.post(
@@ -366,7 +371,8 @@ class _PostTab extends State<PostTab> {
   }
 
   Future<void> _loadCommentsForStory(Story story) async {
-    final apiUrl = 'http://10.0.2.2:5000/posts/getComments/${story.id}';
+    final apiUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/getComments/${story.id}';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -392,7 +398,8 @@ class _PostTab extends State<PostTab> {
     await Future.delayed(const Duration(seconds: 2)); // Simulating a delay
 
     // Fetch the next page of data
-    const apiUrl = 'http://10.0.2.2:5000/posts/lazyLoading/getLazyLoadingPosts';
+    const apiUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/lazyLoading/getLazyLoadingPosts';
 
     try {
       final response = await http.post(
@@ -447,14 +454,16 @@ class _PostTab extends State<PostTab> {
 
   void _openRecipePopup(String postId, int index) async {
     // Fetch the recipeId for the given postId
-    final recipeIdUrl = 'http://10.0.2.2:5000/posts/getRecipeId/$postId';
+    final recipeIdUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/getRecipeId/$postId';
     final recipeIdResponse = await http.get(Uri.parse(recipeIdUrl));
 
     if (recipeIdResponse.statusCode == 200) {
       final recipeId = jsonDecode(recipeIdResponse.body);
 
       // Fetch the detailed recipe using the obtained recipeId
-      final recipeUrl = 'http://10.0.2.2:5000/recipes/getRecipe/$recipeId';
+      final recipeUrl =
+          'https://myculinarycompass-0c8901cce626.herokuapp.com/recipes/getRecipe/$recipeId';
       final recipeResponse = await http.get(Uri.parse(recipeUrl));
 
       if (recipeResponse.statusCode == 200) {
@@ -586,7 +595,7 @@ class _PostTab extends State<PostTab> {
   }
 
   Future<String> _createRecipe(RecipeCreateData recipeData) async {
-    // const apiUrl = 'http://10.0.2.2:5000/recipes/createRecipe';
+    // const apiUrl = 'https://myculinarycompass-0c8901cce626.herokuapp.com/recipes/createRecipe';
 
     // try {
     //   final response = await http.post(
@@ -618,7 +627,8 @@ class _PostTab extends State<PostTab> {
     //   throw Exception("damn son");
     // }
 
-    var url = Uri.http('10.0.2.2:5000', 'recipes/createRecipe');
+    var url = Uri.http(
+        'myculinarycompass-0c8901cce626.herokuapp.com', 'recipes/createRecipe');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -688,7 +698,8 @@ class _PostTab extends State<PostTab> {
   }
 
   Future<void> _createPost(PostCreateData postData, String recipeId) async {
-    const apiUrl = 'http://10.0.2.2:5000/posts/createPost';
+    const apiUrl =
+        'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/createPost';
 
     try {
       final response = await http.post(
