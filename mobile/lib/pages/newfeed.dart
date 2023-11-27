@@ -645,7 +645,8 @@ class _NewsFeedPage extends State<NewsFeedPage> {
     //   throw Exception("damn son");
     // }
 
-    var url = Uri.http('10.0.2.2:5000', 'recipes/createRecipe');
+    var url = Uri.http(
+        'myculinarycompass-0c8901cce626.herokuapp.com', 'recipes/createRecipe');
     final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
