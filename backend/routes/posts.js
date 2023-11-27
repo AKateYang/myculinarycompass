@@ -9,6 +9,7 @@ import {
   getLazyLoadingPosts,
   saveAndUnsavePosts,
   getComments,
+  addComment,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -37,5 +38,7 @@ router.patch("/:id/like", likePost);
 router.patch("/savePost/:userId/:postId", saveAndUnsavePosts);
 
 router.get("/getComments/:postId", getComments);
+
+router.post("/addComment/:postId", addComment);
 
 export default router;

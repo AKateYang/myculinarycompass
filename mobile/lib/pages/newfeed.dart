@@ -86,6 +86,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                             IconButton(
                               icon: Icon(Icons.comment),
                               onPressed: () {
+                                _showCommentsPopup(_stories[index]);
                                 // TODO: Implement comments functionality
                               },
                             ),
@@ -202,6 +203,91 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     }
   }
 
+  void _showCommentsPopup(Story story) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Comments'),
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Display existing comments with lines between them
+                  for (int i = 0; i < story.comments.length; i++)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Align comments to the left
+                      children: [
+                        Text(story.comments[i]),
+                        if (i < story.comments.length - 1) Divider(),
+                      ],
+                    ),
+
+                  // Add a line after the last comment
+                  if (story.comments.isNotEmpty) Divider(),
+
+                  // Add a text field for new comments
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Add a comment'),
+                    onSubmitted: (comment) {
+                      _addComment(story, story.id, comment);
+                      Navigator.of(context).pop(); // Close the popup
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _addComment(Story story, String postId, String comment) async {
+    final apiUrl = 'http://10.0.2.2:5000/posts/addComment/$postId';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'comment': comment}),
+      );
+
+      if (response.statusCode == 200) {
+        _reloadComments(story, postId);
+
+        print('Comment added successfully');
+      } else {
+        print('Failed to add comment');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  Future<void> _reloadComments(Story story, String postId) async {
+    final apiUrl = 'http://10.0.2.2:5000/posts/getComments/$postId';
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<String> comments = data.cast<String>().toList();
+
+      // Update the story with loaded comments
+      setState(() {
+        story.comments = comments;
+      });
+    } else {
+      // Handle error
+      print('Failed to load comments for story ${story.id}');
+    }
+  }
+
   void _loadStories() async {
     // Replace the API URL with your actual API endpoint
     const apiUrl = 'http://10.0.2.2:5000/posts/';
@@ -215,6 +301,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
           id: item['_id'],
           title: item['caption'],
           imageUrl: 'https://via.placeholder.com/300',
+          comments: [], // Initialize comments list
         );
       }).toList();
 
@@ -228,9 +315,32 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         _stories = stories.take(5).toList();
         _loadedStoryIds.addAll(_stories.map((story) => story.id));
       });
+
+      // Fetch comments for each story
+      for (var story in _stories) {
+        await _loadCommentsForStory(story);
+      }
     } else {
       // Handle error
       print('Failed to load stories');
+    }
+  }
+
+  Future<void> _loadCommentsForStory(Story story) async {
+    final apiUrl = 'http://10.0.2.2:5000/posts/getComments/${story.id}';
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<String> comments = data.cast<String>().toList();
+
+      // Update the story with loaded comments
+      setState(() {
+        story.comments = comments;
+      });
+    } else {
+      // Handle error
+      print('Failed to load comments for story ${story.id}');
     }
   }
 
@@ -256,6 +366,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
           id: item['_id'],
           title: item['caption'],
           imageUrl: 'https://via.placeholder.com/300',
+          comments: [],
         );
       }).toList();
 
@@ -270,6 +381,10 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         _loadedStoryIds.addAll(newStories.map((story) => story.id));
         _loadingMore = false;
       });
+
+      for (var story in _stories) {
+        await _loadCommentsForStory(story);
+      }
     } else {
       // Handle error
       print('Failed to load more stories');
@@ -286,6 +401,7 @@ class Story {
   final String imageUrl;
   bool isLiked;
   bool isBookmarked;
+  List<String> comments;
 
   Story({
     required this.id,
@@ -293,5 +409,17 @@ class Story {
     required this.imageUrl,
     this.isLiked = false,
     this.isBookmarked = false,
+    this.comments = const [],
   });
+
+  factory Story.fromJson(Map<String, dynamic> json) {
+    return Story(
+      id: json['id'],
+      title: json['title'],
+      imageUrl: json['imageUrl'],
+      isLiked: json['isLiked'],
+      isBookmarked: json['isBookmarked'],
+      comments: List<String>.from(json['comments']),
+    );
+  }
 }
