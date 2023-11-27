@@ -1,4 +1,5 @@
-const app_name = "myculinarycompass-0c8901cce626";
+// const app_name = "myculinarycompass-0c8901cce626";
+const app_name = "myculinarycompass.com";
 exports.buildPath = function buildPath(route) {
   if (process.env.NODE_ENV === "production") {
     return "https://" + app_name + ".herokuapp.com/" + route;

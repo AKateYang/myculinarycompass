@@ -320,9 +320,9 @@ Future<String> fetchProfileImgUrl() async {
       final List<dynamic> data = json.decode(response.body);
 
       // Extract 'filePath' from each post object, handling null values
-      final String imageUrl 
+      // final String imageUrl
 
-      return imageUrl;
+      // return imageUrl;
     }
     //   } else {
     //     // throw Exception('Failed to load image URLs');
