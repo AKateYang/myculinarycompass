@@ -198,8 +198,8 @@ const Cookpal = () => {
                     <img className="img" src={`${serverBaseURL}${recipe.picturePath}`} alt={recipe.name} />
                     <button id="addbutton" className="frame-6-1" onClick={changeButton(index, "Added", "#F05E1633", userId, recipe._id)}>Add</button>
                     <div id="recipeName" className="recipe-name">{recipe.recipeName}</div>
-                    {/* <div className="time-image"></div>
-                    <div className="time-length">{recipe.timeToMake}</div> */}
+                    <div className="time-image"></div>
+                    <div className="time-length">{recipe.timeToMake}</div>
                     <div className="recipe-likes-img" />
                     <div className="comments-img" />
                     <div className="recipe-likes">{recipe.likes}</div>
