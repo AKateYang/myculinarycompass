@@ -143,11 +143,13 @@ export const likePost = async (req, res) => {
 
 export const getLazyLoadingPosts = async (req, res) => {
   try {
-    // Use the aggregate method to get a sample of 5 random recipes
-    const posts = await Post.aggregate([{ $sample: { size: 5 } }]);
+    const { pageNumber } = req.body;
+    const skip = (pageNumber - 1) * 5;
+    // Assuming Post is a Mongoose model, find the last 5 documents in the posts collection.
+    const posts = await Post.find().sort({ _id: -1 }).skip(skip).limit(5);
     res.status(200).json(posts);
   } catch (err) {
-    res.status(500).json({ error: "Error: " + err.message });
+    res.status(400).json({ error: "Error: " + err.message });
   }
 };
 
@@ -214,6 +216,7 @@ export const getRecipeId = async (req, res) => {
     const { postId } = req.params;
     const post = await Post.findById(postId);
     const recipeId = post.recipeId.toString();
+    console.log(recipeId);
     res.status(200).json(recipeId);
   } catch (err) {
     res.status(500).json({ error: "Error: " + err.message });

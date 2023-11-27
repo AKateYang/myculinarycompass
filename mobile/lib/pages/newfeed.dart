@@ -339,40 +339,52 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
 
   void _loadStories() async {
     // Replace the API URL with your actual API endpoint
-    const apiUrl = 'http://10.0.2.2:5000/posts/';
+    const apiUrl = 'http://10.0.2.2:5000/posts/lazyLoading/getLazyLoadingPosts';
 
-    final response = await http.get(Uri.parse(apiUrl));
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'pageNumber': _currentPage}),
+      );
 
-    if (response.statusCode == 201) {
-      List<dynamic> data = jsonDecode(response.body);
-      List<Story> stories = data.map((item) {
-        return Story(
-          userName: item["firstName"],
-          id: item['_id'],
-          title: item['caption'],
-          imageUrl: 'https://via.placeholder.com/300',
-          comments: [], // Initialize comments list
-        );
-      }).toList();
+      if (response.statusCode == 200) {
+        _currentPage++;
+        List<dynamic> data = jsonDecode(response.body);
+        List<Story> stories = data.map((item) {
+          return Story(
+            userName: item["firstName"],
+            id: item['_id'],
+            title: item['caption'],
+            imageUrl: 'https://via.placeholder.com/300',
+            comments: [], // Initialize comments list
+          );
+        }).toList();
 
-      // Filter out already loaded story IDs
-      stories = stories
-          .where((story) => !_loadedStoryIds.contains(story.id))
-          .toList();
+        // Filter out already loaded story IDs
+        stories = stories
+            .where((story) => !_loadedStoryIds.contains(story.id))
+            .toList();
 
-      // Load only the first 5 unique stories initially
-      setState(() {
-        _stories = stories.take(5).toList();
-        _loadedStoryIds.addAll(_stories.map((story) => story.id));
-      });
+        // Load only the first 5 unique stories initially
+        setState(() {
+          _stories = stories.take(5).toList();
+          _loadedStoryIds.addAll(_stories.map((story) => story.id));
+        });
 
-      // Fetch comments for each story
-      for (var story in _stories) {
-        await _loadCommentsForStory(story);
+        // Fetch comments for each story
+        for (var story in _stories) {
+          await _loadCommentsForStory(story);
+        }
+      } else {
+        // Handle error
+        print('Failed to load stories');
       }
-    } else {
-      // Handle error
-      print('Failed to load stories');
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
     }
   }
 
@@ -402,46 +414,57 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     // Simulate loading more stories from an API or database
     await Future.delayed(const Duration(seconds: 2)); // Simulating a delay
 
-    _currentPage++;
-
     // Fetch the next page of data
-    const apiUrl = 'http://10.0.2.2:5000/posts/';
+    const apiUrl = 'http://10.0.2.2:5000/posts/lazyLoading/getLazyLoadingPosts';
 
-    final response = await http.get(Uri.parse(apiUrl));
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'pageNumber': _currentPage}),
+      );
 
-    if (response.statusCode == 201) {
-      List<dynamic> data = jsonDecode(response.body);
-      List<Story> newStories = data.map((item) {
-        return Story(
-          userName: item["firstName"],
-          id: item['_id'],
-          title: item['caption'],
-          imageUrl: 'https://via.placeholder.com/300',
-          comments: [],
-        );
-      }).toList();
+      _currentPage++;
 
-      // Filter out already loaded story IDs
-      newStories = newStories
-          .where((story) => !_loadedStoryIds.contains(story.id))
-          .toList();
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+        List<Story> newStories = data.map((item) {
+          return Story(
+            userName: item["firstName"],
+            id: item['_id'],
+            title: item['caption'],
+            imageUrl: 'https://via.placeholder.com/300',
+            comments: [],
+          );
+        }).toList();
 
-      // Load the next 5 unique stories
-      setState(() {
-        _stories.addAll(newStories.take(5));
-        _loadedStoryIds.addAll(newStories.map((story) => story.id));
-        _loadingMore = false;
-      });
+        // Filter out already loaded story IDs
+        newStories = newStories
+            .where((story) => !_loadedStoryIds.contains(story.id))
+            .toList();
 
-      for (var story in _stories) {
-        await _loadCommentsForStory(story);
+        // Load the next 5 unique stories
+        setState(() {
+          _stories.addAll(newStories.take(5));
+          _loadedStoryIds.addAll(newStories.map((story) => story.id));
+          _loadingMore = false;
+        });
+
+        for (var story in _stories) {
+          await _loadCommentsForStory(story);
+        }
+      } else {
+        // Handle error
+        print('Failed to load more stories');
+        setState(() {
+          _loadingMore = false;
+        });
       }
-    } else {
-      // Handle error
-      print('Failed to load more stories');
-      setState(() {
-        _loadingMore = false;
-      });
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
     }
   }
 
@@ -775,7 +798,7 @@ class Recipe {
       recipeName: json['recipeName'],
       timeToMake: json['timeToMake'],
       ingredients: List<String>.from(json['ingredients']),
-      description: json['description'],
+      description: json['instructions'],
     );
   }
 }

@@ -17,7 +17,7 @@ import { verifyToken } from "../middleware/verifytoken.js";
 
 const router = express.Router();
 
-router.get("/getLazyLoadingPosts", getLazyLoadingPosts);
+router.post("/lazyLoading/getLazyLoadingPosts/", getLazyLoadingPosts);
 
 // Route to get all posts
 router.get("/", getAllPosts);
