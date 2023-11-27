@@ -15,6 +15,7 @@ import {
   getUser,
   addRemoveUserFollowers,
   getUserName,
+  followFromFeed,
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -44,6 +45,8 @@ router.patch("/:id/:friendId", addRemoveUserFollowings);
 
 // Route to add / remove a friend
 router.patch("/follower/:id/:friendId", addRemoveUserFollowers);
+
+router.patch("/feedFollower/:id/:postId", followFromFeed);
 
 // Route to delete a friend
 router.delete("/removeFriend/:friendId", removeFriend);

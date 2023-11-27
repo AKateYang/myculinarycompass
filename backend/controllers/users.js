@@ -1,4 +1,5 @@
 import User from "../data-models/User.js";
+import Post from "../data-models/Post.js";
 
 // Helper function to convert string ID to MongoDB ObjectId
 // const toObjectId = (_id) => mongoose.Types.ObjectId(_id);
@@ -292,5 +293,57 @@ export const deleteFriend = async (req, res) => {
     res.status(200).json({ message: "Friend successfully deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const followFromFeed = async (req, res) => {
+  try {
+    const { id, postId } = req.params;
+    const user = await User.findById(id);
+    const post = await Post.findById(postId);
+    const friendId = post.userId;
+    const follower = await User.findById(friendId);
+
+    // (id != friendId) was added so that we can get the total followers/follow of current user by passing in the id for
+    // both id and friend with out affecting follower table.
+    if (user.following.includes(friendId) && id != friendId) {
+      // user starts following the friend
+      user.following = user.following.filter((id) => id !== friendId);
+      // the friend gets a new follower
+      follower.followers = follower.followers.filter((id) => id !== id);
+    } else if (id != friendId) {
+      // This else is used for toggling. The user unfollows a friend
+      user.following.push(friendId);
+      // The friend loses a follower
+      follower.followers.push(id);
+    }
+    await user.save();
+    await follower.save();
+
+    // Keeps track of total follower/following for both friend and current user
+    const currentUserFollowing = user.following.length;
+    const currentUserFollowers = user.followers.length;
+
+    // const otherUserFollowing = follower.following.length;
+    // const otherUserFollowers = follower.followers.length;
+
+    const following = await Promise.all(
+      user.following.map((id) => User.findById(id))
+    );
+    const formattedFollowing = following.map(
+      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation, location, picturePath };
+      }
+    );
+
+    res.status(200).json({
+      nowFollowing: formattedFollowing,
+      currentUserFollowing: currentUserFollowing,
+      currentUserFollowers: currentUserFollowers,
+      // otherUserFollowing: otherUserFollowing,
+      // otherUserFollowers: otherUserFollowers,
+    });
+  } catch (err) {
+    res.status(404).json({ message: err.message });
   }
 };

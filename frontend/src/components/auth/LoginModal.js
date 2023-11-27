@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../css/loginModal.css";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,9 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
     }
   };
 
+  var emailRef;
+  var loginPasswordRef;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +25,7 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
   const [message, setMessage] = useState("");
   const [showEmailPopover, setShowEmailPopover] = useState(false);
   const [showPasswordPopover, setShowPasswordPopover] = useState(false);
-  const [verificationToken, setVerificationToken] = useState("");
+
   const [loginAttempted, setLoginAttempted] = useState(false);
 
   useEffect(() => {
@@ -37,10 +40,10 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
     setMessage("");
     setShowEmailPopover(false);
     setShowPasswordPopover(false);
-    setVerificationToken("");
     setLoginAttempted(false);
   };
 
+  // Separate handlers for email and password changes
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     if (loginAttempted) {
@@ -55,14 +58,16 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
     }
   };
 
-  const doLogin = async (event, token) => {
+  const doLogin = async (event) => {
     event.preventDefault();
-    setLoginAttempted(true);
 
+    setLoginAttempted(true); // Set the flag when login is attempted
+
+    // Check if email or password fields are empty and show popovers accordingly
     const isEmailEmpty = !email;
     const isPasswordEmpty = !password;
 
-    if ((isEmailEmpty || isPasswordEmpty) && !token) {
+    if (isEmailEmpty || isPasswordEmpty) {
       setShowEmailPopover(isEmailEmpty);
       setShowPasswordPopover(isPasswordEmpty);
       return;
@@ -95,38 +100,16 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
         };
 
         localStorage.setItem("user_data", JSON.stringify(user));
-
-        if (!res.user.verified) {
-          try {
-            const verificationResponse = await fetch(
-              bp.buildPath("auth/verification"),
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  userId: res.user.id,
-                  token: token,
-                }),
-                headers: { "Content-Type": "application/json" },
-              }
-            );
-
-            const verificationResult = JSON.parse(
-              await verificationResponse.text()
-            );
-
-            if (verificationResult.success) {
-              // Verification successful, update state or redirect as needed
-            } else {
-              // Handle verification failure (show error message, etc.)
-            }
-          } catch (e) {
-            console.error("Verification API call error:", e);
-          }
-        } else {
-          // User is verified, proceed with login
-          navigate("/homepage");
-          setMessage("");
-        }
+        //This may not be needed. can delete later if we don't use it
+        // dispatch(
+        //   setLogin({
+        //     user: res.user,
+        //     token: res.token,
+        //   })
+        // );
+        navigate("/homepage");
+        setMessage("");
+        // window.location.href = "/homepage";
       }
     } catch (e) {
       alert(e.toString());
@@ -134,6 +117,8 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
     }
   };
 
+  ///////////////////////////////////////////////////
+  // This section contains the html/react/input form
   return (
     <div
       className={classNames("custom-modal", { open: isOpen }, className)}
@@ -143,7 +128,7 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
         <span className="custom-close-btn" onClick={onClose}>
           &times;
         </span>
-        <form onSubmit={(e) => doLogin(e, verificationToken)}>
+        <form onSubmit={doLogin}>
           <div className="custom-login-header">
             <h2 className="custom-login-title">Login</h2>
             <p className="custom-question">Don’t have an account?</p>
@@ -151,56 +136,42 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
               Sign-Up
             </button>
           </div>
-
-          {res.id <= 0 || !res.user.verified ? (
-            <>
-              <div className="floating-label">
-                <input
-                  type="text"
-                  className="input-field"
-                  id="login-username"
-                  placeholder=" "
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-                <label htmlFor="login-username">Email</label>
-                {showEmailPopover && (
-                  <Popover className="show">Please enter an email.</Popover>
-                )}
-              </div>
-              <div className="floating-label">
-                <input
-                  type="password"
-                  className="input-field"
-                  id="login-password"
-                  placeholder=" "
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <label htmlFor="login-password">Password</label>
-                {showPasswordPopover && (
-                  <Popover className="show">Please enter a password.</Popover>
-                )}
-              </div>
-
-              {!res.user.verified && (
-                <div className="floating-label">
-                  <input
-                    type="text"
-                    className="input-field"
-                    id="verification-token"
-                    placeholder=" "
-                    value={verificationToken}
-                    onChange={(e) => setVerificationToken(e.target.value)}
-                  />
-                  <label htmlFor="verification-token">Verification Token</label>
-                </div>
-              )}
-            </>
-          ) : null}
-
-          <button type="submit" className="custom-login-submit">
-            {res.user.verified ? "Login" : "Next"}
+          <div className="floating-label">
+            <input
+              type="text"
+              className="input-field"
+              id="login-username"
+              placeholder=" "
+              value={email}
+              onChange={handleEmailChange}
+              /*ref={emailRef} /*{(c) => (email = c)}*/
+            />
+            <label for="login-username">Email</label>
+            {showEmailPopover && (
+              <Popover className="show">Please enter an email.</Popover>
+            )}
+          </div>
+          <div className="floating-label">
+            <input
+              type="password"
+              className="input-field"
+              id="login-password"
+              placeholder=" "
+              value={password}
+              onChange={handlePasswordChange}
+              /*ref={loginPasswordRef} /*{(c) => (loginPassword = c)}*/
+            />
+            <label for="login-password">Password</label>
+            {showPasswordPopover && (
+              <Popover className="show">Please enter a password.</Popover>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="custom-login-submit"
+            onClick={doLogin}
+          >
+            Login
           </button>
           <button id="forgot">Forgot Password?</button>
         </form>

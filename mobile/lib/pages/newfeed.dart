@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class News extends StatelessWidget {
   const News({super.key});
@@ -83,20 +85,35 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                             crossAxisAlignment: CrossAxisAlignment
                                 .start, // Align text to the left
                             children: [
-                              Text(
-                                _stories[index].userName,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
+                              Row(children: [
+                                Text(
+                                  _stories[index].userName,
+                                  style: const TextStyle(
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign:
+                                      TextAlign.left, // Align text to the left
                                 ),
-                                textAlign:
-                                    TextAlign.left, // Align text to the left
-                              ),
-                              Container(
-                                height: 2.0, // Adjust the height of the line
-                                color: Colors
-                                    .black, // Adjust the color of the line
-                              ),
+                                SizedBox(width: 8.0),
+                                IconButton(
+                                  onPressed: () {
+                                    // Call the function to handle becoming a follower
+                                    _becomeFollower(_stories[index]);
+                                  },
+                                  icon: Icon(Icons.person_add,
+                                      color: _stories[index].isFollowing
+                                          ? Colors.blue
+                                          : Colors
+                                              .white // Adjust the color as needed
+                                      ),
+                                ),
+                                Container(
+                                  height: 2.0, // Adjust the height of the line
+                                  color: Colors
+                                      .black, // Adjust the color of the line
+                                ),
+                              ])
                             ],
                           ),
                         ],
@@ -296,26 +313,38 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
   }
 
   void _addComment(Story story, String postId, String comment) async {
-    final apiUrl = 'http://10.0.2.2:5000/posts/addComment/$postId';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
 
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({'comment': comment}),
-      );
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      var firstName = userData['firstName'];
+      var lastName = userData['lastName'];
 
-      if (response.statusCode == 200) {
-        _reloadComments(story, postId);
+      var user = firstName + " " + lastName + " says:\n";
+      var true_comment = user + comment;
 
-        print('Comment added successfully');
-      } else {
-        print('Failed to add comment');
+      final apiUrl = 'http://10.0.2.2:5000/posts/addComment/$postId';
+
+      try {
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode({'comment': true_comment}),
+        );
+
+        if (response.statusCode == 200) {
+          _reloadComments(story, postId);
+
+          print('Comment added successfully');
+        } else {
+          print('Failed to add comment');
+        }
+      } catch (error) {
+        print('Error: $error');
       }
-    } catch (error) {
-      print('Error: $error');
     }
   }
 
@@ -355,7 +384,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         List<dynamic> data = jsonDecode(response.body);
         List<Story> stories = data.map((item) {
           return Story(
-            userName: item["firstName"],
+            userName: item["firstName"] + " " + item["lastName"],
             id: item['_id'],
             title: item['caption'],
             imageUrl: 'https://via.placeholder.com/300',
@@ -432,7 +461,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         List<dynamic> data = jsonDecode(response.body);
         List<Story> newStories = data.map((item) {
           return Story(
-            userName: item["firstName"],
+            userName: item["firstName"] + " " + item["lastName"],
             id: item['_id'],
             title: item['caption'],
             imageUrl: 'https://via.placeholder.com/300',
@@ -501,12 +530,6 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                           'https://via.placeholder.com/300'), // Placeholder image
                       SizedBox(
                           height: 8), // Add some space between image and text
-                      Text(
-                        'Recipe Name:',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(recipe.recipeName, style: TextStyle(fontSize: 16)),
                       Divider(),
                       Text(
                         'Time to Make:',
@@ -676,6 +699,8 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
       postData.lastName = LastName;
     }
 
+    File? selectedImage;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -686,6 +711,21 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      File? image = await _pickImage();
+                      if (image != null) {
+                        setState(() {
+                          selectedImage = image;
+                          postData.picturePath =
+                              getLastSegment(selectedImage!.path);
+                        });
+                      }
+                    },
+                    child: Text('Select Image'),
+                  ),
+                  if (selectedImage != null)
+                    Image.file(selectedImage!, height: 100, width: 100),
                   TextField(
                     decoration: InputDecoration(labelText: 'Caption'),
                     onChanged: (value) {
@@ -695,7 +735,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      await _createPost(postData, recipeId);
+                      await _createPost(postData, recipeId, selectedImage);
                     },
                     child: Text('Create Post'),
                   ),
@@ -708,7 +748,21 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     );
   }
 
-  Future<void> _createPost(PostCreateData postData, String recipeId) async {
+  String getLastSegment(String inputString) {
+    List<String> segments = inputString.split('/');
+
+    // Check if there is more than one segment
+    if (segments.length > 1) {
+      // Return the last segment
+      return segments.last;
+    } else {
+      // If there is only one segment, return the original string
+      return inputString;
+    }
+  }
+
+  Future<void> _createPost(
+      PostCreateData postData, String recipeId, File? selectedImage) async {
     const apiUrl = 'http://10.0.2.2:5000/posts/createPost';
 
     try {
@@ -727,11 +781,11 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
           'recipeId':
               recipeId, // Use the recipeId obtained from the previous step
           'caption': postData.caption,
-          'picturePath': '', // Leave it blank for now
+          'picturePath': postData.picturePath, // Leave it blank for now
         }),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // Post created successfully
         print('Post created successfully');
       } else {
@@ -741,6 +795,43 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     } catch (error) {
       // Handle network or other errors
       print('Error: $error');
+    }
+  }
+
+  void _becomeFollower(Story story) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      var id = userData['id'];
+
+      var postId = story.id;
+
+      final apiUrl = "http://10.0.2.2:5000/users/feedFollower/$id/$postId";
+
+      final Response = await http.patch(Uri.parse(apiUrl));
+
+      if (Response.statusCode == 200) {
+        setState(() {
+          story.isFollowing = !story.isFollowing; // Toggle the follow state
+        });
+        print("You followed someone!");
+      } else {
+        // Handle error
+        print('Failed to follow user');
+      }
+    }
+  }
+
+  Future<File?> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    } else {
+      return null;
     }
   }
 }
@@ -753,6 +844,7 @@ class Story {
   bool isLiked;
   bool isBookmarked;
   List<String> comments;
+  bool isFollowing;
 
   Story({
     required this.userName,
@@ -762,6 +854,7 @@ class Story {
     this.isLiked = false,
     this.isBookmarked = false,
     this.comments = const [],
+    this.isFollowing = false,
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
@@ -811,6 +904,7 @@ class RecipeCreateData {
 }
 
 class PostCreateData {
+  late String picturePath;
   late String caption;
   late String userId;
   late String firstName;

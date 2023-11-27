@@ -72,7 +72,7 @@ export const getAllRecipes = async (req, res) => {
     const recipes = await Recipe.find({});
     const totalPosts = recipes.length;
 
-    res.status(200).json({ recipes, totalPosts: totalPosts });
+    res.status(200).json({ recipes });
   } catch (err) {
     res.status(500).json({ error: "Error: " + err.message });
   }
