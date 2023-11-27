@@ -70,7 +70,7 @@ app.get(
 );
 
 app.delete(
-  "/posts/:postId",
+  "/posts/delete/:postId",
   upload.single("picture"),
   upload.single("video"),
   deletePost

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:mobile/utils/helper.dart';
 
-import 'homepage.dart';
+import 'pages/landing/homepage.dart';
 
 void main() {
   runApp(const GetMaterialApp(

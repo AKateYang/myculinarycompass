@@ -109,7 +109,6 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
         // );
         navigate("/homepage");
         setMessage("");
-
         // window.location.href = "/homepage";
       }
     } catch (e) {

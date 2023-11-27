@@ -18,7 +18,7 @@ class SignupPage extends StatelessWidget {
     var passController = TextEditingController();
     var cPassController = TextEditingController();
     return BackgroundImageWidget(
-      image: AssetImage('assets/landing.jpg'),
+      image: AssetImage('images/landing.jpg'),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,

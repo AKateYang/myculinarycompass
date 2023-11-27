@@ -8,11 +8,12 @@ export const createPost = async (req, res) => {
     // incoming: caption, video, imagesArray, userId
     // outgoing: error
 
-    const { userId, picturePath, videoPath, caption } = req.body;
+    const { userId, picturePath, videoPath, caption, recipeId } = req.body;
     const user = await User.findById(userId);
 
     const newPost = new Post({
       userId,
+      recipeId: recipeId,
       firstName: user.firstName,
       lastName: user.lastName,
       caption: caption,
@@ -47,8 +48,8 @@ export const getAllPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
-    const post = await Post.find({ userId });
-    res.status(200).json(post);
+    const posts = await Post.find({ userId: userId });
+    res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -119,9 +120,9 @@ export const updatePost = async (req, res) => {
 // Need help understanding how this is set up.
 export const likePost = async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { id } = req.params;
     const { userId } = req.body;
-    const post = await Post.findById(postId);
+    const post = await Post.findById(id);
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {
@@ -137,8 +138,5 @@ export const likePost = async (req, res) => {
     );
 
     res.status(200).json(updatedPost);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "An error occurred" });
-  }
+  } catch (err) {}
 };

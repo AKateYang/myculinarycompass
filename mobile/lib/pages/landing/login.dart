@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mobile/palette.dart';
-import 'package:mobile/signup.dart';
+import 'package:mobile/pages/landing/signup.dart';
 import 'package:mobile/utils/helper.dart';
 import 'package:mobile/widgets/background_widget.dart';
 import 'package:mobile/widgets/inputbox_widget.dart';
 
-import 'dashboard.dart';
+import '../../navbar.dart';
 import 'homepage.dart';
 
 class LoginPage extends StatelessWidget {

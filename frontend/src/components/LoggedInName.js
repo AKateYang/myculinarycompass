@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoggedInName() {
+  const navigate = useNavigate();
   var _ud = localStorage.getItem("user_data");
   var ud = JSON.parse(_ud);
-  var userId = ud._id;
+  var userId = ud.id;
   var firstName = ud.firstName;
   var lastName = ud.lastName;
 
@@ -11,7 +13,8 @@ function LoggedInName() {
     event.preventDefault();
 
     localStorage.removeItem("user_data");
-    window.location.href = "/";
+    navigate("/");
+    // window.location.href = '/';
   };
 
   return (
