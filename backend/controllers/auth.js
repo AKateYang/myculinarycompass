@@ -70,6 +70,25 @@ export const login = async (req, res) => {
   }
 };
 
+export const resetPassword = async (req, res) => {
+  try {
+    const { newpassword, userId } = req.body;
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newpassword, salt);
+
+    const user = await User.findByIdAndUpdate(userId, { password: passwordHash }, { new: true });
+    if (!user) return res.status(400).json({ msg: "User does not exist." });
+
+    // Since you're sending the user back in the response, it's better to not include the password at all
+    const userWithoutPassword = { ...user._doc };
+    delete userWithoutPassword.password;
+    
+    res.status(200).json({ user: userWithoutPassword });
+  } catch (err) {
+    res.status(500).json({ error: "Reset Password error: " + err.message });
+  }
+};
+
 export const dashboard = async (req, res) => {
   try {
     res.json({
