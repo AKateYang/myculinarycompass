@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:mobile/pages/account/image_tab.dart';
 import 'package:mobile/pages/account/liked_tab.dart';
 import 'package:mobile/pages/account/post_tab.dart';
@@ -30,6 +29,9 @@ class _ProfilePageState extends State<ProfilePage> {
     _profileImageUrlFuture = fetchProfileImgUrl();
   }
 
+  static const String backendUrl =
+      'https://myculinarycompass-0c8901cce626.herokuapp.com/assets';
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -40,21 +42,17 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
               padding: EdgeInsets.only(top: 50, bottom: 20),
               child: FutureBuilder<String>(
-                // Use FutureBuilder to load the profile image
                 future: _profileImageUrlFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    // If still loading, show a CircularProgressIndicator
                     return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
-                    // If there's an error, handle it accordingly
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    // If successful, display the profile image using Image.network
                     String imageUrl = snapshot.data!;
                     return CircleAvatar(
                       radius: 50.0,
-                      backgroundImage: NetworkImage(imageUrl),
+                      backgroundImage: NetworkImage('$backendUrl/$imageUrl'),
                     );
                   }
                 },
@@ -99,7 +97,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     var data = snapshot.data!;
-
                     var followers = data['currentUserFollowers'];
                     var following = data['currentUserFollowing'];
 
@@ -134,10 +131,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           backgroundColor: Colors.white,
                           textColor: Colors.black,
                           onPressed: () {
-                            // Handle button press
                             print('Edit Profile Button Pressed!');
                           },
-                          text: 'Edit Profile',
+                          text: 'Log out',
                         ),
                       ],
                     );

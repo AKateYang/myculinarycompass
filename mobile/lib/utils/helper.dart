@@ -317,19 +317,17 @@ Future<String> fetchProfileImgUrl() async {
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      // Decode the response body as a Map<String, dynamic>
-      Map<String, dynamic> data = json.decode(response.body);
+      final Map<String, dynamic>? data = json.decode(response.body);
 
-      // Extract 'picturePath' from the user object
-      String? imageUrl = data['users']['picturePath'];
-
-      if (imageUrl != null) {
-        return imageUrl;
+      if (data != null && data.containsKey('picturePath')) {
+        return data['picturePath'] as String;
       } else {
-        throw Exception('Profile image URL not found');
+        throw Exception(
+            'Failed to extract picturePath from the response data.');
       }
     } else {
-      throw Exception('Failed to fetch user profile data');
+      throw Exception(
+          'Failed to fetch user data. Status code: ${response.statusCode}');
     }
   } else {
     throw Exception('User data not found');
