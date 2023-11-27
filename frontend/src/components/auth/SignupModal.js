@@ -124,7 +124,7 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
               Email
             </label>
           </div>
-          <div className="signup-floating-label">
+          {/* <div className="signup-floating-label">
             <input
               type="text"
               className="signup-input-field"
@@ -135,7 +135,7 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
             <label id="target-username" for="signup-username">
               Username
             </label>
-          </div>
+          </div> */}
           <div className="signup-floating-label">
             <input
               type="text"
@@ -151,12 +151,6 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
           <button type="submit" className="signup-submit" onClick={doSignUp}>
             Sign-Up
           </button>
-          <div className="terms">
-            <p className="agree">
-              I agree to the Terms &amp; Service and Privacy Policy
-            </p>
-            <input type="checkbox" class="check" />
-          </div>
         </form>
         <span id="signUpResult">{message}</span>
       </div>

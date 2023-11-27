@@ -15,6 +15,11 @@ export const Landing = () => {
     setSignUpOpen(true); // Open the signup modal
   };
 
+  const openLogin = () => {
+    setSignUpOpen(false); // Close the login modal
+    setLoginOpen(true); // Open the signup modal
+  };
+
   return (
     <div className="custom-frame">
       <LoginModal
@@ -26,6 +31,7 @@ export const Landing = () => {
       <SignupModal
         isOpen={isSignUpOpen}
         onClose={() => setSignUpOpen(false)}
+        onOpenLogin={openLogin}
         className="signup-modal"
       />
       <AboutModal
