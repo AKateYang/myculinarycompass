@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -93,8 +96,7 @@ class LoginPage extends StatelessWidget {
                               //     inputAction: TextInputAction.next,
                               //     isHide: false),
                               makeInput(
-                                  label: "Username",
-                                  controller: emailController),
+                                  label: "Email", controller: emailController),
                               makeInput(
                                   label: "Password",
                                   obscureText: true,

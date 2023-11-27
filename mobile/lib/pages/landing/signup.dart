@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:mobile/palette.dart';
 import 'package:mobile/utils/helper.dart';
 import 'package:mobile/widgets/background_widget.dart';
 import 'package:mobile/widgets/inputbox_widget.dart';
+import 'package:http/http.dart' as http;
 
 import 'homepage.dart';
 import 'login.dart';
@@ -14,9 +17,10 @@ class SignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var firstNameController = TextEditingController();
+    var lastNameController = TextEditingController();
     var emailController = TextEditingController();
     var passController = TextEditingController();
-    var cPassController = TextEditingController();
     return BackgroundImageWidget(
       image: AssetImage('images/landing.jpg'),
       child: Scaffold(
@@ -68,6 +72,14 @@ class SignupPage extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     makeInput(
+                        label: "First Name",
+                        controller: firstNameController,
+                        obscureText: false),
+                    makeInput(
+                        label: "Last Name",
+                        controller: lastNameController,
+                        obscureText: false),
+                    makeInput(
                         label: "Email",
                         controller: emailController,
                         obscureText: false),
@@ -75,10 +87,6 @@ class SignupPage extends StatelessWidget {
                         label: "Password",
                         obscureText: true,
                         controller: passController),
-                    makeInput(
-                        label: "Confirm Password",
-                        obscureText: true,
-                        controller: cPassController),
                   ],
                 ),
                 Container(
@@ -90,8 +98,8 @@ class SignupPage extends StatelessWidget {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      singupUser(
-                          emailController, passController, cPassController);
+                      singupUser(emailController, passController,
+                          firstNameController, lastNameController);
                     },
                     color: const Color.fromRGBO(107, 99, 255, 1),
                     elevation: 0,
@@ -164,17 +172,38 @@ class SignupPage extends StatelessWidget {
     );
   }
 
-  void singupUser(emailController, passController, cPassController) {
-    registerUser(emailController.text.trim(), passController.text.trim(),
-            cPassController.text.trim())
-        .then((value) => {
-              if (value)
-                {
-                  emailController.clear(),
-                  passController.clear(),
-                  cPassController.clear(),
-                  Get.off(() => const LoginPage())
-                }
-            });
+  void singupUser(
+    TextEditingController emailController,
+    TextEditingController passController,
+    TextEditingController firstNameController,
+    TextEditingController lastNameController,
+  ) async {
+    const apiUrl = 'http://10.0.2.2:5000/auth/register';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "firstName": firstNameController.text,
+          "lastName": lastNameController.text,
+          "email": emailController.text,
+          "password": passController.text,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        // Post created successfully
+        print('User registered');
+        Get.to(() => const HomePage());
+      } else {
+        // Handle error
+        print('Failed to register user');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 }

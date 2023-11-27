@@ -64,6 +64,80 @@ export const register = async (req, res) => {
   }
 };
 
+export const resetPasswordEmail = async (req, res) => {
+  const { email } = req.body;
+  const number = crypto.randomBytes(16).toString("hex");
+
+  // Search for a user with the given email
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      // If no user found, return an error
+      return res
+        .status(404)
+        .json({ error: "User not found with the provided email" });
+    }
+
+    // Continue with the email sending logic
+    const transporter = nodemailer.createTransport({
+      host: "smtp.forwardemail.net",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL, // sender address
+      to: email, // list of receivers
+      subject: "Account recovery.", // Subject line
+      text: "Looks like you forgot your password!",
+      html: `<div>Looks like you forgot your password! Here is your verification code: ${number}</div>`,
+    });
+    user.token = number;
+    await user.save();
+
+    // Send a response indicating success
+    return res
+      .status(200)
+      .json({ message: "Verification code sent successfully" });
+  } catch (error) {
+    console.error("Error searching for user:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { newpassword, userId, verification_token } = req.body;
+    const salt = await bcrypt.genSalt();
+    const id = await User.findById(userId);
+    const passwordHash = await bcrypt.hash(newpassword, salt);
+
+    if (verification_token != id.token) {
+      return res.status(400).json({ msg: "Verification code is incorrect." });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { password: passwordHash },
+      { new: true }
+    );
+    if (!user) return res.status(400).json({ msg: "User does not exist." });
+
+    // Since you're sending the user back in the response, it's better to not include the password at all
+    const userWithoutPassword = { ...user._doc };
+    delete userWithoutPassword.password;
+
+    res.status(200).json({ user: userWithoutPassword });
+  } catch (err) {
+    res.status(500).json({ error: "Reset Password error: " + err.message });
+  }
+};
+
 ///////////////////////////////////////////////////
 // LOGGING IN
 export const login = async (req, res) => {
@@ -102,6 +176,20 @@ export const verification = async (req, res) => {
         .status(400)
         .json({ msg: "Verification token is wrong or user not found." });
     }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const isVerified = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Use await to get the user object from the query
+    const user = await User.findOne({ email: email });
+    const isVerified = user.verified;
+
+    res.status(200).json({ isVerified });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
