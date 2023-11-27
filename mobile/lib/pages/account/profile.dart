@@ -19,6 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future<String> _userNameFuture;
   late Future<List<String>> _postsFuture;
   late Future<Map<String, dynamic>> _followFuture;
+  late Future<String> _profileImageUrlFuture;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _userNameFuture = fetchUserName();
     _postsFuture = fetchPosts();
     _followFuture = fetchUserFollow();
+    _profileImageUrlFuture = fetchProfileImgUrl();
   }
 
   @override
@@ -37,19 +39,25 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 50, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 100,
-                    width: 100,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
+              child: FutureBuilder<String>(
+                // Use FutureBuilder to load the profile image
+                future: _profileImageUrlFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // If still loading, show a CircularProgressIndicator
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    // If there's an error, handle it accordingly
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    // If successful, display the profile image using Image.network
+                    String imageUrl = snapshot.data!;
+                    return CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: NetworkImage(imageUrl),
+                    );
+                  }
+                },
               ),
             ),
             Container(
@@ -173,121 +181,5 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
-
-    // return MaterialApp(
-    //   theme: ThemeData.dark(),
-    //   home: Scaffold(
-    //     appBar: AppBar(
-    //       title: Text('Your Username'),
-    //       actions: [
-    //         IconButton(
-    //           icon: Icon(Icons.settings),
-    //           onPressed: () {
-    //             // Navigate to settings page
-    //           },
-    //         ),
-    //       ],
-    //     ),
-    //     body: FutureBuilder(
-    //       future: Future.wait([_userNameFuture, _postsFuture]),
-    //       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-    //         if (snapshot.connectionState == ConnectionState.waiting) {
-    //           return Center(
-    //             child: CircularProgressIndicator(),
-    //           );
-    //         } else if (snapshot.hasError) {
-    //           return Center(
-    //             child: Text('Error: ${snapshot.error}'),
-    //           );
-    //         } else {
-    //           String userName = snapshot.data![0] as String;
-    //           List<String> posts = snapshot.data![1] as List<String>;
-
-    //           return SingleChildScrollView(
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //                 // Profile Information Section
-    //                 Padding(
-    //                   padding: const EdgeInsets.all(16.0),
-    //                   child: Row(
-    //                     children: [
-    //                       CircleAvatar(
-    //                         radius: 50.0,
-    //                         backgroundImage:
-    //                             AssetImage('assets/profile_picture.jpg'),
-    //                       ),
-    //                       SizedBox(width: 16.0),
-    //                       Column(
-    //                         crossAxisAlignment: CrossAxisAlignment.start,
-    //                         children: [
-    //                           Text(
-    //                             userName,
-    //                             style: TextStyle(
-    //                               fontSize: 18.0,
-    //                               fontWeight: FontWeight.bold,
-    //                             ),
-    //                           ),
-    //                           SizedBox(height: 4.0),
-    //                           Text(
-    //                             'Your Bio or Description',
-    //                             style: TextStyle(
-    //                               color: Colors.grey,
-    //                             ),
-    //                           ),
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //                 // Divider
-    //                 Divider(thickness: 0.5, color: Colors.grey),
-    //                 // Post Section
-    //                 Padding(
-    //                   padding: const EdgeInsets.all(16.0),
-    //                   child: Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     children: [
-    //                       Text(
-    //                         'Posts',
-    //                         style: TextStyle(
-    //                           fontSize: 18.0,
-    //                           fontWeight: FontWeight.bold,
-    //                         ),
-    //                       ),
-    //                       SizedBox(height: 8.0),
-    //                       // Replace with your grid of images or posts
-    //                       GridView.builder(
-    //                         shrinkWrap: true,
-    //                         physics: NeverScrollableScrollPhysics(),
-    //                         gridDelegate:
-    //                             SliverGridDelegateWithFixedCrossAxisCount(
-    //                           crossAxisCount: 3,
-    //                           crossAxisSpacing: 8.0,
-    //                           mainAxisSpacing: 8.0,
-    //                         ),
-    //                         itemCount: posts.length,
-    //                         itemBuilder: (context, index) {
-    //                           return Container(
-    //                             decoration: BoxDecoration(
-    //                               image: DecorationImage(
-    //                                 image: AssetImage(posts[index]),
-    //                                 fit: BoxFit.cover,
-    //                               ),
-    //                             ),
-    //                           );
-    //                         },
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //           );
-    //         }
-    //       },
-    //     ),
-    //   ),
-    // );
   }
 }
