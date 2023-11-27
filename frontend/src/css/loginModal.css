@@ -248,3 +248,20 @@ label {
   cursor: pointer;
   margin-left: 170px;
 }
+
+.Popover {
+  /* initial hidden state */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px); /* start slightly above the final position */
+  transition: visibility 0s, opacity 0.5s ease-in-out,
+    transform 0.5s ease-in-out;
+}
+
+.Popover.show {
+  /* visible state */
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0); /* end at the final position */
+  transition-delay: 0s; /* no delay when showing */
+}

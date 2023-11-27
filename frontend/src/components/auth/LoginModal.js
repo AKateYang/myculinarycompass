@@ -148,7 +148,11 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
             />
             <label for="login-username">Email</label>
             {showEmailPopover && (
-              <Popover className="show">Please enter an email.</Popover>
+              <Popover
+                className={showEmailPopover ? "Popover show" : "Popover"}
+              >
+                Please enter an email.
+              </Popover>
             )}
           </div>
           <div className="floating-label">
@@ -163,13 +167,17 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
             />
             <label for="login-password">Password</label>
             {showPasswordPopover && (
-              <Popover className="show">Please enter a password.</Popover>
+              <Popover
+                className={showPasswordPopover ? "Popover show" : "Popover"}
+              >
+                Please enter a password.
+              </Popover>
             )}
           </div>
           <button
             type="submit"
             className="custom-login-submit"
-            onClick={doLogin}
+            // onClick={doLogin}
           >
             Login
           </button>

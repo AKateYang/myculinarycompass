@@ -6,6 +6,7 @@ import {
   getPost,
   likePost,
   getUserPosts,
+  addComment,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -27,6 +28,9 @@ router.put("/updatePost/:postId", updatePost);
 router.delete("/deletePost/:postId", deletePost);
 
 // Updates likes on a post
-router.patch("/:userId/like", likePost);
+router.patch("/:_id/like", likePost);
+
+// Route to add a comment to a post without token verification
+router.post("/:_id/addComment", addComment);
 
 export default router;

@@ -1,6 +1,10 @@
 import { Box } from "@mui/material";
 
 const UserImage = ({ image, size = "60px" }) => {
+  // Base URL for your server
+  const serverBaseUrl =
+    "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
+
   return (
     <Box width={size} height={size}>
       <img
@@ -8,7 +12,7 @@ const UserImage = ({ image, size = "60px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`/assets/${image}`}
+        src={`${serverBaseUrl}${image}`}
       />
     </Box>
   );

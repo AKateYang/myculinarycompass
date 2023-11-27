@@ -1,20 +1,22 @@
-import {
-  ChatBubbleOutlineOutlined,
-  FavoriteBorderOutlined,
-  FavoriteOutlined,
-  ShareOutlined,
-} from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
-import FlexBetween from "../../components/FlexBetween.jsx";
-// import Friend from "../../components/Friend.jsx";
-import WidgetWrapper from "../../components/WidgetWrapper.jsx";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { setPost } from "../../state/index.jsx";
+import { addCommentToPost } from "../../state/index.jsx";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  IconButton,
+  Divider,
+} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import FlexBetween from "../../components/FlexBetween.jsx";
 
 const PostWidget = ({
   _id,
-  userId,
+  // userId,
   firstName,
   lastName,
   caption,
@@ -24,94 +26,162 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  // ...other props if needed
 }) => {
+  // Base URL for your server
+  const serverBaseUrl =
+    "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
+
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
 
-  var _id = localStorage.getItem("user_data");
-  var _id = JSON.parse(_id);
-  var userId = _id._id;
+  var userData = JSON.parse(localStorage.getItem("user_data"));
+  var userId = userData._id;
 
-  const isLiked = Boolean(likes[userId]);
-  const likeCount = Object.keys(likes).length;
-
-  const { palette } = useTheme();
-  const main = palette.neutral.main;
-  const primary = palette.primary.main;
-
-  // UPDATED API to link to likePost in posts.js
   const patchLike = async () => {
     var bp = require("../../components/Path.js");
-    const response = await fetch(bp.buildPath(`posts/${userId}/like`), {
+    console.log(_id);
+    const response = await fetch(bp.buildPath(`posts/${_id}/like`), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: userId }),
+      body: JSON.stringify({ userId }),
     });
     const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    dispatch(
+      addCommentToPost({ postId: _id, comment: updatedPost.newComment })
+    );
+  };
+
+  const [localComments, setLocalComments] = useState(comments || []);
+  const [newComment, setNewComment] = useState(""); // This is for the input value
+
+  const handleAddComment = async (e) => {
+    e.preventDefault(); // This line should prevent the default form submission
+    try {
+      var bp = require("../../components/Path.js");
+      const response = await fetch(bp.buildPath(`posts/${_id}/addComment`), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userData._id, text: newComment }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const updatedPost = await response.json();
+      dispatch(setPost({ post: updatedPost })); // If using Redux to manage state
+      // Update local state for immediate feedback
+      setLocalComments([...localComments, updatedPost.newComment]);
+      setNewComment(""); // Clear the comment input
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
-      {/* <Friend
-        // It's complaining about this.
-        friendId={userId}
-        name={firstName}
-        subtitle={location}
-        userPicturePath={userPicturePath}
-      /> */}
-      <Typography color={main} sx={{ mt: "1rem" }}>
-        {caption}
-      </Typography>
-      {picturePath && (
-        <img
-          width="100%"
-          height="auto"
-          alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          // UPDATED to go to public assets for pictures
-          src={`public/assets/${picturePath}`}
-        />
-      )}
-      <FlexBetween mt="0.25rem">
-        <FlexBetween gap="1rem">
-          <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
-              {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
-              ) : (
-                <FavoriteBorderOutlined />
-              )}
-            </IconButton>
-            <Typography>{likeCount}</Typography>
-          </FlexBetween>
-
-          <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
-              <ChatBubbleOutlineOutlined />
-            </IconButton>
-            <Typography>{comments.length}</Typography>
-          </FlexBetween>
-        </FlexBetween>
-
-        <IconButton>
-          <ShareOutlined />
-        </IconButton>
-      </FlexBetween>
-      {isComments && (
-        <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${firstName}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
-          <Divider />
+    <Card sx={{ marginBottom: 2 }}>
+      {" "}
+      {/* Added gap between posts */}
+      <CardContent>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex" alignItems="center">
+            <img
+              src={`${serverBaseUrl}${userPicturePath}`}
+              alt={`${firstName} ${lastName}`}
+              style={{
+                objectFit: "cover",
+                borderRadius: "50%",
+                marginRight: "10px",
+                width: "60px",
+                height: "60px",
+              }}
+            />
+            <Typography variant="subtitle1" style={{ fontWeight: "bold" }}>
+              {`${firstName} ${lastName}`}
+            </Typography>
+          </Box>
+          {/* Placeholder for created date */}
+          <Typography variant="subtitle2">{"MM/DD/YYYY"}</Typography>
         </Box>
-      )}
-    </WidgetWrapper>
+
+        <Typography variant="h5" style={{ marginTop: "1rem" }}>
+          {caption}
+        </Typography>
+        <Typography variant="body2">{location}</Typography>
+
+        {picturePath && (
+          <img
+            src={`${serverBaseUrl}${picturePath}`}
+            alt="Post"
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "0.75rem",
+              marginTop: "0.75rem",
+            }}
+          />
+        )}
+
+        {videoPath && (
+          <video
+            src={`${serverBaseUrl}${videoPath}`}
+            controls
+            style={{
+              width: "100%",
+              borderRadius: "0.75rem",
+              marginTop: "0.75rem",
+            }}
+          />
+        )}
+
+        <Box display="flex" alignItems="center" mt={2}>
+          <IconButton aria-label="like" onClick={patchLike}>
+            <FavoriteBorderIcon />
+            <Typography variant="body2" style={{ marginLeft: "5px" }}>
+              {Object.keys(likes).length}
+            </Typography>
+          </IconButton>
+
+          <FlexBetween gap="0.3rem"></FlexBetween>
+
+          <IconButton
+            aria-label="comment"
+            onClick={() => setIsComments(!isComments)}
+          >
+            <ChatBubbleOutlineIcon />
+            <Typography variant="body2" style={{ marginLeft: "5px" }}>
+              {comments.length}
+            </Typography>
+          </IconButton>
+        </Box>
+        {isComments && (
+          <>
+            <Box mt="0.5rem">
+              {comments.map((comment, i) => (
+                <React.Fragment key={i}>
+                  <Divider />
+                  <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
+                    {comment}
+                  </Typography>
+                </React.Fragment>
+              ))}
+            </Box>
+            <form onSubmit={handleAddComment}>
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add a comment..."
+              />
+              <button type="submit">Comment</button>
+            </form>
+          </>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
