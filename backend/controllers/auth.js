@@ -23,11 +23,15 @@ export const register = async (req, res) => {
   // The outer if loop checks to see if there is an existing user with same email
   if (existingUser == null) {
     // This if statement checks the confirm password. This is to make sure the user is correctly typing the password
-@@ -20,18 +32,28 @@ export const register = async (req, res) => {
+    // that they actually want.
+    try {
+      const { firstName, lastName, email, password, picturePath, friends } =
+        req.body;
+
+      // genSalt() is used to generate a random salt that is then used for hashing pw
       // salt is a random string to make the hash unpredictable
       const salt = await bcrypt.genSalt();
       const passwordHash = await bcrypt.hash(password, salt);
-
       const number = crypto.randomBytes(16).toString("hex");
       const newUser = new User({
         firstName,
@@ -53,7 +57,10 @@ export const register = async (req, res) => {
       res.status(201).json(savedUser);
     } catch (err) {
       res.status(500).json({ error: err.message });
-@@ -42,6 +64,80 @@ export const register = async (req, res) => {
+    }
+  } else {
+    res.statusCode = 400;
+    res.json({ status: false, msg: "User already registered" });
   }
 };
 
@@ -134,7 +141,11 @@ export const resetPassword = async (req, res) => {
 ///////////////////////////////////////////////////
 // LOGGING IN
 export const login = async (req, res) => {
-@@ -53,10 +149,70 @@ export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!user) return res.status(400).json({ msg: "User does not exist. " });
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
 
