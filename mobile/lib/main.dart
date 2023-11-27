@@ -44,7 +44,7 @@ class _MainPageState extends State<MainPage> {
           const Text("Welcome Back", style: TextStyle(fontSize: 24)),
           const SizedBox(height: 10),
           const Text(
-            "Nce to see you again!",
+            "Nice to see you again!",
             style: TextStyle(fontSize: 18),
           ),
           SizedBox(

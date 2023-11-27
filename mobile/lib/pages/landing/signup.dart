@@ -197,6 +197,13 @@ class SignupPage extends StatelessWidget {
       if (response.statusCode == 201) {
         // Post created successfully
         print('User registered');
+        Get.snackbar(
+          'Signup Success',
+          'Your account has been successfully created!'
+              'A verification token has been sent to your email!',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
         Get.to(() => const HomePage());
       } else {
         // Handle error
