@@ -60,6 +60,48 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                 margin: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment:
+                          Alignment.center, // Adjust the alignment as needed
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius:
+                                16.0, // Adjust the radius of the circular image
+                            backgroundColor:
+                                Colors.grey, // Placeholder background color
+                            child: Image.network(
+                              'https://via.placeholder.com/300', // Replace with your actual API endpoint
+                              fit: BoxFit.cover, // Adjust the fit as needed
+                            ),
+                          ),
+                          SizedBox(
+                              width:
+                                  8.0), // Add some space between the image and text
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment
+                                .start, // Align text to the left
+                            children: [
+                              Text(
+                                _stories[index].userName,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign:
+                                    TextAlign.left, // Align text to the left
+                              ),
+                              Container(
+                                height: 2.0, // Adjust the height of the line
+                                color: Colors
+                                    .black, // Adjust the color of the line
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     Image.network(_stories[index].imageUrl),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,6 +181,12 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
             }
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showCreateRecipePopup();
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -299,6 +347,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
       List<dynamic> data = jsonDecode(response.body);
       List<Story> stories = data.map((item) {
         return Story(
+          userName: item["firstName"],
           id: item['_id'],
           title: item['caption'],
           imageUrl: 'https://via.placeholder.com/300',
@@ -364,6 +413,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
       List<dynamic> data = jsonDecode(response.body);
       List<Story> newStories = data.map((item) {
         return Story(
+          userName: item["firstName"],
           id: item['_id'],
           title: item['caption'],
           imageUrl: 'https://via.placeholder.com/300',
@@ -474,9 +524,181 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
       print('Failed to fetch recipeId');
     }
   }
+
+  void _showCreateRecipePopup() {
+    RecipeCreateData recipeCreateData = RecipeCreateData();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Create Recipe'),
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Recipe Name'),
+                    onChanged: (value) {
+                      recipeCreateData.recipeName = value;
+                    },
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Ingredients (comma separated)'),
+                    onChanged: (value) {
+                      recipeCreateData.ingredients =
+                          value.split(',').map((e) => e.trim()).toList();
+                    },
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Instructions'),
+                    onChanged: (value) {
+                      recipeCreateData.instructions = value;
+                    },
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Time to Make'),
+                    onChanged: (value) {
+                      recipeCreateData.timeToMake = value;
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await _createRecipe(recipeCreateData);
+                      _showCreatePostPopup();
+                    },
+                    child: Text('Next'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _createRecipe(RecipeCreateData recipeData) async {
+    const apiUrl = 'http://10.0.2.2:5000/recipes/createRecipe';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'recipeName': recipeData.recipeName,
+          'ingredients': recipeData.ingredients,
+          'picturePath': '', // Leave it blank for now
+          'instructions': recipeData.instructions,
+          'timeToMake': recipeData.timeToMake,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        // Use responseData to get recipeId for the next step if needed
+        print('Recipe created successfully');
+      } else {
+        // Handle error
+        print('Failed to create recipe');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
+    }
+  }
+
+  void _showCreatePostPopup() async {
+    PostCreateData postData = PostCreateData();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      var UserId = userData['id'];
+      var FirstName = userData['firstName'];
+      var LastName = userData['lastName'];
+
+      postData.userId = UserId;
+      postData.firstName = FirstName;
+      postData.lastName = LastName;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Create Post'),
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Caption'),
+                    onChanged: (value) {
+                      postData.caption = value;
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await _createPost(postData);
+                    },
+                    child: Text('Create Post'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _createPost(PostCreateData postData) async {
+    const apiUrl = 'http://10.0.2.2:5000/posts/createPost';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'userId': postData
+              .userId, // You may need to set this value based on your authentication
+          'firstName': postData
+              .firstName, // You may need to set this value based on your authentication
+          'lastName': postData
+              .lastName, // You may need to set this value based on your authentication
+          'recipeId': '', // Use the recipeId obtained from the previous step
+          'caption': postData.caption,
+          'picturePath': '', // Leave it blank for now
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Post created successfully
+        print('Post created successfully');
+      } else {
+        // Handle error
+        print('Failed to create post');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
+    }
+  }
 }
 
 class Story {
+  final String userName;
   final String id;
   final String title;
   final String imageUrl;
@@ -485,6 +707,7 @@ class Story {
   List<String> comments;
 
   Story({
+    required this.userName,
     required this.id,
     required this.title,
     required this.imageUrl,
@@ -495,6 +718,7 @@ class Story {
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
+      userName: json['firstName'],
       id: json['id'],
       title: json['title'],
       imageUrl: json['imageUrl'],
@@ -529,4 +753,18 @@ class Recipe {
       description: json['description'],
     );
   }
+}
+
+class RecipeCreateData {
+  late String recipeName;
+  late List<String> ingredients;
+  late String instructions;
+  late String timeToMake;
+}
+
+class PostCreateData {
+  late String caption;
+  late String userId;
+  late String firstName;
+  late String lastName;
 }
