@@ -77,7 +77,9 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{following.length} following</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
+        <ManageAccountsOutlined
+          onClick={() => navigate(`/profile/${userId}`)}
+        />
       </FlexBetween>
 
       <Divider />

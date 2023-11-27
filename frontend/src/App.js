@@ -10,7 +10,7 @@ import { themeSettings } from "./components/theme.js";
 
 import CardPage from "./pages/CardPage";
 import LandingPage from "./pages/LandingPage";
-import UserPage from "./pages/UserPage";
+import ProfilePage from "./pages/ProfilePage";
 import SavedRecipes from "./pages/SavedRecipes";
 import HomePage from "./scenes/homePage/index.jsx";
 
@@ -31,7 +31,7 @@ function App() {
             path="/home"
             element={isAuth ? <HomePage /> : <Navigate to="/" />}
           />
-          <Route path="/user" element={<UserPage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
