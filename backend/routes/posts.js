@@ -11,6 +11,7 @@ import {
   getComments,
   addComment,
   getRecipeId,
+  getPostUser,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -43,5 +44,7 @@ router.get("/getComments/:postId", getComments);
 router.post("/addComment/:postId", addComment);
 
 router.get("/getRecipeId/:postId", getRecipeId);
+
+router.get("/getPostUser/:postId", getPostUser);
 
 export default router;
