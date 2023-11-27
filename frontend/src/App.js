@@ -27,10 +27,10 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/savedRecipes" element={<SavedRecipes />} />
-          <Route
+          {/* <Route
             path="/home"
             element={isAuth ? <HomePage /> : <Navigate to="/" />}
-          />
+          /> */}
           <Route path="/profile/:userId" element={<ProfilePage />} />
         </Routes>
       </ThemeProvider>

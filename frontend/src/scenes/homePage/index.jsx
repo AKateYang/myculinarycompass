@@ -1,11 +1,11 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
-import Navbar from "../homePage/index.jsx";
+// import Navbar from "../homePage/index.jsx";
 import UserWidget from "../widgets/UserWidget.jsx";
 import MyPostWidget from "../widgets/MyPostWidget.jsx";
 import PostsWidget from "../widgets/PostsWidget.jsx";
 import AdvertWidget from "../widgets/AdvertWidget.jsx";
-import FriendListWidget from "../widgets/FriendListWidget.jsx";
+// import FriendListWidget from "../widgets/FriendListWidget.jsx";
 import LoggedInName from "../../components/LoggedInName";
 import React, { useEffect } from "react";
 
@@ -44,7 +44,7 @@ const HomePage = () => {
             <Box flexBasis="26%">
               <AdvertWidget />
               <Box m="2rem 0" />
-              <FriendListWidget userId={userId} />
+              {/* <FriendListWidget userId={userId} /> */}
             </Box>
           )}
         </Box>
