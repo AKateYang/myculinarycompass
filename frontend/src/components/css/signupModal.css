@@ -84,7 +84,9 @@
   left: 0;
   top: 0; */
   margin: auto;
-  height: 85%;
+  max-height: 90vh; /* maximum height is 90% of the viewport height */
+  min-height: 300px; /* minimum height to ensure modal is not too small */
+  height: auto; /* height is based on content */
   transform: translateY(-50px);
   transform: translateY(-5px);
   transition: transform 0.3s ease-in-out;
@@ -374,7 +376,8 @@ input.check:checked {
 @media (max-width: 768px) {
   .signup-modal .modal-content {
     width: 90%; /* Wider on smaller screens */
-    max-width: none; /* Removes max-width restriction */
+    max-height: 80vh; /* slightly smaller on medium screens */
+    min-height: 250px; /* adjust minimum height for medium screens */
     padding: 15px; /* Slightly less padding */
   }
   .signup-title,
@@ -447,6 +450,8 @@ input.check:checked {
 @media (max-width: 480px) {
   .signup-modal .modal-content {
     width: 95%; /* Even wider on very small screens */
+    max-height: 70vh; /* even smaller on small screens */
+    min-height: 200px; /* adjust minimum height for small screens */
   }
   .signup-title,
   .question,

@@ -8,6 +8,9 @@ const AdvertWidget = () => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
+  const serverBaseUrl =
+    "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
+
   return (
     <WidgetWrapper>
       <FlexBetween>
@@ -20,7 +23,7 @@ const AdvertWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="/assets/info4.jpeg"
+        src={`${serverBaseUrl}info4.jpeg`}
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>

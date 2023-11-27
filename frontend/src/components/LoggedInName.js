@@ -19,9 +19,7 @@ function LoggedInName() {
 
   return (
     <div id="loggedInDiv">
-      <span id="userName">
-        Logged In As {firstName} {lastName}
-      </span>
+      <span id="userName">{/* Logged In As {firstName} {lastName} */}</span>
       <br />
       <button
         type="button"

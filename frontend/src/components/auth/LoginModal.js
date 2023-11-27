@@ -84,13 +84,13 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
 
       var res = JSON.parse(await response.text());
 
-      if (res.id <= 0) {
+      if (res <= 0) {
         setMessage("User/Password combination incorrect");
       } else {
         var user = {
           firstName: res.user.firstName,
           lastName: res.user.lastName,
-          id: res.user._id,
+          _id: res.user._id,
           picturePath: res.user.picturePath,
         };
 
@@ -151,56 +151,50 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
               Sign-Up
             </button>
           </div>
-
-          {res.id <= 0 || !res.user.verified ? (
-            <>
-              <div className="floating-label">
-                <input
-                  type="text"
-                  className="input-field"
-                  id="login-username"
-                  placeholder=" "
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-                <label htmlFor="login-username">Email</label>
-                {showEmailPopover && (
-                  <Popover className="show">Please enter an email.</Popover>
-                )}
-              </div>
-              <div className="floating-label">
-                <input
-                  type="password"
-                  className="input-field"
-                  id="login-password"
-                  placeholder=" "
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <label htmlFor="login-password">Password</label>
-                {showPasswordPopover && (
-                  <Popover className="show">Please enter a password.</Popover>
-                )}
-              </div>
-
-              {!res.user.verified && (
-                <div className="floating-label">
-                  <input
-                    type="text"
-                    className="input-field"
-                    id="verification-token"
-                    placeholder=" "
-                    value={verificationToken}
-                    onChange={(e) => setVerificationToken(e.target.value)}
-                  />
-                  <label htmlFor="verification-token">Verification Token</label>
-                </div>
-              )}
-            </>
-          ) : null}
-
-          <button type="submit" className="custom-login-submit">
-            {res.user.verified ? "Login" : "Next"}
+          <div className="floating-label">
+            <input
+              type="text"
+              className="input-field"
+              id="login-username"
+              placeholder=" "
+              value={email}
+              onChange={handleEmailChange}
+              /*ref={emailRef} /*{(c) => (email = c)}*/
+            />
+            <label for="login-username">Email</label>
+            {showEmailPopover && (
+              <Popover
+                className={showEmailPopover ? "Popover show" : "Popover"}
+              >
+                Please enter an email.
+              </Popover>
+            )}
+          </div>
+          <div className="floating-label">
+            <input
+              type="password"
+              className="input-field"
+              id="login-password"
+              placeholder=" "
+              value={password}
+              onChange={handlePasswordChange}
+              /*ref={loginPasswordRef} /*{(c) => (loginPassword = c)}*/
+            />
+            <label for="login-password">Password</label>
+            {showPasswordPopover && (
+              <Popover
+                className={showPasswordPopover ? "Popover show" : "Popover"}
+              >
+                Please enter a password.
+              </Popover>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="custom-login-submit"
+            // onClick={doLogin}
+          >
+            Login
           </button>
           <button id="forgot">Forgot Password?</button>
         </form>

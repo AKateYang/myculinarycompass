@@ -1,0 +1,284 @@
+.desktop {
+  background-color: #fffbf6;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.desktop .div {
+  background-color: #fffbf6;
+  height: 1024px;
+  position: relative;
+  width: 1440px;
+}
+
+.desktop .text-wrapper {
+  color: #000000;
+  font-family: "Overpass Mono-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 48px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 54px;
+  width: 318px;
+}
+
+.desktop .light-mode {
+  height: 35px;
+  left: 1111px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .chat {
+  height: 35px;
+  left: 1187px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .notifications {
+  height: 35px;
+  left: 1263px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .help {
+  height: 35px;
+  left: 1339px;
+  position: absolute;
+  top: 57px;
+  width: 35px;
+}
+
+.desktop .ellipse {
+  background-color: #a28561;
+  border-radius: 75px;
+  height: 150px;
+  left: 71px;
+  position: absolute;
+  top: 178px;
+  width: 150px;
+}
+
+.desktop .group {
+  height: 78px;
+  left: 62px;
+  position: absolute;
+  top: 373px;
+  width: 543px;
+}
+
+.desktop .text-wrapper-2 {
+  color: #000000;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  width: 54px;
+}
+
+.desktop .text-wrapper-3 {
+  color: #000000;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 90px;
+}
+
+.desktop .text-wrapper-4 {
+  color: #000000;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  left: 205px;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  width: 54px;
+}
+
+.desktop .text-wrapper-5 {
+  color: #000000;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 214px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 90px;
+}
+
+.desktop .text-wrapper-6 {
+  color: #000000;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  left: 432px;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  width: 71px;
+}
+
+.desktop .text-wrapper-7 {
+  color: #000000;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 441px;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  text-align: center;
+  top: 39px;
+  width: 90px;
+}
+
+.desktop .text-wrapper-8 {
+  color: #000000;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 28px;
+  font-weight: 700;
+  left: 261px;
+  letter-spacing: 0;
+  line-height: 44.8px;
+  position: absolute;
+  text-align: center;
+  top: 234px;
+  white-space: nowrap;
+  width: 166px;
+}
+
+.desktop .overlap-group-wrapper {
+  height: 62px;
+  left: 1179px;
+  position: absolute;
+  top: 234px;
+  width: 162px;
+}
+
+.desktop .overlap-group {
+  background-color: #5b5d4e;
+  border-radius: 10px;
+  height: 62px;
+  position: relative;
+  width: 160px;
+}
+
+.desktop .text-wrapper-9 {
+  color: #fffbf6;
+  font-family: "Overpass-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 17px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 16px;
+}
+
+.desktop .frame {
+  background-image: url(../../../backend/public/assets/p11.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 5px;
+  height: 400px;
+  left: 66px;
+  position: absolute;
+  top: 507px;
+  width: 300px;
+}
+
+.desktop .frame-2 {
+  background-image: url(../../../backend/public/assets/p11.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 5px;
+  height: 400px;
+  left: 404px;
+  position: absolute;
+  top: 507px;
+  width: 300px;
+}
+
+.desktop .frame-3 {
+  background-image: url(../../../backend/public/assets/p11.jpeg);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 5px;
+  height: 400px;
+  left: 745px;
+  position: absolute;
+  top: 507px;
+  width: 300px;
+}
+
+.desktop .pexels-photo-by {
+  height: 400px;
+  left: 1086px;
+  object-fit: cover;
+  position: absolute;
+  top: 507px;
+  width: 300px;
+}
+
+/* .desktop .overlap {
+  background-image: url(./rectangle-2.svg);
+  background-size: 100% 100%;
+  height: 55px;
+  left: 404px;
+  position: absolute;
+  top: 45px;
+  width: 565px;
+} */
+
+.desktop .search {
+  height: 24px;
+  left: 23px;
+  position: absolute;
+  top: 17px;
+  width: 24px;
+}
+
+.desktop .text-wrapper-10 {
+  color: #5b5d4e;
+  font-family: "Overpass-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 86px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 16px;
+  white-space: nowrap;
+  width: 151px;
+}

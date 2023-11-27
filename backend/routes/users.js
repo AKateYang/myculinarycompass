@@ -40,6 +40,7 @@ router.put("/updateUser", updateUser);
 router.delete("deleteUser/:userId", deleteUser);
 
 // Route to add / remove a friend
+// get user
 router.patch("/:id/:friendId", addRemoveUserFollowings);
 
 // Route to add / remove a friend
@@ -49,7 +50,7 @@ router.patch("/follower/:id/:friendId", addRemoveUserFollowers);
 router.delete("/removeFriend/:friendId", removeFriend);
 
 // Route to get the list of users someone is following
-router.get("/getFollowing", getFollowing);
+router.get("/getFollowing/:_id", getFollowing);
 
 // Route to get the list of followers for a user
 router.get("/getFollowers", getFollowers);

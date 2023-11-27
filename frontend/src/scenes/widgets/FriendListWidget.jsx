@@ -8,26 +8,32 @@ import { setFriends } from "../../state/index.jsx";
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
-  const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  // const token = useSelector((state) => state.token);
+  const following = useSelector((state) => state.user?.following);
 
   // UPDATED getFriends path
   const getFriends = async () => {
     var bp = require("../../components/Path.js");
     const response = await fetch(
-      bp.buildPath(`users/${userId}/getUserFriends`),
+      bp.buildPath(`/users/getFollowing/${userId}`),
       {
         method: "GET",
-        headers: { "Content-Type": "appplication:json" },
+        headers: { "Content-Type": "application:json" },
       }
     );
     const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+
+    if (data && Array.isArray(data)) {
+      dispatch(setFriends({ following: data }));
+    }
   };
 
   useEffect(() => {
-    getFriends();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (userId) {
+      // Ensure that userId is not null or undefined
+      getFriends();
+    }
+  }, [userId]);
 
   return (
     <WidgetWrapper>
@@ -37,18 +43,19 @@ const FriendListWidget = ({ userId }) => {
         fontWeight="500"
         sx={{ mb: "1.5rem" }}
       >
-        Friend List
+        Following
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
-          <Friend
-            key={friend._id}
-            friendId={friend._id}
-            name={`${friend.firstName} ${friend.lastName}`}
-            subtitle={friend.occupation}
-            userPicturePath={friend.picturePath}
-          />
-        ))}
+        {following &&
+          following.map((following) => (
+            <Friend
+              key={following._id}
+              friendId={following._id}
+              name={`${following.firstName} ${following.lastName}`}
+              subtitle={following.occupation}
+              userPicturePath={following.picturePath}
+            />
+          ))}
       </Box>
     </WidgetWrapper>
   );

@@ -1,81 +1,84 @@
-import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setFriends } from "../state/index.jsx";
-import FlexBetween from "./FlexBetween";
-import UserImage from "./UserImage";
+// import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
+// import { Box, IconButton, Typography, useTheme } from "@mui/material";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import { setFriends } from "../state/index.jsx";
+// import FlexBetween from "./FlexBetween";
+// import UserImage from "./UserImage";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+// const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
 
-  const { palette } = useTheme();
-  const primaryLight = palette.primary.light;
-  const primaryDark = palette.primary.dark;
-  const main = palette.neutral.main;
-  const medium = palette.neutral.medium;
+//   // NULL is passing in from PostWidget
+//   const { user } = useSelector((state) => state.user);
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+//   const token = useSelector((state) => state.token);
+//   const friends = useSelector((state) => state.user.friends);
 
-  // UPDATED patchFRIEND
-  const patchFriend = async () => {
-    var bp = require("./Path.js");
-    const json = JSON.stringify({ friendId: friendId });
-    const response = await fetch(`/users/${_id}/${friendId}`, {
-      method: "PATCH",
-      body: json,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
-  };
+//   const { palette } = useTheme();
+//   const primaryLight = palette.primary.light;
+//   const primaryDark = palette.primary.dark;
+//   const main = palette.neutral.main;
+//   const medium = palette.neutral.medium;
 
-  return (
-    <FlexBetween>
-      <FlexBetween gap="1rem">
-        <UserImage image={userPicturePath} size="55px" />
-        <Box
-          onClick={() => {
-            navigate(`/profile/${friendId}`);
-            navigate(0);
-          }}
-        >
-          <Typography
-            color={main}
-            variant="h5"
-            fontWeight="500"
-            sx={{
-              "&:hover": {
-                color: palette.primary.light,
-                cursor: "pointer",
-              },
-            }}
-          >
-            {name}
-          </Typography>
-          <Typography color={medium} fontSize="0.75rem">
-            {subtitle}
-          </Typography>
-        </Box>
-      </FlexBetween>
-      <IconButton
-        onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
-      </IconButton>
-    </FlexBetween>
-  );
-};
+//   const isFriend = friends.find((friend) => friend._id === friendId);
 
-export default Friend;
+//   // UPDATED patchFRIEND
+//   const patchFriend = async () => {
+//     var bp = require("./Path.js");
+//     const json = JSON.stringify({ friendId: friendId });
+//     const response = await fetch(`users/${_id}/${friendId}`, {
+//       method: "PATCH",
+//       body: json,
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     const data = await response.json();
+//     dispatch(setFriends({ friends: data }));
+//   };
+
+//   return (
+//     <FlexBetween>
+//       <FlexBetween gap="1rem">
+//         <UserImage image={userPicturePath} size="55px" />
+//         <Box
+//           onClick={() => {
+//             navigate(`/profile/${friendId}`);
+//             navigate(0);
+//           }}
+//         >
+//           <Typography
+//             color={main}
+//             variant="h5"
+//             fontWeight="500"
+//             sx={{
+//               "&:hover": {
+//                 color: palette.primary.light,
+//                 cursor: "pointer",
+//               },
+//             }}
+//           >
+//             {name}
+//           </Typography>
+//           <Typography color={medium} fontSize="0.75rem">
+//             {subtitle}
+//           </Typography>
+//         </Box>
+//       </FlexBetween>
+//       <IconButton
+//         onClick={() => patchFriend()}
+//         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+//       >
+//         {isFriend ? (
+//           <PersonRemoveOutlined sx={{ color: primaryDark }} />
+//         ) : (
+//           <PersonAddOutlined sx={{ color: primaryDark }} />
+//         )}
+//       </IconButton>
+//     </FlexBetween>
+//   );
+// };
+
+// export default Friend;

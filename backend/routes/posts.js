@@ -35,7 +35,10 @@ router.put("/updatePost/:postId", updatePost);
 router.delete("/deletePost/:postId", deletePost);
 
 // Updates likes on a post
-router.patch("/:id/like", likePost);
+router.patch("/:_id/like", likePost);
+
+// Route to add a comment to a post without token verification
+router.post("/:_id/addComment", addComment);
 
 router.patch("/savePost/:userId/:postId", saveAndUnsavePosts);
 

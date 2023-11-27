@@ -226,12 +226,13 @@ export const searchUsers = async (req, res) => {
 };
 
 export const getFollowing = async (req, res) => {
-  const { userId } = req.body;
-  const userObjectId = toObjectId(userId);
+  // const userObjectId = toObjectId(userId);
 
   try {
-    const user = await User.findById(userObjectId);
-    res.status(200).json({ following: user.Following });
+    const { _id } = req.params;
+    console.log("ID received:", _id);
+    const user = await User.findById({ _id });
+    res.status(200).json({ following: user.following });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
