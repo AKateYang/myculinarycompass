@@ -24,7 +24,7 @@ const UserWidget = ({ userId, picturePath }) => {
   // UPDATED getUser
   const getUser = async () => {
     var user = require("../../components/Path.js");
-    const response = await fetch(user.buildPath(`users/getUser/${userId}`), {
+    const response = await fetch(user.buildPath(`users/${userId}`), {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -48,6 +48,7 @@ const UserWidget = ({ userId, picturePath }) => {
     viewedProfile,
     impressions,
     following,
+    followers,
   } = user;
 
   return (
@@ -74,7 +75,7 @@ const UserWidget = ({ userId, picturePath }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{following.length} following</Typography>
+            {/* <Typography color={medium}>{following.length} following</Typography> */}
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined
@@ -82,9 +83,9 @@ const UserWidget = ({ userId, picturePath }) => {
         />
       </FlexBetween>
 
-      <Divider />
+      {/* <Divider />
 
-      {/* SECOND ROW */}
+      { SECOND ROW }
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <LocationOnOutlined fontSize="large" sx={{ color: main }} />
@@ -94,22 +95,22 @@ const UserWidget = ({ userId, picturePath }) => {
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{occupation}</Typography>
         </Box>
-      </Box>
+      </Box> */}
 
       <Divider />
 
       {/* THIRD ROW */}
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
+          <Typography color={medium}>Following</Typography>
           <Typography color={main} fontWeight="500">
-            {viewedProfile}
+            {following.length}
           </Typography>
         </FlexBetween>
         <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
+          <Typography color={medium}>Followers</Typography>
           <Typography color={main} fontWeight="500">
-            {impressions}
+            {followers.length}
           </Typography>
         </FlexBetween>
       </Box>

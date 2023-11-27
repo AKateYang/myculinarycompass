@@ -37,6 +37,7 @@ router.put("/updateUser", updateUser);
 router.delete("deleteUser/:userId", deleteUser);
 
 // Route to add / remove a friend
+// get user following
 router.patch("/:id/:friendId", addRemoveUserFollowings);
 
 // Route to add / remove a friend
