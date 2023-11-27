@@ -80,14 +80,14 @@ export const dashboard = async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
-  // jwt.verify(req.token, secretKey, (err, authData) => {
-  //   if (err) {
-  //   } else {
-  //     res.json({
-  //       status: true,
-  //       msg: "profile accessed",
-  //       email: authData.oldUser.email,
-  //     });
-  //   }
-  // });
+  jwt.verify(req.token, secretKey, (err, authData) => {
+    if (err) {
+    } else {
+      res.json({
+        status: true,
+        msg: "profile accessed",
+        email: authData.oldUser.email,
+      });
+    }
+  });
 };
