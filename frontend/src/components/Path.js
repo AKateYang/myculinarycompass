@@ -5,6 +5,6 @@ exports.buildPath = function buildPath(route) {
     return "https://" + app_name + ".herokuapp.com/" + route;
   } else {
     // Change to 5000 for main server
-    return "http://localhost:6001/" + route;
+    return "http://localhost:5000/" + route;
   }
 };
