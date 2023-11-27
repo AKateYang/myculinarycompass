@@ -21,6 +21,10 @@ const RecipeSchema = new mongoose.Schema(
       require: true,
       min: 2,
     },
+    timeToMake: {
+      type: String,
+      require: true,
+    },
     picturePath: {
       type: String,
       default: "",

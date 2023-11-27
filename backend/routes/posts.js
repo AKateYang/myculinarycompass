@@ -6,11 +6,17 @@ import {
   getPost,
   likePost,
   getUserPosts,
+  getLazyLoadingPosts,
+  saveAndUnsavePosts,
+  getComments,
+  addComment,
+  getRecipeId,
+  getPostUser,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
 const router = express.Router();
-
+router.post("/lazyLoading/getLazyLoadingPosts/", getLazyLoadingPosts);
 // Route to get all posts
 router.get("/", getAllPosts);
 
@@ -28,5 +34,15 @@ router.delete("/deletePost/:postId", deletePost);
 
 // Updates likes on a post
 router.patch("/:id/like", likePost);
+
+router.patch("/savePost/:userId/:postId", saveAndUnsavePosts);
+
+router.get("/getComments/:postId", getComments);
+
+router.post("/addComment/:postId", addComment);
+
+router.get("/getRecipeId/:postId", getRecipeId);
+
+router.get("/getPostUser/:postId", getPostUser);
 
 export default router;
