@@ -559,16 +559,18 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                     },
                   ),
                   TextField(
-                    decoration: InputDecoration(labelText: 'Time to Make'),
+                    decoration:
+                        InputDecoration(labelText: 'Time to Make In Minutes'),
                     onChanged: (value) {
-                      recipeCreateData.timeToMake = value;
+                      var value2 = value + " minutes";
+                      recipeCreateData.timeToMake = value2;
                     },
                   ),
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      await _createRecipe(recipeCreateData);
-                      _showCreatePostPopup();
+                      String recipeId = await _createRecipe(recipeCreateData);
+                      _showCreatePostPopup(recipeId);
                     },
                     child: Text('Next'),
                   ),
@@ -581,12 +583,41 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     );
   }
 
-  Future<void> _createRecipe(RecipeCreateData recipeData) async {
-    const apiUrl = 'http://10.0.2.2:5000/recipes/createRecipe';
+  Future<String> _createRecipe(RecipeCreateData recipeData) async {
+    // const apiUrl = 'http://10.0.2.2:5000/recipes/createRecipe';
 
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
+    // try {
+    //   final response = await http.post(
+    //     Uri.parse(apiUrl),
+    //     headers: <String, String>{
+    //       'Content-Type': 'application/json; charset=UTF-8',
+    //     },
+    //     body: jsonEncode({
+    //       'recipeName': recipeData.recipeName,
+    //       'ingredients': recipeData.ingredients,
+    //       'picturePath': '', // Leave it blank for now
+    //       'instructions': recipeData.instructions,
+    //       'timeToMake': recipeData.timeToMake,
+    //     }),
+    //   );
+
+    //   if (response.statusCode == 200) {
+    //     final Map<String, dynamic> responseData = jsonDecode(response.body);
+    //     print('Recipe created successfully');
+    //     return responseData["_id"];
+    //     // Use responseData to get recipeId for the next step if needed
+    //   } else {
+    //     // Handle error
+    //     print('Failed to create recipe');
+    //   }
+    // } catch (error) {
+    //   // Handle network or other errors
+    //   print('Error: $error');
+    //   throw Exception("damn son");
+    // }
+
+    var url = Uri.http('10.0.2.2:5000', 'recipes/createRecipe');
+    final response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -596,24 +627,17 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
           'picturePath': '', // Leave it blank for now
           'instructions': recipeData.instructions,
           'timeToMake': recipeData.timeToMake,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
-        // Use responseData to get recipeId for the next step if needed
-        print('Recipe created successfully');
-      } else {
-        // Handle error
-        print('Failed to create recipe');
-      }
-    } catch (error) {
-      // Handle network or other errors
-      print('Error: $error');
+        }));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      print('Recipe created successfully');
+      return responseData["_id"];
+    } else {
+      throw Exception('Failed to fetch user data');
     }
   }
 
-  void _showCreatePostPopup() async {
+  void _showCreatePostPopup(String recipeId) async {
     PostCreateData postData = PostCreateData();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userDataString = prefs.getString('user_data');
@@ -648,7 +672,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      await _createPost(postData);
+                      await _createPost(postData, recipeId);
                     },
                     child: Text('Create Post'),
                   ),
@@ -661,7 +685,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     );
   }
 
-  Future<void> _createPost(PostCreateData postData) async {
+  Future<void> _createPost(PostCreateData postData, String recipeId) async {
     const apiUrl = 'http://10.0.2.2:5000/posts/createPost';
 
     try {
@@ -677,7 +701,8 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
               .firstName, // You may need to set this value based on your authentication
           'lastName': postData
               .lastName, // You may need to set this value based on your authentication
-          'recipeId': '', // Use the recipeId obtained from the previous step
+          'recipeId':
+              recipeId, // Use the recipeId obtained from the previous step
           'caption': postData.caption,
           'picturePath': '', // Leave it blank for now
         }),

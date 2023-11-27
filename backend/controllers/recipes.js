@@ -6,21 +6,30 @@ export const createRecipe = async (req, res) => {
   // outgoing: error
 
   try {
-    const { recipeName, userId, picturePath, videoPath, instructions, time } =
-      req.body;
+    const {
+      recipeName,
+      userId,
+      picturePath,
+      videoPath,
+      instructions,
+      timeToMake,
+      ingredients,
+    } = req.body;
     const user = await User.findById(userId);
 
     const newRecipe = new Recipe({
       userId,
       recipeName: recipeName,
       instructions: instructions,
-      ingredients: [],
-      timeToMake: time,
+      ingredients: ingredients,
+      timeToMake: timeToMake,
       picturePath: picturePath,
       videoPath: videoPath,
       continent: "",
       country: "",
     });
+
+    console.log(ingredients);
     const savedRecipe = await newRecipe.save();
     res.status(200).json(savedRecipe);
   } catch (err) {
