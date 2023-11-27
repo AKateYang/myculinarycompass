@@ -5,6 +5,7 @@ import 'package:mobile/pages/account/image_tab.dart';
 import 'package:mobile/pages/account/liked_tab.dart';
 import 'package:mobile/pages/account/post_tab.dart';
 import 'package:mobile/pages/account/video_tab.dart';
+import 'package:mobile/utils/helper.dart';
 import 'package:mobile/widgets/round_button.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,17 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     _userNameFuture = fetchUserName();
     _postsFuture = fetchPosts();
-  }
-
-  Future<String> fetchUserName() async {
-    await Future.delayed(Duration(seconds: 2));
-    return 'Your Full Name';
-  }
-
-  Future<List<String>> fetchPosts() async {
-    await Future.delayed(Duration(seconds: 2));
-    return List.generate(
-        9, (index) => '../backend/public/assets/post$index.jpeg');
   }
 
   @override
@@ -63,15 +53,29 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: Column(children: [
-                  Text(
-                    "Name Here",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  )
-                ]),
+                child: FutureBuilder<String>(
+                  future: _userNameFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      String userName = snapshot.data!;
+                      return Column(
+                        children: [
+                          Text(
+                            userName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                  },
+                ),
               ),
             ),
             Padding(

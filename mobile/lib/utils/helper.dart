@@ -13,8 +13,8 @@ import '../models/user.dart';
 // The 10.0.2.2:5000 is for localhost
 // '10.0.2.2:5000'
 // localhost:5000
-const addr = '10.0.2.2:5000';
-// const addr = 'myculinarycompass-0c8901cce626.herokuapp.com';
+// const addr = '10.0.2.2:5000';
+const addr = 'myculinarycompass-0c8901cce626.herokuapp.com';
 // const addr = 'localhost:5000';
 
 Future<bool> loginUserWithEmail(String email, String pass) async {
@@ -202,4 +202,34 @@ Future<List<String>> fetchData(String apiUrl) async {
     // If the server did not return a 200 OK response, throw an exception
     throw Exception('Failed to load followers');
   }
+}
+
+Future<String> fetchUserName() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? userDataString = prefs.getString('user_data');
+
+  if (userDataString != null) {
+    Map<String, dynamic> userData = jsonDecode(userDataString);
+    Map<String, String> headers = {'Content-type': 'application/json'};
+    var userId = userData['id'];
+
+    var url = Uri.http(addr, 'users/$userId');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var name = userData['firstName'] + " " + userData['lastName'];
+
+      return name;
+    } else {
+      throw Exception('Failed to fetch user data');
+    }
+  } else {
+    throw Exception('User data not found');
+  }
+}
+
+Future<List<String>> fetchPosts() async {
+  await Future.delayed(Duration(seconds: 2));
+  return List.generate(
+      9, (index) => '../backend/public/assets/post$index.jpeg');
 }

@@ -19,7 +19,7 @@ import { verifyToken } from "../middleware/verifytoken.js";
 
 const router = express.Router();
 
-router.get("/:id", verifyToken, getUser);
+router.get("/:id", getUser);
 
 // Route to block a user
 router.post("/blockUser", blockUser);
