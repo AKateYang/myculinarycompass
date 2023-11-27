@@ -69,10 +69,23 @@ export const getAllRecipes = async (req, res) => {
   // No incoming body is needed to get all recipes
   try {
     // Assuming Recipe is a Mongoose mreqodel you would find all documents in the recipes collection.
-    const recipes = await Recipe.find({});
+    const recipes = await Recipe.find();
     const totalPosts = recipes.length;
 
     res.status(200).json({ recipes, totalPosts: totalPosts });
+  } catch (err) {
+    res.status(500).json({ error: "Error: " + err.message });
+  }
+};
+// Gets all recipes
+export const getAllRecipesMobile = async (req, res) => {
+  // No incoming body is needed to get all recipes
+  try {
+    // Assuming Recipe is a Mongoose mreqodel you would find all documents in the recipes collection.
+    const recipes = await Recipe.find();
+    const totalPosts = recipes.length;
+
+    res.status(200).json(recipes);
   } catch (err) {
     res.status(500).json({ error: "Error: " + err.message });
   }

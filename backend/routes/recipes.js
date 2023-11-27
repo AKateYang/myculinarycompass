@@ -8,6 +8,7 @@ import {
   deleteRecipe, // Import the deletePost function
   getUserRecipes,
   saveAndUnsaveRecipes,
+  getAllRecipesMobile,
 } from "../controllers/recipes.js"; // Make sure the path is correct
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.post("/createRecipe", createRecipe);
 
 // Route to get all recipes
 router.get("/", getAllRecipes);
+router.get("/getallmobile", getAllRecipesMobile);
 
 router.get("/getLazyLoadingRecipes", getLazyLoadingRecipes);
 

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Recipe {
-  final String recipeName;
-  final String picturePath;
+  final List<String> recipeName;
+  final List<String> picturePath;
 
   Recipe({required this.recipeName, required this.picturePath});
 }
@@ -15,59 +16,123 @@ class SavedRecipes extends StatefulWidget {
 }
 
 class _SavedRecipesState extends State<SavedRecipes> {
-  List<Recipe> suggestedRecipes = [];
-  List<Recipe> savedRecipes = [];
-
+  late Future<Recipe> _postsFuture;
+  late Future<Recipe> _savedRecipe;
   @override
   void initState() {
     super.initState();
     // Call the function to fetch recipes when the widget is initialized
-    _fetchRecipes();
+    _postsFuture = _fetchRecipes();
+    _savedRecipe = _fetchSavedRecipes();
   }
 
-  Future<void> _fetchRecipes() async {
+  Future<Recipe> _fetchRecipes() async {
     // Replace the API URL with your actual API endpoint
-    // const apiUrl =
-    //     'https://myculinarycompass-0c8901cce626.herokuapp.com/recipes';
-    const apiUrl = "http://10.0.2.2:5000/recipes/";
+    const apiUrl =
+        "https://myculinarycompass-0c8901cce626.herokuapp.com/recipes/getallmobile";
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
         // Check if response.body is not null
-        if (response.body != null) {
-          // If the server returns a 200 OK response, parse the data
-          Map<String, dynamic> data = jsonDecode(response.body);
+        final List<dynamic> data = json.decode(response.body);
 
-          setState(() {
-            suggestedRecipes =
-                (data["suggested"] as List<dynamic> ?? []).map((item) {
-              return Recipe(
-                recipeName: item["recipeName"],
-                picturePath: item["picturePath"],
-              );
-            }).toList();
-            savedRecipes = (data["saved"] as List<dynamic> ?? []).map((item) {
-              return Recipe(
-                recipeName: item["recipeName"],
-                picturePath: item["picturePath"],
-              );
-            }).toList();
-          });
-        } else {
-          // If response.body is null, handle the error accordingly
-          throw Exception('Failed to load recipes. Response body is null.');
-        }
+        final List<String> imageUrls = data
+            .map((post) => post['picturePath'] as String?)
+            .where((filePath) => filePath != null)
+            .cast<String>()
+            .toList();
+        final List<String> recipeNames = data
+            .map((post) => post['recipeName'] as String?)
+            .where((name) => name != null)
+            .cast<String>()
+            .toList();
+
+        return Recipe(picturePath: imageUrls, recipeName: recipeNames);
       } else {
-        // If the server did not return a 200 OK response,
-        // throw an exception or handle the error accordingly
         throw Exception(
             'Failed to load recipes. Status code: ${response.statusCode}');
       }
     } catch (error) {
-      // Handle any other errors that might occur during the HTTP request
       print('Error: $error');
+      throw Exception('Failed to load recipes');
+    }
+  }
+
+  final String addr = 'https://myculinarycompass-0c8901cce626.herokuapp.com';
+
+  Future<Recipe> _fetchSavedRecipes() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+    // Use final instead of const for variables determined at runtime
+    final String addr = 'https://myculinarycompass-0c8901cce626.herokuapp.com';
+
+    if (userDataString != null) {
+      try {
+        Map<String, dynamic> userData = jsonDecode(userDataString);
+        Map<String, String> headers = {'Content-type': 'application/json'};
+        // Use final instead of const for variables determined at runtime
+        final userId = userData['id'];
+
+        final apiUrl = Uri.http(addr, 'recipes/getUserRecipe/$userId');
+
+        final response = await http.get(apiUrl, headers: headers);
+
+        if (response.statusCode == 200) {
+          // Check if response.body is not null
+          final List<dynamic> data = json.decode(response.body);
+
+          final List<String> imageUrls = data
+              .map((post) => post['picturePath'] as String?)
+              .where((filePath) => filePath != null)
+              .cast<String>()
+              .toList();
+          final List<String> recipeNames = data
+              .map((post) => post['recipeName'] as String?)
+              .where((name) => name != null)
+              .cast<String>()
+              .toList();
+
+          return Recipe(picturePath: imageUrls, recipeName: recipeNames);
+        } else {
+          throw Exception(
+              'Failed to load recipes. Status code: ${response.statusCode}');
+        }
+      } catch (error) {
+        print('Error: $error');
+        throw Exception('Failed to load recipes');
+      }
+    }
+    throw Exception('Failed to load recipes');
+  }
+
+  Future<List<String>> fetchSavedRecipes() async {
+    // Replace the API URL with your actual API endpoint
+    const apiUrl =
+        "https://myculinarycompass-0c8901cce626.herokuapp.com/recipes/";
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // Check if response.body is not null
+        final List<dynamic> data = json.decode(response.body);
+
+        final List<String> imageUrls = data
+            .map((post) => post['picturePath'] as String?)
+            .where((filePath) => filePath != null)
+            .cast<String>()
+            .toList();
+
+        return imageUrls;
+      } else {
+        throw Exception(
+            'Failed to load recipes. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+      throw Exception('Failed to load recipes');
     }
   }
 
@@ -76,13 +141,13 @@ class _SavedRecipesState extends State<SavedRecipes> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Horizontal Recipe List'),
+          title: Text('Hello!'),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 80),
+          padding: const EdgeInsets.only(top: 40),
           child: Column(
             children: [
-              // Suggested Recipes
+              // Saved Recipes
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Row(
@@ -90,7 +155,7 @@ class _SavedRecipesState extends State<SavedRecipes> {
                   children: [
                     Container(
                       child: Text(
-                        "Suggested Recipes:",
+                        "Recommended Recipes:",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
@@ -98,23 +163,36 @@ class _SavedRecipesState extends State<SavedRecipes> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 60.0),
-                child: Container(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: suggestedRecipes.length,
-                    itemBuilder: (context, index) {
-                      return RecipeCard(recipe: suggestedRecipes[index]);
-                    },
-                  ),
+              Container(
+                height: 200,
+                child: FutureBuilder<Recipe>(
+                  future: _fetchRecipes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData) {
+                      return Center(child: Text('No data available.'));
+                    } else {
+                      Recipe recipeData = snapshot.data!;
+
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: recipeData.recipeName.length,
+                        itemBuilder: (context, index) {
+                          return RecipeCard(
+                            imageUrl: recipeData.picturePath[index],
+                            recipeName: recipeData.recipeName[index],
+                          );
+                        },
+                      );
+                    }
+                  },
                 ),
               ),
-
-              // Saved Recipes
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -129,12 +207,39 @@ class _SavedRecipesState extends State<SavedRecipes> {
                 ),
               ),
               Container(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: savedRecipes.length,
-                  itemBuilder: (context, index) {
-                    return RecipeCard(recipe: savedRecipes[index]);
+                height: 400,
+                child: FutureBuilder<Recipe>(
+                  future: _fetchRecipes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData) {
+                      return Center(child: Text('No data available.'));
+                    } else {
+                      Recipe recipeData = snapshot.data!;
+
+                      return GridView.builder(
+                        // scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing:
+                                8.0, // Adjust the spacing between columns
+                            mainAxisSpacing: 25,
+                            childAspectRatio:
+                                0.75 // Adjust the spacing between rows
+                            ),
+                        itemCount: recipeData.recipeName.length,
+
+                        itemBuilder: (context, index) {
+                          return RecipeCard(
+                            imageUrl: recipeData.picturePath[index],
+                            recipeName: recipeData.recipeName[index],
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),
@@ -147,13 +252,12 @@ class _SavedRecipesState extends State<SavedRecipes> {
 }
 
 class RecipeCard extends StatelessWidget {
-  final Recipe recipe;
-  // static const String backendUrl =
-  //     'https://myculinarycompass-0c8901cce626.herokuapp.com/assets';
+  final String imageUrl;
+  final String recipeName;
+  static const String backendUrl =
+      'https://myculinarycompass-0c8901cce626.herokuapp.com/assets';
 
-  static const String backendUrl = 'http://10.0.2.2:5000/assets';
-
-  RecipeCard({required this.recipe});
+  RecipeCard({required this.imageUrl, required this.recipeName});
 
   @override
   Widget build(BuildContext context) {
@@ -163,15 +267,15 @@ class RecipeCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(
-            '$backendUrl/${recipe.picturePath}',
+            '$backendUrl/$imageUrl',
             width: 170,
-            height: 100,
+            height: 110,
             fit: BoxFit.cover,
           ),
           Padding(
             padding: EdgeInsets.all(8),
             child: Text(
-              recipe.recipeName,
+              recipeName,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),

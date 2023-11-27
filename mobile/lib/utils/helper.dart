@@ -7,6 +7,7 @@ import 'package:mobile/models/dashboard_res.dart';
 import 'package:mobile/models/login_response.dart';
 import 'package:mobile/models/loginuser.dart';
 import 'package:mobile/models/sign_response.dart';
+import 'package:mobile/pages/saved.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
@@ -366,3 +367,39 @@ Future<List<String>> fetchRecipeImage() async {
   throw Exception('Failed to load video URLs');
   // return null;
 }
+
+// Future<List<String>> _fetchRecipes() async {
+//   // Replace the API URL with your actual API endpoint
+//   // const apiUrl =
+//   //     'https://myculinarycompass-0c8901cce626.herokuapp.com/recipes';
+//   const apiUrl = "http://10.0.2.2:5000/recipes/";
+
+//   try {
+//     final response = await http.get(Uri.parse(apiUrl));
+
+//     if (response.statusCode == 200) {
+//       // Check if response.body is not null
+//       // If the server returns a 200 OK response, parse the data
+//       final List<dynamic> data = json.decode(response.body);
+//       ;
+
+//       final List<String> imageUrls = data
+//           .map((post) => post['picturePath']
+//               as String?) // Use String? to handle potential null values
+//           .where((filePath) => filePath != null) // Filter out null values
+//           .cast<String>() // Cast to non-nullable String
+//           .toList();
+
+//       return imageUrls;
+//     } else {
+//       // If the server did not return a 200 OK response,
+//       // throw an exception or handle the error accordingly
+//       throw Exception(
+//           'Failed to load recipes. Status code: ${response.statusCode}');
+//     }
+//   } catch (error) {
+//     // Handle any other errors that might occur during the HTTP request
+//     print('Error: $error');
+//     throw Exception('Failed to load recipes');
+//   }
+// }

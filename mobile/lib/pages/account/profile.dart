@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         body: Column(
           children: [
@@ -153,12 +153,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 Tab(
                   icon: Icon(Icons.video_collection_rounded),
                 ),
-                Tab(
-                  icon: Text(
-                    "Liked",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ),
+                // Tab(
+                //   icon: Text(
+                //     "Liked",
+                //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                //   ),
+                // ),
                 Tab(
                   icon: Text(
                     "Posts",
@@ -172,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   ImageTab(),
                   VideoTab(),
-                  LikedTab(),
+                  // LikedTab(),
                   PostTab(),
                 ],
               ),
