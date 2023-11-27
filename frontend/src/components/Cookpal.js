@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./css/SavedRecipes.css";
+import { useNavigate } from "react-router-dom";
+import { WindowSharp } from "@mui/icons-material";
 
 const Cookpal = () => {
 
@@ -7,6 +9,9 @@ const Cookpal = () => {
   var _ud = localStorage.getItem("user_data");
   var ud = JSON.parse(_ud);
   var userId = ud.id;
+  var userRecipes = ud.saveRecipesId;
+  const usersSavedRecipes = [];
+  const serverBaseURL = "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
 
   useEffect(() => {
     // Replace 'API_ENDPOINT' with your actual endpoint URL
@@ -50,12 +55,23 @@ const Cookpal = () => {
   const doLogout = event => 
     {
 	    event.preventDefault();
+      //const navigate = useNavigate();
 
         localStorage.removeItem("user_data")
-        window.location.href = '/';
+        //navigate("/");
+        window.location.href('/');
 
     };
 
+    // const goToNewsFeed = event =>
+    // {
+    //   event.preventDefault();
+    //   const navigate = useNavigate();
+
+    //   navigate("/homepage");
+    // }
+
+  
   function changeButton(index, newText, newColor, userId, recipeId)
   {
     const divsWithKey = document.querySelectorAll(`div[data-key="${index}"]`);
@@ -87,31 +103,58 @@ const Cookpal = () => {
     });
   };
 
-  // function getPicture(index)
-  // {
-  //   const divsWithKey = document.querySelectorAll(`div[data-key="${index}"]`);
+  function getSavedRecipes (userId) {
+    var bp = require("./Path.js");
+    fetch(bp.buildPath("recipes/getUserRecipe/" + `${userId}`), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // If you need to send a body with the POST request, add it here
+      // body: JSON.stringify({ /* data */ })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Fetched data:', data);
+      console.log(data.recipes);
+      usersSavedRecipes = data.recipes;
+    })
+    .catch(error => console.error('Error fetching data:', error));
+  }
 
-  //   divsWithKey.forEach(div => {
-  //     const img = div.querySelector('img'); // Get the button inside the div
+  function changeButtonBack(index, newText, newColor, userId, recipeId)
+  {   
+      const groupToHide = document.querySelectorAll(`#savedGroup[data-key="${index}"]`);
+      groupToHide.forEach(div => {
+        const button = div.querySelector('button'); // Get the button inside the div
+        if (button) {
+          button.addEventListener('click', function() {
+            console.log(groupToHide[index]);
+            const divtoHide = document.querySelector(`#savedGroup[data-key="${index}"]`);
+            divtoHide.style.display = 'none';
+          });
+        }
+    });
+  };
+  
+  //console.log("saved recipes" + getSavedRecipes(userId));
+  
+  console.log("users saved recipes" + usersSavedRecipes[0]);
+  const filteredData = recipes.filter(item => usersSavedRecipes.includes(item._id));
+  //console.log("all recipes" + recipes);
+  //console.log("filtered data: " + filteredData);
 
-  //     if (img) {
-  //       const picturePath = "./images/food-" + (index + 1) + ".jpeg";
-  //       console.log(picturePath);
-  //       return picturePath;
-  //     }
-  //   });
-  // };
 
     return (
         <div className="cookpal">
       <div className="div">
         <div className="overlap">
-          <div className="text-wrapper">
+          {/* <div className="text-wrapper">
             <button className="logout-button" >Saved Recipes</button>
           </div>
           <div className="text-wrapper-2">
             <button className="logout-button" >My Recipes</button>
-          </div>
+          </div> */}
           <div className="text-wrapper-3">
             <button className="logout-button" >NewsFeed</button>
           </div>
@@ -121,22 +164,22 @@ const Cookpal = () => {
         </div>
         <div className="overlap-2">
           <div className="overlap-3">
-            <div className="culinary-compass">
+            {/* <div className="culinary-compass">
               <span className="span">
                 Culinary
                 <br />
               </span>
               <span className="text-wrapper-6">Compass</span>
-            </div>
-            <div className="overlap-4">
-              <div className="text-wrapper-8">
-                {/* <label for="textInput">Search: </label> */}
+            </div> */}
+            {/* <div className="overlap-4">
+              {/* <div className="text-wrapper-8">
+                {/* <label for="textInput">Search: </label> }
                 <input type="text" border="none" name="textInput"></input>
-              </div>
+              </div> }
               <div className="overlap-5">
                 <img className="text-wrapper-9" />
               </div>
-            </div>
+            </div> */}
             <div className="overlap-6">
               <div className="get-cooking-bg">
                 <p className="get-cooking">
@@ -149,45 +192,34 @@ const Cookpal = () => {
         </div>
         <div className="overlap-8">
           <div className="overlap-9">
-          <div className="suggested-recipes-title">Suggested Recipes</div>
+          <div className="suggested-recipes-title" id="responsiveDiv">Suggested Recipes</div>
               {recipes.map((recipe, index) => (
                   <div data-key={index} key={index} className="group-2">
-                    <img className="img" src="./images/food-1.jpeg" alt={recipe.name} />
+                    <img className="img" src={`${serverBaseURL}${recipe.picturePath}`} alt={recipe.name} />
                     <button id="addbutton" className="frame-6-1" onClick={changeButton(index, "Added", "#F05E1633", userId, recipe._id)}>Add</button>
                     <div id="recipeName" className="recipe-name">{recipe.recipeName}</div>
-                    <div className="time-image"></div>
-                    <div className="time-length">{recipe.time}</div>
+                    {/* <div className="time-image"></div>
+                    <div className="time-length">{recipe.timeToMake}</div> */}
                     <div className="recipe-likes-img" />
                     <div className="comments-img" />
                     <div className="recipe-likes">{recipe.likes}</div>
                     <div className="recipe-comments">{recipe.comments}</div>
                   </div>
               ))}
-            {/* <div className="group-3">
-              <div className="text-wrapper-32">FILTERS</div>
-              <div className="text-wrapper-33">Diet</div>
-              <div className="filter-group">
-                <button className="filter-button">Dairy Free</button>
-                <button className="filter-button">Egg Free</button>
-                <button className="filter-button">Sugar Free</button>
-                <button className="filter-button">Gluten Free</button>
-              </div>
-              <div className="text-wrapper-33-1">Allergies</div>
-              <div className="filter-group">
-                <button className="filter-button">Nuts</button>
-                <button className="filter-button">Legumes</button>
-                <button className="filter-button">Grain</button>
-                <button className="filter-button">Fruit</button>
-              </div>
-              <div className="text-wrapper-34">Cusine</div>
-              <div className="filter-group">
-                <button className="filter-button">Asian</button>
-                <button className="filter-button">Italian</button>
-                <button className="filter-button">Chinese</button>
-                <button className="filter-button">Thai</button>
-              </div>  
-            </div> */}
-            <div className="saved-recipes-title">Saved Recipes</div>
+            <div className="saved-recipes-title"></div>
+            {filteredData.map((recipe, index) => (
+                  <div data-key={index} key={index} className="group-2" id="savedGroup">
+                    <img className="img" src={`${serverBaseURL}${recipe.picturePath}`} alt={recipe.name} />
+                    <button id="addbutton" className="frame-6-1-1" onClick={changeButtonBack(index, "Add", "#078e1433", userId, recipe._id)}>Added</button>
+                    <div id="recipeName" className="recipe-name">{recipe.recipeName}</div>
+                    <div className="time-image"></div>
+                    <div className="time-length">{recipe.timeToMake}</div>
+                    <div className="recipe-likes-img" />
+                    <div className="comments-img" />
+                    <div className="recipe-likes">{recipe.likes}</div>
+                    <div className="recipe-comments">{recipe.comments}</div>
+                  </div>
+              ))}
           </div>
         </div>
       </div>
