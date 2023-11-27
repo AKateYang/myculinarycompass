@@ -200,10 +200,10 @@ const Cookpal = () => {
                     <div id="recipeName" className="recipe-name">{recipe.recipeName}</div>
                     <div className="time-image"></div>
                     <div className="time-length">{recipe.timeToMake}</div>
-                    <div className="recipe-likes-img" />
+		    {/*<div className="recipe-likes-img" />
                     <div className="comments-img" />
                     <div className="recipe-likes">{recipe.likes}</div>
-                    <div className="recipe-comments">{recipe.comments}</div>
+                    <div className="recipe-comments">{recipe.comments}</div>*/}
                   </div>
               ))}
             <div className="saved-recipes-title"></div>
