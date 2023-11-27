@@ -48,7 +48,7 @@ export const register = async (req, res) => {
         to: email, // list of receivers
         subject: "Verification Email", // Subject line
         text: "Welcome to your Culinary Compass!",
-        html: `<div>Here is your verification token: ${number}. 
+        html: `<div>Here is your verification token:\n ${number}\n 
         You will use this when you log in for the first time!</div>`,
       });
 
