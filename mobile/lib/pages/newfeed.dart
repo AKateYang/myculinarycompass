@@ -19,14 +19,17 @@ class NewsFeedPage extends StatefulWidget {
   const NewsFeedPage({super.key});
 
   @override
-  _NewsFeedPageState createState() => _NewsFeedPageState();
+  _NewsFeedPage createState() => _NewsFeedPage();
 }
 
-class _NewsFeedPageState extends State<NewsFeedPage> {
+class _NewsFeedPage extends State<NewsFeedPage> {
   List<Story> _stories = [];
   Set<String> _loadedStoryIds = {};
   bool _loadingMore = false;
   int _currentPage = 1;
+
+  static const String backendUrl =
+      'https://myculinarycompass-0c8901cce626.herokuapp.com/assets';
 
   @override
   void initState() {
@@ -62,26 +65,20 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8.0),
-                      alignment:
-                          Alignment.center, // Adjust the alignment as needed
+                      alignment: Alignment.center,
                       child: Row(
                         children: [
                           CircleAvatar(
-                            radius:
-                                16.0, // Adjust the radius of the circular image
-                            backgroundColor:
-                                Colors.grey, // Placeholder background color
+                            radius: 16.0,
+                            backgroundColor: Colors.grey,
                             child: Image.network(
-                              'https://via.placeholder.com/300', // Replace with your actual API endpoint
-                              fit: BoxFit.cover, // Adjust the fit as needed
+                              'https://via.placeholder.com/300',
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(
-                              width:
-                                  8.0), // Add some space between the image and text
+                          SizedBox(width: 8.0),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Align text to the left
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 _stories[index].userName,
@@ -89,20 +86,18 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
                                 ),
-                                textAlign:
-                                    TextAlign.left, // Align text to the left
+                                textAlign: TextAlign.left,
                               ),
                               Container(
-                                height: 2.0, // Adjust the height of the line
-                                color: Colors
-                                    .black, // Adjust the color of the line
+                                height: 2.0,
+                                color: Colors.black,
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    Image.network(_stories[index].imageUrl),
+                    Image.network('$backendUrl/${_stories[index].picturePath}'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -135,7 +130,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                             IconButton(
                               icon: Icon(Icons.open_in_new),
                               onPressed: () {
-                                _openRecipePopup(_stories[index].id);
+                                _openRecipePopup(_stories[index].id, index);
                                 // TODO: Implement redirection functionality
                               },
                             ),
@@ -358,7 +353,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
             userName: item["firstName"],
             id: item['_id'],
             title: item['caption'],
-            imageUrl: 'https://via.placeholder.com/300',
+            picturePath: item['picturePath'],
             comments: [], // Initialize comments list
           );
         }).toList();
@@ -435,7 +430,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
             userName: item["firstName"],
             id: item['_id'],
             title: item['caption'],
-            imageUrl: 'https://via.placeholder.com/300',
+            picturePath: item['picturePath'],
             comments: [],
           );
         }).toList();
@@ -468,7 +463,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
     }
   }
 
-  void _openRecipePopup(String postId) async {
+  void _openRecipePopup(String postId, int index) async {
     // Fetch the recipeId for the given postId
     final recipeIdUrl = 'http://10.0.2.2:5000/posts/getRecipeId/$postId';
     final recipeIdResponse = await http.get(Uri.parse(recipeIdUrl));
@@ -498,7 +493,9 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.network(
-                          'https://via.placeholder.com/300'), // Placeholder image
+                        '$backendUrl/${_stories[index].picturePath}', // Use the imageUrl from the story
+                        fit: BoxFit.cover, // Adjust the fit as needed
+                      ),
                       SizedBox(
                           height: 8), // Add some space between image and text
                       Text(
@@ -749,7 +746,7 @@ class Story {
   final String userName;
   final String id;
   final String title;
-  final String imageUrl;
+  final String picturePath;
   bool isLiked;
   bool isBookmarked;
   List<String> comments;
@@ -758,7 +755,7 @@ class Story {
     required this.userName,
     required this.id,
     required this.title,
-    required this.imageUrl,
+    required this.picturePath,
     this.isLiked = false,
     this.isBookmarked = false,
     this.comments = const [],
@@ -769,7 +766,7 @@ class Story {
       userName: json['firstName'],
       id: json['id'],
       title: json['title'],
-      imageUrl: json['imageUrl'],
+      picturePath: json['picturePath'],
       isLiked: json['isLiked'],
       isBookmarked: json['isBookmarked'],
       comments: List<String>.from(json['comments']),
@@ -815,4 +812,5 @@ class PostCreateData {
   late String userId;
   late String firstName;
   late String lastName;
+  late String picturePath;
 }

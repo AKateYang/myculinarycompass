@@ -4,7 +4,6 @@ import 'package:mobile/pages/newfeed.dart';
 import 'package:mobile/pages/account/profile.dart';
 import 'package:mobile/pages/saved.dart';
 
-
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
@@ -26,7 +25,7 @@ class _DashboardPageState extends State<DashboardPage> {
     //dashboard
     ProfilePage(),
 
-    News(),
+    NewsFeedPage(),
 
     SavedRecipes(),
   ];
