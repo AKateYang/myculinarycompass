@@ -59,7 +59,7 @@ export const saveAndUnsaveRecipes = async (req, res) => {
 export const getAllRecipes = async (req, res) => {
   // No incoming body is needed to get all recipes
   try {
-    // Assuming Recipe is a Mongoose model you would find all documents in the recipes collection.
+    // Assuming Recipe is a Mongoose mreqodel you would find all documents in the recipes collection.
     const recipes = await Recipe.find({});
     const totalPosts = recipes.length;
 
