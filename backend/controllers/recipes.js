@@ -28,6 +28,7 @@ export const createRecipe = async (req, res) => {
       continent: "",
       country: "",
     });
+
     const savedRecipe = await newRecipe.save();
     res.status(200).json(savedRecipe);
   } catch (err) {
@@ -105,7 +106,7 @@ export const getLazyLoadingRecipes = async (req, res) => {
 
 export const getRecipe = async (req, res) => {
   const { recipeId } = req.params; // Extract the recipe ID from the URL parameters
-
+  console.log(recipeId);
   try {
     const recipe = await Recipe.findById(recipeId);
 

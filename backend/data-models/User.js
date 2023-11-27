@@ -48,6 +48,14 @@ const UserSchema = new mongoose.Schema(
     },
     totalFollowers: Number,
     totalFollowing: Number,
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    token: {
+      type: String,
+      default: "",
+    },
     location: String,
     occupation: String,
     viewedProfile: Number,

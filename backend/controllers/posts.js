@@ -116,13 +116,13 @@ export const updatePost = async (req, res) => {
   }
 };
 
-// Updates the likes of a post
-// Need help understanding how this is set up.
 export const likePost = async (req, res) => {
   try {
     const { id } = req.params;
+
     const { userId } = req.body;
     const post = await Post.findById(id);
+
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {
