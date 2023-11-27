@@ -89,13 +89,13 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
 
       var res = JSON.parse(await response.text());
 
-      if (res.id <= 0) {
+      if (res <= 0) {
         setMessage("User/Password combination incorrect");
       } else {
         var user = {
           firstName: res.user.firstName,
           lastName: res.user.lastName,
-          id: res.user._id,
+          _id: res.user._id,
           picturePath: res.user.picturePath,
         };
 
