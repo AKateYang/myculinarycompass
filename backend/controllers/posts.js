@@ -141,6 +141,30 @@ export const likePost = async (req, res) => {
   } catch (err) {}
 };
 
+export const getlikePosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const posts = await Post.find();
+
+    const isLiked = posts.likes.get(userId);
+
+    if (isLiked) {
+      var post = {};
+    } else {
+      post.likes.set(userId, true);
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { likes: post.likes },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {}
+};
+
 export const getLazyLoadingPosts = async (req, res) => {
   try {
     const { pageNumber } = req.body;

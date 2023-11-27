@@ -316,44 +316,56 @@ class _LikedTab extends State<LikedTab> {
 
   void _loadStories() async {
     // Replace the API URL with your actual API endpoint
-    const apiUrl = 'http://10.0.2.2:5000/posts/lazyLoading/getLazyLoadingPosts';
+    const apiUrl = 'http://10.0.2.2:5000/posts/';
 
     try {
-      final response = await http.post(
+      final response = await http.get(
         Uri.parse(apiUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode({'pageNumber': _currentPage}),
       );
 
       if (response.statusCode == 200) {
-        _currentPage++;
-        List<dynamic> data = jsonDecode(response.body);
-        List<Story> stories = data.map((item) {
-          return Story(
-            userName: item["firstName"],
-            id: item['_id'],
-            title: item['caption'],
-            picturePath: item['picturePath'],
-            comments: [], // Initialize comments list
-          );
-        }).toList();
+        // List<dynamic> data = jsonDecode(response.body);
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String? userDataString = prefs.getString('user_data');
+        var isLiked = false;
+        if (userDataString != null) {
+          Map<String, dynamic> data = jsonDecode(response.body);
+          Map<String, dynamic> userData = jsonDecode(userDataString);
+          var userId = userData['id'];
+          var like = data['likes'][userId];
+          isLiked = like;
+        }
+        if (isLiked) {
+          _currentPage++;
+          List<dynamic> data = jsonDecode(response.body);
+          List<Story> stories = data.map((item) {
+            return Story(
+              userName: item["firstName"],
+              id: item['_id'],
+              title: item['caption'],
+              picturePath: item['picturePath'],
+              comments: [], // Initialize comments list
+            );
+          }).toList();
 
-        // Filter out already loaded story IDs
-        stories = stories
-            .where((story) => !_loadedStoryIds.contains(story.id))
-            .toList();
+          // Filter out already loaded story IDs
+          stories = stories
+              .where((story) => !_loadedStoryIds.contains(story.id))
+              .toList();
 
-        // Load only the first 5 unique stories initially
-        setState(() {
-          _stories = stories.take(5).toList();
-          _loadedStoryIds.addAll(_stories.map((story) => story.id));
-        });
+          // Load only the first 5 unique stories initially
+          setState(() {
+            _stories = stories.take(5).toList();
+            _loadedStoryIds.addAll(_stories.map((story) => story.id));
+          });
 
-        // Fetch comments for each story
-        for (var story in _stories) {
-          await _loadCommentsForStory(story);
+          // Fetch comments for each story
+          for (var story in _stories) {
+            await _loadCommentsForStory(story);
+          }
         }
       } else {
         // Handle error
@@ -392,45 +404,56 @@ class _LikedTab extends State<LikedTab> {
     await Future.delayed(const Duration(seconds: 2)); // Simulating a delay
 
     // Fetch the next page of data
-    const apiUrl = 'http://10.0.2.2:5000/posts/lazyLoading/getLazyLoadingPosts';
+    const apiUrl = 'http://10.0.2.2:5000/posts/';
 
     try {
-      final response = await http.post(
+      final response = await http.get(
         Uri.parse(apiUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode({'pageNumber': _currentPage}),
       );
 
       _currentPage++;
 
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
-        List<Story> newStories = data.map((item) {
-          return Story(
-            userName: item["firstName"],
-            id: item['_id'],
-            title: item['caption'],
-            picturePath: item['picturePath'],
-            comments: [],
-          );
-        }).toList();
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String? userDataString = prefs.getString('user_data');
+        var isLiked = false;
+        if (userDataString != null) {
+          Map<String, dynamic> data = jsonDecode(response.body);
+          Map<String, dynamic> userData = jsonDecode(userDataString);
+          var userId = userData['id'];
+          bool like = data['likes'][userId];
+          isLiked = like;
+        }
+        if (isLiked) {
+          List<Story> newStories = data.map((item) {
+            return Story(
+              userName: item["firstName"],
+              id: item['_id'],
+              title: item['caption'],
+              picturePath: item['picturePath'],
+              comments: [],
+            );
+          }).toList();
 
-        // Filter out already loaded story IDs
-        newStories = newStories
-            .where((story) => !_loadedStoryIds.contains(story.id))
-            .toList();
+          // Filter out already loaded story IDs
+          newStories = newStories
+              .where((story) => !_loadedStoryIds.contains(story.id))
+              .toList();
 
-        // Load the next 5 unique stories
-        setState(() {
-          _stories.addAll(newStories.take(5));
-          _loadedStoryIds.addAll(newStories.map((story) => story.id));
-          _loadingMore = false;
-        });
+          // Load the next 5 unique stories
+          setState(() {
+            _stories.addAll(newStories.take(5));
+            _loadedStoryIds.addAll(newStories.map((story) => story.id));
+            _loadingMore = false;
+          });
 
-        for (var story in _stories) {
-          await _loadCommentsForStory(story);
+          for (var story in _stories) {
+            await _loadCommentsForStory(story);
+          }
         }
       } else {
         // Handle error
