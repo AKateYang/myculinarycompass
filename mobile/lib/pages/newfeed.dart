@@ -93,6 +93,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                             IconButton(
                               icon: Icon(Icons.open_in_new),
                               onPressed: () {
+                                _openRecipePopup(_stories[index].id);
                                 // TODO: Implement redirection functionality
                               },
                             ),
@@ -393,6 +394,86 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
       });
     }
   }
+
+  void _openRecipePopup(String postId) async {
+    // Fetch the recipeId for the given postId
+    final recipeIdUrl = 'http://10.0.2.2:5000/posts/getRecipeId/$postId';
+    final recipeIdResponse = await http.get(Uri.parse(recipeIdUrl));
+
+    if (recipeIdResponse.statusCode == 200) {
+      final recipeId = jsonDecode(recipeIdResponse.body);
+
+      // Fetch the detailed recipe using the obtained recipeId
+      final recipeUrl = 'http://10.0.2.2:5000/recipes/getRecipe/$recipeId';
+      final recipeResponse = await http.get(Uri.parse(recipeUrl));
+
+      if (recipeResponse.statusCode == 200) {
+        final Map<String, dynamic> recipeData = jsonDecode(recipeResponse.body);
+        final Recipe recipe = Recipe.fromJson(recipeData);
+
+        // Display the recipe details in a popup
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(recipe.recipeName),
+              content: Container(
+                width: MediaQuery.of(context).size.width *
+                    0.9, // Adjust the width factor
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(
+                          'https://via.placeholder.com/300'), // Placeholder image
+                      SizedBox(
+                          height: 8), // Add some space between image and text
+                      Text(
+                        'Recipe Name:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(recipe.recipeName, style: TextStyle(fontSize: 16)),
+                      Divider(),
+                      Text(
+                        'Time to Make:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(recipe.timeToMake, style: TextStyle(fontSize: 16)),
+                      Divider(),
+                      Text(
+                        'Ingredients:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        recipe.ingredients.join(', '),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Divider(),
+                      Text(
+                        'Description:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(recipe.description, style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      } else {
+        // Handle error
+        print('Failed to fetch recipe details');
+      }
+    } else {
+      // Handle error
+      print('Failed to fetch recipeId');
+    }
+  }
 }
 
 class Story {
@@ -420,6 +501,32 @@ class Story {
       isLiked: json['isLiked'],
       isBookmarked: json['isBookmarked'],
       comments: List<String>.from(json['comments']),
+    );
+  }
+}
+
+class Recipe {
+  final String recipeId;
+  final String recipeName;
+  final String timeToMake;
+  final List<String> ingredients;
+  final String description;
+
+  Recipe({
+    required this.recipeId,
+    required this.recipeName,
+    required this.timeToMake,
+    required this.ingredients,
+    required this.description,
+  });
+
+  factory Recipe.fromJson(Map<String, dynamic> json) {
+    return Recipe(
+      recipeId: json['_id'],
+      recipeName: json['recipeName'],
+      timeToMake: json['timeToMake'],
+      ingredients: List<String>.from(json['ingredients']),
+      description: json['description'],
     );
   }
 }

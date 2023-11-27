@@ -208,3 +208,14 @@ export const addComment = async (req, res) => {
     res.status(500).json({ error: "Error: " + err.message });
   }
 };
+
+export const getRecipeId = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const post = await Post.findById(postId);
+    const recipeId = post.recipeId.toString();
+    res.status(200).json(recipeId);
+  } catch (err) {
+    res.status(500).json({ error: "Error: " + err.message });
+  }
+};

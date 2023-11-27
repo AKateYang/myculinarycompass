@@ -10,6 +10,7 @@ import {
   saveAndUnsavePosts,
   getComments,
   addComment,
+  getRecipeId,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -40,5 +41,7 @@ router.patch("/savePost/:userId/:postId", saveAndUnsavePosts);
 router.get("/getComments/:postId", getComments);
 
 router.post("/addComment/:postId", addComment);
+
+router.get("/getRecipeId/:postId", getRecipeId);
 
 export default router;
