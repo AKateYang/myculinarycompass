@@ -133,7 +133,7 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
           </div> */}
           <div className="signup-floating-label">
             <input
-              type="text"
+              type="password"
               className="signup-input-field"
               id="signup-password"
               placeholder=" "
