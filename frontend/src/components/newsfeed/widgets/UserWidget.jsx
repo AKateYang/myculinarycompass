@@ -5,9 +5,9 @@ import {
   WorkOutlineOutlined,
 } from "@mui/icons-material";
 import { Box, Typography, Divider, useTheme } from "@mui/material";
-import UserImage from "../../components/UserImage.jsx";
-import FlexBetween from "../../components/FlexBetween.jsx";
-import WidgetWrapper from "../../components/WidgetWrapper.jsx";
+import UserImage from "../UserImage.jsx";
+import FlexBetween from "../FlexBetween.jsx";
+import WidgetWrapper from "../WidgetWrapper.jsx";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
   // UPDATED getUser
   const getUser = async () => {
-    var user = require("../../components/Path.js");
+    var user = require("../../Path.js");
     const response = await fetch(user.buildPath(`users/${userId}`), {
       method: "GET",
       headers: { "Content-Type": "application/json" },

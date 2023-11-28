@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../data-models/User.js";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 ///////////////////////////////////////////////////
 // REGISTER USER
@@ -54,7 +56,7 @@ export const register = async (req, res) => {
 
       res.status(201).json(savedUser);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message, msg: "Sign up error" });
     }
   } else {
     res.statusCode = 400;

@@ -6,13 +6,12 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { themeSettings } from "./components/theme.js";
+import { themeSettings } from "./components/newsfeed/theme.js";
 
-import CardPage from "./pages/CardPage";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
 import SavedRecipes from "./pages/SavedRecipes";
-import HomePage from "./scenes/homePage/index.jsx";
+import HomePage from "./pages/homePage.jsx";
 
 function App() {
   const mode = useSelector((state) => state.mode);

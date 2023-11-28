@@ -207,7 +207,7 @@
 }
 
 .desktop .frame {
-  background-image: url(../../../backend/public/assets/p11.jpeg);
+  background-image: url(../../../../backend/public/assets/p11.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 5px;
@@ -219,7 +219,7 @@
 }
 
 .desktop .frame-2 {
-  background-image: url(../../../backend/public/assets/p11.jpeg);
+  background-image: url(../../../../backend/public/assets/p11.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 5px;
@@ -231,7 +231,7 @@
 }
 
 .desktop .frame-3 {
-  background-image: url(../../../backend/public/assets/p11.jpeg);
+  background-image: url(../../../../backend/public/assets/p11.jpeg);
   background-position: 50% 50%;
   background-size: cover;
   border-radius: 5px;

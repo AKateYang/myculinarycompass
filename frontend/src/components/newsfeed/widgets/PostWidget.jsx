@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setPost } from "../../state/index.jsx";
-import { addCommentToPost } from "../../state/index.jsx";
+import { setPost } from "../../../state/index.jsx";
+import { addCommentToPost } from "../../../state/index.jsx";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import FlexBetween from "../../components/FlexBetween.jsx";
+import FlexBetween from "../FlexBetween.jsx";
 
 const PostWidget = ({
   _id,
@@ -39,7 +39,7 @@ const PostWidget = ({
   var userId = userData._id;
 
   const patchLike = async () => {
-    var bp = require("../../components/Path.js");
+    var bp = require("../../Path.js");
     console.log(_id);
     const response = await fetch(bp.buildPath(`posts/${_id}/like`), {
       method: "PATCH",
@@ -58,7 +58,7 @@ const PostWidget = ({
   const handleAddComment = async (e) => {
     e.preventDefault(); // This line should prevent the default form submission
     try {
-      var bp = require("../../components/Path.js");
+      var bp = require("../../Path.js");
       const response = await fetch(bp.buildPath(`posts/${_id}/addComment`), {
         method: "POST",
         headers: {

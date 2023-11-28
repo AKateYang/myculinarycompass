@@ -35,7 +35,6 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
-      username: username.value,
       password: loginPassword.value,
     };
     var js = JSON.stringify(obj);
@@ -50,18 +49,14 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
 
       var res = JSON.parse(await response.text());
 
-      if (res.id <= 0) {
-        setMessage("User/Password combination incorrect");
-      } else {
-        var user = {
-          firstName: res.user.firstName,
-          lastName: res.user.lastName,
-          id: res.user.id,
-        };
-        localStorage.setItem("user_data", JSON.stringify(user));
+      if (res.msg === "User already registered") {
+        setMessage("User already registered");
+      } else if (res.msg != "Sign up error") {
+        setMessage("Successfully registered, please validate email");
 
-        setMessage("");
         navigate("/");
+      } else {
+        setMessage("error with sign up");
       }
     } catch (e) {
       alert(e.toString());
