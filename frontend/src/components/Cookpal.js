@@ -13,7 +13,7 @@ const Cookpal = () => {
   var userId = ud.id;
   var userRecipes = ud.saveRecipesId;
   const usersSavedRecipes = [];
-  const serverBaseURL = "https://www.myculinarycompass.com/assets";
+  const serverBaseURL = "https://www.myculinarycompass.com/assets/";
   // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
   const navigate = useNavigate();
 
