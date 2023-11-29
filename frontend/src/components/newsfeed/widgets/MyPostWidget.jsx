@@ -12,6 +12,7 @@ import {
   Divider,
   InputBase,
   Button,
+  useTheme,
 } from "@mui/material";
 import UserImage from "../UserImage.jsx";
 import WidgetWrapper from "../WidgetWrapper.jsx";
@@ -21,6 +22,7 @@ const MyPostWidget = ({ picturePath }) => {
   const [caption, setCaption] = useState("");
   const userData = JSON.parse(localStorage.getItem("user_data") || "{}");
   const userId = userData._id;
+  const { palette } = useTheme();
 
   // Assuming recipeId, picturePath, and videoPath are provided or managed elsewhere
   const postPicturePath = "your-picture-path"; // replace with actual picture path logic
@@ -65,7 +67,7 @@ const MyPostWidget = ({ picturePath }) => {
           value={caption}
           sx={{
             width: "100%",
-            backgroundColor: "background.paper",
+            backgroundColor: palette.neutral.light,
             borderRadius: "2rem",
             padding: "1rem 2rem",
           }}
@@ -77,7 +79,7 @@ const MyPostWidget = ({ picturePath }) => {
         onClick={handlePost}
         sx={{
           color: "background.alt",
-          backgroundColor: "primary.main",
+          backgroundColor: "#23e858",
           borderRadius: "3rem",
           marginTop: "1rem",
         }}
