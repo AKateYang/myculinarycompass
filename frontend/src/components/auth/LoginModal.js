@@ -84,6 +84,10 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
 
       var res = JSON.parse(await response.text());
 
+      if (res.msg === "Please verify email at " + email) {
+        setMessage("Verify account from sent email.");
+        return;
+      }
       if (res <= 0) {
         setMessage("User/Password combination incorrect");
       } else {

@@ -72,14 +72,6 @@ class _NewsFeedPage extends State<NewsFeedPage> {
                       alignment: Alignment.center,
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 16.0,
-                            backgroundColor: Colors.grey,
-                            child: Image.network(
-                              'https://via.placeholder.com/300',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                           SizedBox(width: 8.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -830,9 +822,8 @@ class _NewsFeedPage extends State<NewsFeedPage> {
         final Response = await http.patch(Uri.parse(apiUrl));
 
         if (Response.statusCode == 200) {
-          setState(() {
-            story.isFollowing = !story.isFollowing; // Toggle the follow state
-          });
+          story.isFollowing = !story.isFollowing; // Toggle the follow state
+
           print("You followed someone!");
         } else {
           // Handle error
