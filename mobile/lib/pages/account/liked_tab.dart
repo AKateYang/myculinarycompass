@@ -16,7 +16,7 @@ class _LikedTab extends State<LikedTab> {
   bool _loadingMore = false;
   int _currentPage = 1;
 
-  static const String backendUrl = 'https://www.myculinarycompass.com/assets';
+  static const String backendUrl = 'http://www.myculinarycompass.com/assets';
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _LikedTab extends State<LikedTab> {
                             radius: 16.0,
                             backgroundColor: Colors.grey,
                             child: Image.network(
-                              'https://via.placeholder.com/300',
+                              'http://via.placeholder.com/300',
                               fit: BoxFit.cover,
                             ),
                           ),

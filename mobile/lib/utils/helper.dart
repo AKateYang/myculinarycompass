@@ -371,7 +371,7 @@ Future<List<String>> fetchRecipeImage() async {
 // Future<List<String>> _fetchRecipes() async {
 //   // Replace the API URL with your actual API endpoint
 //   // const apiUrl =
-//   //     'https://myculinarycompass-0c8901cce626.herokuapp.com/recipes';
+//   //     'http://myculinarycompass-0c8901cce626.herokuapp.com/recipes';
 //   const apiUrl = "http://10.0.2.2:5000/recipes/";
 
 //   try {

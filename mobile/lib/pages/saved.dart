@@ -28,7 +28,7 @@ class _SavedRecipesState extends State<SavedRecipes> {
 
   Future<Recipe> _fetchRecipes() async {
     // Replace the API URL with your actual API endpoint
-    const apiUrl = "https://www.myculinarycompass.com/recipes/getallmobile";
+    const apiUrl = "http://www.myculinarycompass.com/recipes/getallmobile";
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -59,13 +59,13 @@ class _SavedRecipesState extends State<SavedRecipes> {
     }
   }
 
-  final String addr = 'https://www.myculinarycompass.com';
+  final String addr = 'http://www.myculinarycompass.com';
 
   Future<Recipe> _fetchSavedRecipes() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userDataString = prefs.getString('user_data');
     // Use final instead of const for variables determined at runtime
-    final String addr = 'https://www.myculinarycompass.com';
+    final String addr = 'http://www.myculinarycompass.com';
 
     if (userDataString != null) {
       try {
@@ -108,7 +108,7 @@ class _SavedRecipesState extends State<SavedRecipes> {
 
   Future<List<String>> fetchSavedRecipes() async {
     // Replace the API URL with your actual API endpoint
-    const apiUrl = "https://www.myculinarycompass.com/recipes/";
+    const apiUrl = "http://www.myculinarycompass.com/recipes/";
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -252,7 +252,7 @@ class _SavedRecipesState extends State<SavedRecipes> {
 class RecipeCard extends StatelessWidget {
   final String imageUrl;
   final String recipeName;
-  static const String backendUrl = 'https://www.myculinarycompass.com/assets';
+  static const String backendUrl = 'http://www.myculinarycompass.com/assets';
 
   RecipeCard({required this.imageUrl, required this.recipeName});
 

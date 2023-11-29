@@ -178,7 +178,7 @@ class SignupPage extends StatelessWidget {
     TextEditingController firstNameController,
     TextEditingController lastNameController,
   ) async {
-    const apiUrl = 'https://www.myculinarycompass.com/auth/register';
+    const apiUrl = 'http://www.myculinarycompass.com/auth/register';
 
     try {
       final response = await http.post(

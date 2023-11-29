@@ -29,8 +29,8 @@ const PostWidget = ({
   // ...other props if needed
 }) => {
   // Base URL for your server
-  const serverBaseUrl = "https://www.myculinarycompass.com/assets/";
-  // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
+  const serverBaseUrl = "http://www.myculinarycompass.com/assets/";
+  // "http://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
 
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();

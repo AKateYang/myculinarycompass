@@ -5,7 +5,7 @@ class ImageTab extends StatelessWidget {
   const ImageTab({Key? key}) : super(key: key);
 
   // Replace with your backend API endpoint
-  static const String backendUrl = 'https://www.myculinarycompass.com/assets';
+  static const String backendUrl = 'http://www.myculinarycompass.com/assets';
 
   @override
   Widget build(BuildContext context) {

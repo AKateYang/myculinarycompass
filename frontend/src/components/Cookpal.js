@@ -13,8 +13,8 @@ const Cookpal = () => {
   var userId = ud.id;
   var userRecipes = ud.saveRecipesId;
   const usersSavedRecipes = [];
-  const serverBaseURL = "https://www.myculinarycompass.com/assets/";
-  // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
+  const serverBaseURL = "http://www.myculinarycompass.com/assets/";
+  // "http://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
   const navigate = useNavigate();
 
   // Fetch recipes on component mount

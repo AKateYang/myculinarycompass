@@ -28,8 +28,8 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   bool _loadingMore = false;
   int _currentPage = 1;
 
-  static const String backendUrl = "https://www.myculinarycompass.com/assets/";
-  // 'https://www.myculinarycompass.com/assets';
+  static const String backendUrl = "http://www.myculinarycompass.com/assets/";
+  // 'http://www.myculinarycompass.com/assets';
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
                             radius: 16.0,
                             backgroundColor: Colors.grey,
                             child: Image.network(
-                              'https://via.placeholder.com/300',
+                              'http://via.placeholder.com/300',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -195,7 +195,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
       var userId = userData['id'];
 
       final apiUrl =
-          'https://www.myculinarycompass.com/posts/savePost/$userId/$postId';
+          'http://www.myculinarycompass.com/posts/savePost/$userId/$postId';
 
       try {
         final response = await http.patch(Uri.parse(apiUrl));
@@ -223,7 +223,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
       var userId = userData['id'];
 
       // Replace the API URL with your actual API endpoint
-      final apiUrl = 'https://www.myculinarycompass.com/posts/$postId/like';
+      final apiUrl = 'http://www.myculinarycompass.com/posts/$postId/like';
 
       try {
         final response = await http.patch(
@@ -292,7 +292,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   }
 
   void _addComment(Story story, String postId, String comment) async {
-    final apiUrl = 'https://www.myculinarycompass.com/posts/addComment/$postId';
+    final apiUrl = 'http://www.myculinarycompass.com/posts/addComment/$postId';
 
     try {
       final response = await http.post(
@@ -316,8 +316,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   }
 
   Future<void> _reloadComments(Story story, String postId) async {
-    final apiUrl =
-        'https://www.myculinarycompass.com/posts/getComments/$postId';
+    final apiUrl = 'http://www.myculinarycompass.com/posts/getComments/$postId';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -337,7 +336,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   void _loadStories() async {
     // Replace the API URL with your actual API endpoint
     const apiUrl =
-        'https://www.myculinarycompass.com/posts/lazyLoading/getLazyLoadingPosts';
+        'http://www.myculinarycompass.com/posts/lazyLoading/getLazyLoadingPosts';
 
     try {
       final response = await http.post(
@@ -388,7 +387,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
 
   Future<void> _loadCommentsForStory(Story story) async {
     final apiUrl =
-        'https://www.myculinarycompass.com/posts/getComments/${story.id}';
+        'http://www.myculinarycompass.com/posts/getComments/${story.id}';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -415,7 +414,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
 
     // Fetch the next page of data
     const apiUrl =
-        'https://www.myculinarycompass.com/posts/lazyLoading/getLazyLoadingPosts';
+        'http://www.myculinarycompass.com/posts/lazyLoading/getLazyLoadingPosts';
 
     try {
       final response = await http.post(
@@ -471,7 +470,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   void _openRecipePopup(String postId, int index) async {
     // Fetch the recipeId for the given postId
     final recipeIdUrl =
-        'https://www.myculinarycompass.com/posts/getRecipeId/$postId';
+        'http://www.myculinarycompass.com/posts/getRecipeId/$postId';
     final recipeIdResponse = await http.get(Uri.parse(recipeIdUrl));
 
     if (recipeIdResponse.statusCode == 200) {
@@ -479,7 +478,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
 
       // Fetch the detailed recipe using the obtained recipeId
       final recipeUrl =
-          'https://www.myculinarycompass.com/recipes/getRecipe/$recipeId';
+          'http://www.myculinarycompass.com/recipes/getRecipe/$recipeId';
       final recipeResponse = await http.get(Uri.parse(recipeUrl));
 
       if (recipeResponse.statusCode == 200) {
@@ -611,7 +610,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   }
 
   Future<String> _createRecipe(RecipeCreateData recipeData) async {
-    // const apiUrl = 'https://www.myculinarycompass.com/recipes/createRecipe';
+    // const apiUrl = 'http://www.myculinarycompass.com/recipes/createRecipe';
 
     // try {
     //   final response = await http.post(
@@ -713,7 +712,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   }
 
   Future<void> _createPost(PostCreateData postData, String recipeId) async {
-    const apiUrl = 'https://www.myculinarycompass.com/posts/createPost';
+    const apiUrl = 'http://www.myculinarycompass.com/posts/createPost';
 
     try {
       final response = await http.post(

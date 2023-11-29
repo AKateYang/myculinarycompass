@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _profileImageUrlFuture = fetchProfileImgUrl();
   }
 
-  static const String backendUrl = 'https://www.myculinarycompass.com/assets';
+  static const String backendUrl = 'http://www.myculinarycompass.com/assets';
 
   @override
   Widget build(BuildContext context) {

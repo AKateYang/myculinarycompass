@@ -6,7 +6,7 @@ import 'package:chewie/chewie.dart';
 class VideoTab extends StatelessWidget {
   const VideoTab({Key? key}) : super(key: key);
 
-  static const String backendUrl = 'https://www.myculinarycompass.com/assets';
+  static const String backendUrl = 'http://www.myculinarycompass.com/assets';
 
   @override
   Widget build(BuildContext context) {
