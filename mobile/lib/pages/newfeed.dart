@@ -72,14 +72,6 @@ class _NewsFeedPage extends State<NewsFeedPage> {
                       alignment: Alignment.center,
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 16.0,
-                            backgroundColor: Colors.grey,
-                            child: Image.network(
-                              'https://via.placeholder.com/300',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                           SizedBox(width: 8.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +90,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
                               ),
                             ],
                           ),
-                          SizedBox(width: 125.0),
+                          SizedBox(width: 160.0),
                           if (currentId != _stories[index].userId)
                             ElevatedButton(
                               onPressed: () {
