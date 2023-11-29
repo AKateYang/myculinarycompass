@@ -25,8 +25,8 @@ const MyPostWidget = ({ picturePath }) => {
   const { palette } = useTheme();
 
   // Assuming recipeId, picturePath, and videoPath are provided or managed elsewhere
-  const postPicturePath = "your-picture-path"; // replace with actual picture path logic
-  const postVideoPath = "your-video-path"; // replace with actual video path logic
+  const postPicturePath = "post1.jpeg"; // replace with actual picture path logic
+  const postVideoPath = ""; // replace with actual video path logic
 
   const serverBaseUrl = "https://www.myculinarycompass.com/";
 

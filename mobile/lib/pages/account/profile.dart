@@ -149,9 +149,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 Tab(
                   icon: Icon(Icons.photo_camera),
                 ),
-                Tab(
-                  icon: Icon(Icons.video_collection_rounded),
-                ),
+                // Tab(
+                //   icon: Icon(Icons.video_collection_rounded),
+                // ),
                 // Tab(
                 //   icon: Text(
                 //     "Liked",
@@ -170,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: TabBarView(
                 children: [
                   ImageTab(),
-                  VideoTab(),
+                  // VideoTab(),
                   // LikedTab(),
                   PostTab(),
                 ],
