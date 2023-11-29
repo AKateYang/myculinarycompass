@@ -57,7 +57,7 @@ class SignupPage extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 12,
+                      height: MediaQuery.of(context).size.height / 40,
                       // child: const Image(
                       //   colorBlendMode: BlendMode.overlay,
                       //   image: AssetImage('assets/background.png'),
@@ -101,7 +101,7 @@ class SignupPage extends StatelessWidget {
                       singupUser(emailController, passController,
                           firstNameController, lastNameController);
                     },
-                    color: const Color.fromRGBO(107, 99, 255, 1),
+                    color: Color.fromARGB(255, 7, 113, 12),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
@@ -153,7 +153,7 @@ class SignupPage extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(
           height: 5,
@@ -194,6 +194,23 @@ class SignupPage extends StatelessWidget {
         }),
       );
 
+      if (response.statusCode == 400) {
+        Get.snackbar(
+          'User already registered!',
+          'That email is already taken',
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
+          colorText: Colors.white,
+        );
+      }
+      if (response.statusCode == 403) {
+        Get.snackbar(
+          'Email Invalid!',
+          'It appears you typed an invalid email address!',
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
+          colorText: Colors.white,
+        );
+      }
+
       if (response.statusCode == 201) {
         // Post created successfully
         print('User registered');
@@ -201,7 +218,7 @@ class SignupPage extends StatelessWidget {
           'Signup Success',
           'Your account has been successfully created!'
               'A verification token has been sent to your email!',
-          backgroundColor: Colors.green,
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
           colorText: Colors.white,
         );
         Get.to(() => const HomePage());

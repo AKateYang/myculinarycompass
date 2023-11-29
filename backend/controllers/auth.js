@@ -98,10 +98,14 @@ export const login = async (req, res) => {
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+    if (!isMatch) return res.status(403).json({ msg: "Invalid credentials. " });
 
     const isVerified = user.verified;
-    if (!isVerified) return false;
+    if (!isVerified) {
+      res.status(401).json({ msg: "Please verify email at " + email });
+      res.status;
+      return false;
+    }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     delete user.password;

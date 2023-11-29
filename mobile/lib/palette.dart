@@ -7,7 +7,7 @@ const TextStyle landHeading = TextStyle(
 );
 
 const TextStyle landBodyText = TextStyle(
-  fontSize: 25,
+  fontSize: 20,
   fontWeight: FontWeight.bold,
   color: Colors.black,
 );

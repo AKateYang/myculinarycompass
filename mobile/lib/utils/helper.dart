@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,34 @@ Future<bool> loginUserWithEmail(String email, String pass) async {
           await http.post(url, headers: headers, body: user.toJson());
       var data = LoginResponse.fromJson(response.body);
 
+      if (response.statusCode == 400) {
+        Get.snackbar(
+          'User does not exist. ',
+          'please sign up',
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
+          colorText: Colors.white,
+        );
+      }
+
+      if (response.statusCode == 403) {
+        Get.snackbar(
+          'Invalid credentials. ',
+          'please try again',
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
+          colorText: Colors.white,
+        );
+      }
+
+      if (response.statusCode == 401) {
+        var errorMessage = json.decode(response.body)['msg'];
+        Get.snackbar(
+          'Email not verified',
+          errorMessage,
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
+          colorText: Colors.white,
+        );
+      }
+
       if (response.statusCode == 200) {
         // Parse user data from the response
         var userData = {
@@ -38,12 +67,22 @@ Future<bool> loginUserWithEmail(String email, String pass) async {
           'lastName': data.user.lastName,
           'id': data.user.id,
         };
-        Get.showSnackbar(GetSnackBar(
-          title: "Login Successful",
-          message: "Loading...",
-          snackPosition: SnackPosition.TOP,
+        Get.snackbar(
+          'Login Successful',
+          'Loading...',
           duration: const Duration(seconds: 2),
-        ));
+          backgroundColor: Color.fromARGB(255, 7, 113, 12),
+          colorText: Colors.white,
+        );
+        // Get.showSnackbar(
+        //   GetSnackBar(
+        //       title: "Login Successful",
+        //       message: "Loading...",
+        //       snackPosition: SnackPosition.TOP,
+        //       duration: const Duration(seconds: 2),
+        //       backgroundColor: Color.fromARGB(255, 7, 113, 12),
+        //       colorText: Colors.white),
+        // );
 
         // Save user data to local storage (SharedPreferences in Flutter)
         SharedPreferences prefs = await SharedPreferences.getInstance();

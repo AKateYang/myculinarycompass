@@ -94,6 +94,7 @@ class LoginPage extends StatelessWidget {
                               //     isHide: false),
                               makeInput(
                                   label: "Username",
+                                  obscureText: false,
                                   controller: emailController),
                               makeInput(
                                   label: "Password",
@@ -115,7 +116,7 @@ class LoginPage extends StatelessWidget {
                               onPressed: () {
                                 loginUser(emailController, passController);
                               },
-                              color: const Color.fromRGBO(107, 99, 255, 1),
+                              color: Color.fromARGB(255, 7, 113, 12),
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
@@ -123,7 +124,7 @@ class LoginPage extends StatelessWidget {
                                 "Login",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 20,
+                                    fontSize: 24,
                                     color: Colors.white),
                               ),
                             ),
@@ -165,14 +166,14 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget makeInput({label, obscureText = false, required controller}) {
+  Widget makeInput({label, obscureText, required controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           label,
           style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(
           height: 5,
@@ -183,7 +184,7 @@ class LoginPage extends StatelessWidget {
             inputType: TextInputType.text,
             controller: controller,
             inputAction: TextInputAction.next,
-            isHide: false),
+            isHide: obscureText),
         // TextField(
         //   controller: controller,
         //   obscureText: obscureText,

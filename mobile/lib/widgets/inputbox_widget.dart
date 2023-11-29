@@ -23,7 +23,7 @@ class InputBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 2),
         child: Column(
           children: [
             Padding(
@@ -37,7 +37,7 @@ class InputBoxWidget extends StatelessWidget {
                   controller: controller,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 15),
+                        vertical: 12, horizontal: 15),
                     border: InputBorder.none,
                     hintText: hintname,
                     hintStyle: hintStyle,

@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           Get.to(() => const LoginPage());
                         },
-                        color: const Color.fromRGBO(107, 99, 255, 1),
+                        color: const Color.fromARGB(255, 7, 113, 12),
                         shape: RoundedRectangleBorder(
                             side: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(50)),
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                           onPressed: () {
                             Get.to(() => const SignupPage());
                           },
-                          color: const Color.fromRGBO(107, 99, 255, 1),
+                          color: const Color.fromARGB(255, 7, 113, 12),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50)),
                           child: const Text(
