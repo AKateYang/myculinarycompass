@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:mobile/pages/landing/forgotPassword.dart';
 import 'package:mobile/palette.dart';
 import 'package:mobile/pages/landing/signup.dart';
 import 'package:mobile/utils/helper.dart';
@@ -14,11 +13,12 @@ import 'package:http/http.dart' as http;
 import '../../navbar.dart';
 import 'homepage.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class forgotPasswordPage extends StatelessWidget {
+  const forgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var accountController = TextEditingController();
     var emailController = TextEditingController();
     var passController = TextEditingController();
     return BackgroundImageWidget(
@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           title: const Text(
-            "Login Page",
+            "Forgot Password",
             style: TextStyle(
                 fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
           ),
@@ -96,11 +96,15 @@ class LoginPage extends StatelessWidget {
                               //     controller: passController,
                               //     inputAction: TextInputAction.next,
                               //     isHide: false),
+
                               makeInput(
-                                  label: "Username",
+                                  label: "Email",
+                                  controller: accountController),
+                              makeInput(
+                                  label: "New Password",
                                   controller: emailController),
                               makeInput(
-                                  label: "Password",
+                                  label: "Confirm Password",
                                   obscureText: true,
                                   controller: passController),
                             ],
@@ -117,14 +121,15 @@ class LoginPage extends StatelessWidget {
                               minWidth: double.infinity,
                               height: 60,
                               onPressed: () {
-                                loginUser(emailController, passController);
+                                sendRequest(accountController, emailController,
+                                    passController);
                               },
                               color: const Color.fromRGBO(107, 99, 255, 1),
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
                               child: const Text(
-                                "Login",
+                                "Request Change",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 20,
@@ -133,51 +138,6 @@ class LoginPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  const Text(
-                                    "Don't have an account? ",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(() => const SignupPage());
-                                    },
-                                    child: const Text(
-                                      "Sign up",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
-                                          color:
-                                              Color.fromRGBO(125, 255, 99, 1)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0), // Add some spacing
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(() => const forgotPasswordPage());
-                                  // Add the functionality for the "Forgot Password" button here
-                                  // For now, you can print a message
-                                  print("Forgot Password tapped");
-                                },
-                                child: const Text(
-                                  "Forgot Password",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: Color.fromRGBO(125, 255, 99, 1)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -228,45 +188,42 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-void loginUser(emailController, passController) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String? userDataString = prefs.getString('user_data');
+void sendRequest(accountController, emailController, passController) async {
+  if (emailController.text.trim() == passController.text.trim()) {
+    final apiUrl = "http://10.0.2.2:5000/auth/forgotPasswordSend";
 
-  if (userDataString != null) {
-    Map<String, dynamic> userData = jsonDecode(userDataString);
-    var id = userData['id'];
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'email': accountController.text.trim(),
+          'newPassword': passController.text.trim()
+        }),
+      );
 
-    var email = emailController.text.trim();
-
-    final apiUrl = "http://10.0.2.2:5000/users/isVerified/$email";
-    final response = await http.get(Uri.parse(apiUrl));
-
-    if (response.statusCode == 200) {
-      bool isVerified = jsonDecode(response.body);
-      if (!isVerified) {
+      if (response.statusCode == 200) {
         Get.snackbar(
-          'Seems like you are not verified',
-          'Check your inbox for your verification email!',
+          'Password change request sent!',
+          'Check your inbox for a recovery link!',
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+        Get.offAll(() => const HomePage());
       } else {
-        loginUserWithEmail(
-          emailController.text.trim(),
-          passController.text.trim(),
-        ).then((value) => {
-              if (value)
-                {
-                  emailController.clear(),
-                  passController.clear(),
-                  Future.delayed(const Duration(seconds: 2),
-                      () => {Get.offAll(() => const DashboardPage())})
-                }
-            });
+        print('Failed to send recovery link.');
       }
-    } else {
-      // Handle error
-      print('Failed to log in');
+    } catch (error) {
+      print('Error: $error');
     }
+  } else {
+    Get.snackbar(
+      'Passwords did not match',
+      'Try typing both of them again!',
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
   }
 }

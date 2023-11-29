@@ -53,7 +53,8 @@ export const register = async (req, res) => {
         impressions: Math.floor(Math.random() * 10000),
       });
       const savedUser = await newUser.save();
-      link = "http://localhost:5000/auth/verification/" + number + "/" + email;
+      const link =
+        "http://localhost:5000/auth/verification/" + number + "/" + email;
       const info = await transporter.sendMail({
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
@@ -92,6 +93,60 @@ export const login = async (req, res) => {
     res.status(200).json({ token, user });
   } catch (err) {
     res.status(500).json({ error: "login error: " + err.message });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { userId, newPassword } = req.params;
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+    const user = await User.findById(userId);
+
+    await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          password: passwordHash,
+        },
+      }
+    );
+    res.status(200).json({ msg: "Your password has been changed!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const forgotPasswordSend = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    const user = await User.findOne({ email: email });
+    const userId = user._id;
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.forwardemail.net",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
+      },
+    });
+
+    const link =
+      "http://localhost:5000/auth/forgotPassword/" + userId + "/" + newPassword;
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL, // sender address
+      to: email, // list of receivers
+      subject: "Password Recovery", // Subject line
+      text: "Seems like you forgot your password",
+      html: `<div>Click on this link in order to complete your change password request: \n ${link}</div>`,
+    });
+    res.status(200).json({ msg: "Recovery email sent successfully!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 

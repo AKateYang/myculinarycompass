@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/pages/landing/signup.dart';
 import 'package:mobile/widgets/background_widget.dart';
+import 'forgotPassword.dart';
 
 import 'login.dart';
 

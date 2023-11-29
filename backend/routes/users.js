@@ -25,7 +25,7 @@ router.get("/:id", getUser);
 
 router.get("/getUserName/:userId", getUserName);
 
-router.get("/isVerified/:userId", isVerified);
+router.get("/isVerified/:email", isVerified);
 
 // Route to block a user
 router.post("/blockUser", blockUser);

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:mobile/utils/helper.dart';
 
 import 'pages/landing/homepage.dart';
+import 'pages/landing/forgotPassword.dart';
 
 void main() {
   runApp(const GetMaterialApp(

@@ -25,8 +25,8 @@ export const getUserName = async (req, res) => {
 
 export const isVerified = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const user = await User.findById(userId);
+    const { email } = req.params;
+    const user = await User.findOne({ email: email });
     res.status(200).json(user.verified);
   } catch (err) {
     res.status(404).json({ message: err.message });
