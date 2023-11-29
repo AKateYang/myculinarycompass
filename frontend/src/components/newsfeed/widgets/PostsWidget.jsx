@@ -6,37 +6,43 @@ import PostWidget from "./PostWidget";
 const PostsWidget = ({ isProfile, _id, userId }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.auth.posts);
+  const _uid = JSON.parse(localStorage.getItem("user_data"))._id;
+  var userId = _uid._id;
 
-  // UPDATED getPosts
-  // Loading in all posts
-  const getPosts = async () => {
-    var bp = require("../../Path.js");
-    const response = await fetch(bp.buildPath("posts/"), {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    dispatch(setPosts({ posts: data }));
-  };
-
-  // UPDATED getUserPosts
-  const getUserPosts = async () => {
-    var bp = require("../../Path.js");
-    const response = await fetch(bp.buildPath(`posts/getPost/${_id}`), {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    dispatch(setPosts({ posts: data }));
-  };
+  const serverBaseUrl = "https://www.myculinarycompass.com/";
 
   useEffect(() => {
-    if (isProfile) {
-      getUserPosts();
-    } else {
-      getPosts();
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const getPosts = async () => {
+      const response = await fetch(serverBaseUrl + "posts/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      dispatch(setPosts({ posts: data }));
+      console.log({ posts: data });
+    };
+
+    // UPDATED getUserPosts
+    const getUserPosts = async () => {
+      const response = await fetch(serverBaseUrl + `posts/getPost/${userId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      dispatch(setPosts({ posts: data }));
+    };
+
+    const getUserProfile = async () => {
+      const response = await fetch(serverBaseUrl + `posts/getPost/${userId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      dispatch(setPosts({ posts: data }));
+    };
+    // Define your fetch logic here based on 'isProfile' and 'userId'
+    // Example: fetchPosts(isProfile ? `posts/user/${userId}` : 'posts/')
+  }, [isProfile, userId, dispatch]);
 
   return (
     <div>

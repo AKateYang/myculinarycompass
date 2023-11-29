@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "Overpass-Bold";
+  src: local("Overpass-Bold"),
+    url(../fonts/Overpass-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Overpass-Medium";
+  src: local("Overpass-Medium"),
+    url(../fonts/Overpass-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Overpass Mono-Bold";
+  src: local("Overpass Mono-Bold"),
+    url(../fonts/OverpassMono-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Overpass Mono-Medium";
+  src: local("Overpass Mono-Medium"),
+    url(../fonts/OverpassMono-Medium.ttf) format("truetype");
+}
+
 .cookpal {
   background-color: #ffffff;
   display: flex;
@@ -19,36 +43,51 @@
   width: 102%; /* Adjust the percentage as needed */
 }
 
+.overlap {
+  display: flex;
+  justify-content: space-between; /* Elements on either end */
+  align-items: center; /* Vertically center items */
+  background-color: #1a1a1a; /* Chic dark grey background */
+  padding: 1rem 2rem; /* Spacious padding for a relaxed feel */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.newsfeed-button,
+.logout-button {
+  font-family: "Overpass Mono-Medium", Helvetica;
+  font-size: 16px; /* Readable font size */
+  color: #ffffff; /* White text for contrast */
+  background-color: transparent; /* No background for a clean look */
+  padding: 0.5rem 1rem; /* Comfortable padding */
+  margin: 0 0.5rem; /* Balanced margin */
+  border: none; /* No border for simplicity */
+  text-transform: uppercase; /* Uppercase text for a fashionable touch */
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
 .newsfeed-button {
-  height: 40px;
-  width: 120px;
-  font-family: "Montserrat-Bold", Helvetica;
-  font-size: 16px;
-  font-weight: 700;
-  color: #d9d9d9;
-  background-color: #000000;
-  border: 2px solid #ffffff;
-  border-radius: 20px;
-  position: fixed;
-  top: 10px;
-  left: 10px; /* Adjust the left distance from the left of the viewport */
-  z-index: 999;
+  position: relative; /* Changed from fixed to relative */
+  left: initial; /* Reset left position */
+  top: initial; /* Reset top position */
 }
 
 .logout-button {
-  height: 40px;
-  width: 120px;
-  font-family: "Montserrat-Bold", Helvetica;
-  font-size: 16px;
-  font-weight: 700;
-  color: #d9d9d9;
-  background-color: #000000;
-  border: 2px solid #ffffff;
-  border-radius: 20px;
-  position: fixed;
-  top: 10px; /* Adjust the top distance from the top of the viewport */
-  right: 50px; /* Adjust the right distance from the right of the viewport */
-  z-index: 999; /* Ensure it appears above other elements on the page */
+  position: relative; /* Changed from fixed to relative */
+  right: initial; /* Reset right position */
+  top: initial; /* Reset top position */
+}
+
+.newsfeed-button:hover,
+.logout-button:hover {
+  color: #f0c808; /* Accent color on hover */
+  border-bottom: 2px solid #f0c808;
+}
+
+.brand-name {
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 24px;
+  color: #f0c808; /* Accent color for your brand name */
+  text-transform: uppercase; /* Uppercase for a stylish brand name */
 }
 
 .cookpal .text-wrapper-3 {
@@ -66,4 +105,8 @@
   /* width: 70px; */
   width: 10vw;
   height: 3vh;
+}
+
+body {
+  margin-top: 10vh; /* Push the content down so it doesn't hide under the navbar */
 }

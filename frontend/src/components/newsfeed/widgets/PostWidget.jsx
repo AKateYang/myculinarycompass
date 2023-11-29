@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../../state/index.jsx";
 import {
@@ -21,18 +21,42 @@ const PostWidget = ({
   location,
   videoPath,
   picturePath,
-  userPicturePath,
   likes,
 }) => {
-  // Base URL for your server
   const serverBaseUrl = "https://www.myculinarycompass.com/assets/";
-  // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
-
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
 
   var userData = JSON.parse(localStorage.getItem("user_data"));
   var userId = userData._id;
+
+  const [userPicturePath, setUserPicturePath] = useState("");
+
+  useEffect(() => {
+    const getUserProfile = async () => {
+      try {
+        const getUser = await fetch(
+          `https://www.myculinarycompass.com/users/${userId}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        if (!getUser.ok) {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        const getUserResponse = await getUser.json();
+        console.log(userId);
+        setUserPicturePath(getUserResponse.picturePath);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    getUserProfile(); // Call the function when the component mounts
+  }, []); // Empty dependency array to run once on moun
 
   const patchLike = async () => {
     var bp = require("../../Path.js");
@@ -77,6 +101,7 @@ const PostWidget = ({
   return (
     <Card sx={{ marginBottom: 2 }}>
       <CardContent>
+        {/* User info and post date */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <img
@@ -97,11 +122,13 @@ const PostWidget = ({
           <Typography variant="subtitle2">{""}</Typography>
         </Box>
 
+        {/* Post content */}
         <Typography variant="h5" style={{ marginTop: "1rem" }}>
           {caption}
         </Typography>
         <Typography variant="body2">{location}</Typography>
 
+        {/* Display picture if available */}
         {picturePath && (
           <img
             src={`${serverBaseUrl}${picturePath}`}
@@ -115,6 +142,7 @@ const PostWidget = ({
           />
         )}
 
+        {/* Display video if available */}
         {videoPath && (
           <video
             src={`${serverBaseUrl}${videoPath}`}
@@ -127,6 +155,7 @@ const PostWidget = ({
           />
         )}
 
+        {/* Like and comment buttons */}
         <Box display="flex" alignItems="center" mt={2}>
           <IconButton aria-label="like" onClick={patchLike}>
             <FavoriteBorderIcon />
@@ -150,26 +179,54 @@ const PostWidget = ({
 
         {isComments && (
           <>
-            <Box mt="0.5rem">
+            <Box
+              mt="0.5rem"
+              style={{
+                padding: "10px",
+                backgroundColor: "#f9f9f9",
+                borderRadius: "5px",
+              }}
+            >
               {Array.isArray(post?.comments) &&
                 post.comments.map((comment, i) => (
                   <React.Fragment key={i}>
                     <Divider />
-                    <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
+                    <Typography
+                      sx={{ m: "0.5rem 0", pl: "1rem" }}
+                      style={{ color: "gray", fontSize: "14px" }}
+                    >
                       {comment.text}{" "}
-                      {/* Access the text property of the comment object */}
                     </Typography>
                   </React.Fragment>
                 ))}
             </Box>
-            <form onSubmit={handleAddComment}>
+            <form
+              onSubmit={handleAddComment}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+              }}
+            >
               <input
                 type="text"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
+                style={{ flexGrow: 1, marginRight: "10px" }}
               />
-              <button type="submit">Comment</button>
+              <button
+                type="submit"
+                style={{
+                  backgroundColor: "blue",
+                  color: "white",
+                  border: "none",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                }}
+              >
+                Comment
+              </button>
             </form>
           </>
         )}
