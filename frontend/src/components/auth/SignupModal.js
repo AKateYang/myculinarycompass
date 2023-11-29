@@ -53,12 +53,11 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
         setMessage("User already registered");
       } else if (res.msg === "Invalid email format") {
         setMessage("Invalid email format");
-      } else if (res.msg != "Sign up error") {
-        setMessage("Successfully registered, please validate email");
-
-        navigate("/");
-      } else {
+      } else if (res.msg === "Sign up error") {
         setMessage("error with sign up");
+      } else {
+        setMessage("Successfully registered, please validate email");
+        navigate("/");
       }
     } catch (e) {
       alert(e.toString());
