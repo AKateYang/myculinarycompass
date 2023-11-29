@@ -41,10 +41,10 @@ app.use((req, res, next) => {
   );
 
   // Set Content Security Policy header
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self' https://www.myculinarycompass.com"
-  );
+  // res.setHeader(
+  //   "Content-Security-Policy",
+  //   "default-src 'self' https://www.myculinarycompass.com"
+  // );
 
   // Call next after setting all headers
   next();
