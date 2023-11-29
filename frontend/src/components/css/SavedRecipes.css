@@ -124,6 +124,7 @@ body {
   background-color: #000000;
   border: 2px solid #ffffff;
   border-radius: 20px;
+  position: fixed;
   top: 10px;
   left: 10px; /* Adjust the left distance from the left of the viewport */
   z-index: 999;
@@ -139,7 +140,7 @@ body {
   background-color: #000000;
   border: 2px solid #ffffff;
   border-radius: 20px;
-
+  position: fixed;
   top: 10px; /* Adjust the top distance from the top of the viewport */
   right: 50px; /* Adjust the right distance from the right of the viewport */
   z-index: 999; /* Ensure it appears above other elements on the page */
@@ -785,6 +786,17 @@ body {
   float: left;
 }
 
+.cookpal .group-2-1 {
+  height: 400px;
+  left: 60px;
+  /*position: absolute;*/
+  position: relative;
+  top: 175px;
+  width: 370px;
+  float: left;
+  display: none;
+}
+
 .cookpal .img {
   height: 250px;
   left: 0px;
@@ -1337,12 +1349,12 @@ body {
 .cookpal .frame-6-1-1 {
   background-color: #f05e1633;
   border-radius: 8px;
-  /* height: 17px; */
-  left: 167px;
+  height: 38px;
+  left: 0px;
   position: absolute;
-  top: 265px;
-  /* width: 46px; */
-  font-size: 13px;
+  top: 255px;
+  width: 100px;
+  font-size: 16px;
   text-align: center;
   border: none;
 }
@@ -1406,7 +1418,7 @@ body {
   /* height: 17px; */
   right: 70px;
   position: absolute;
-  top: 250px;
+  top: 247px;
   width: 165px;
   /* font-size: 18px; */
   text-align: right;

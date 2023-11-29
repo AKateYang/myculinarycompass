@@ -11,10 +11,12 @@ const Cookpal = () => {
   var _ud = localStorage.getItem("user_data");
   var ud = JSON.parse(_ud);
   var userId = ud.id;
-  var userRecipes = ud.saveRecipesId;
-  const usersSavedRecipes = [];
+  let holdSavedData;
+  let holdBuildData;
+  let filteredData;
+
+  //const usersSavedRecipes = [];
   const serverBaseURL = "https://www.myculinarycompass.com/assets/";
-  // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
   const navigate = useNavigate();
 
   // Fetch recipes on component mount
@@ -26,6 +28,7 @@ const Cookpal = () => {
       .then((data) => {
         console.log("Fetched data:", data);
         setRecipes(data);
+        getSavedRecipes(userId);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -46,12 +49,27 @@ const Cookpal = () => {
   // Function to change button on click
   function changeButton(index, newText, newColor, userId, recipeId) {
     const divsWithKey = document.querySelectorAll(`div[data-key="${index}"]`);
+    const groupToShow = document.querySelectorAll(
+      `#savedGroup[data-key="${index}"]`
+    );
+
     divsWithKey.forEach((div) => {
       const button = div.querySelector("button");
       if (button) {
         button.addEventListener("click", function () {
           button.textContent = newText;
           button.style.backgroundColor = newColor;
+
+          groupToShow.forEach((div) => {
+            const button = div.querySelector("button");
+            if (button) {
+              console.log(groupToShow[index]);
+              const divtoHide = document.querySelector(
+                `#savedGroup[data-key="${index}"]`
+              );
+              divtoHide.style.display = "block";
+            }
+          });
 
           // Fetch data and update button state
           var bp = require("./Path.js");
@@ -63,7 +81,8 @@ const Cookpal = () => {
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log("Fetched data:", data);
+              console.log("Fetched data inside changebutton:", data);
+              getSavedRecipes(userId);
             })
             .catch((error) => console.error("Error fetching data:", error));
         });
@@ -72,7 +91,7 @@ const Cookpal = () => {
   }
 
   // Function to get saved recipes for a user
-  function getSavedRecipes(userId) {
+  async function getSavedRecipes(userId) {
     var bp = require("./Path.js");
     fetch(bp.buildPath("recipes/getUserRecipe/" + `${userId}`), {
       method: "GET",
@@ -82,9 +101,33 @@ const Cookpal = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched data:", data);
-        console.log(data.recipes);
-        usersSavedRecipes = data.recipes;
+        console.log("Fetched data inside getsavedrecipes:", data);
+        console.log("data.recipes[0]:" + data.recipes[0]);
+        holdSavedData = data.recipes;
+        console.log(holdSavedData);
+        filteredData = recipes.filter((item) =>
+          holdSavedData.includes(item._id)
+        );
+        console.log("recipes ?" + recipes);
+        buildSavedRecipe(data.recipes[0]);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }
+
+  async function buildSavedRecipe(recipeId) {
+    var bp = require("./Path.js");
+    fetch(bp.buildPath("recipes/getRecipe/" + `${recipeId}`), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetched data inside singlerecipe " + data.timeToMake);
+        holdBuildData = data;
+        console.log("hold build data in buuld funct " + holdBuildData);
+        console.log("testing hold recipes plzplzplz: " + holdSavedData);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }
@@ -94,6 +137,9 @@ const Cookpal = () => {
     const groupToHide = document.querySelectorAll(
       `#savedGroup[data-key="${index}"]`
     );
+
+    const divsWithKey = document.querySelectorAll(`div[data-key="${index}"]`);
+
     groupToHide.forEach((div) => {
       const button = div.querySelector("button");
       if (button) {
@@ -107,11 +153,6 @@ const Cookpal = () => {
       }
     });
   }
-
-  // Filter recipes based on saved recipes
-  const filteredData = recipes.filter((item) =>
-    usersSavedRecipes.includes(item._id)
-  );
 
   // Render the component
   return (
@@ -173,12 +214,13 @@ const Cookpal = () => {
               </div>
             ))}
             {/* Render saved recipes */}
-            <div className="saved-recipes-title"></div>
-            {filteredData.map((recipe, index) => (
+            <div className="saved-recipes-title">Saved Recipes</div>
+            <div id="saved-recipes" />
+            {recipes.map((recipe, index) => (
               <div
                 data-key={index}
                 key={index}
-                className="group-2"
+                className="group-2-1"
                 id="savedGroup"
               >
                 <img
@@ -204,8 +246,6 @@ const Cookpal = () => {
                 </div>
                 <div className="time-image"></div>
                 <div className="time-length">{recipe.timeToMake}</div>
-                <div className="recipe-likes-img" />
-                <div className="comments-img" />
                 <div className="recipe-likes">{recipe.likes}</div>
                 <div className="recipe-comments">{recipe.comments}</div>
               </div>
