@@ -54,6 +54,89 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
       setShowPasswordPopover(false);
     }
   };
+  const handleForgotPasswordClick = async () => {
+    // Placeholder for the "Forgot Password?" button click action
+
+    // Prompt the user for their email
+    const userEmail = window.prompt("Please enter your email:");
+
+    // Check if the user provided an email
+    if (userEmail !== null && userEmail.trim() !== "") {
+      // Prompt the user for a new password
+      const newPassword = window.prompt("Please enter your new password:");
+
+      // Check if the user provided a new password
+      if (newPassword !== null) {
+        // Prompt the user to confirm the new password
+        const newPasswordConfirmation = window.prompt(
+          "Please confirm your new password:"
+        );
+
+        // Check if the user confirmed the new password
+        if (newPasswordConfirmation !== null) {
+          // Check if the passwords match
+          if (newPassword === newPasswordConfirmation) {
+            // Create the request body
+            const requestBody = JSON.stringify({
+              email: userEmail,
+              newPassword: newPassword,
+            });
+
+            try {
+              // Replace 'your_forgot_password_api_endpoint' with the actual API endpoint
+
+              const response = await fetch(
+                "http://localhost:5000/auth/forgotPasswordSend",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    // Add any additional headers if needed
+                  },
+                  body: requestBody,
+                }
+              );
+
+              // Check if the request was successful (status code 2xx)
+              if (response.ok) {
+                // Parse the response JSON if needed
+                const result = await response.json();
+                console.log("Forgot Password API call success:", result);
+                // Add your logic for handling the successful API response here
+              } else {
+                // Handle errors or non-successful responses
+                console.error(
+                  "Forgot Password API call failed:",
+                  response.status,
+                  response.statusText
+                );
+                window.alert("Failed to reset password.");
+                // Add your error handling logic here
+              }
+            } catch (error) {
+              console.error("Error in Forgot Password API call:", error);
+              window.alert(
+                "An unexpected error occurred. Please try again later."
+              );
+              // Add your error handling logic here
+            }
+          } else {
+            console.log("Passwords do not match. Please try again.");
+            window.alert("Passwords do not match. Please try again.");
+          }
+        } else {
+          console.log("User canceled entering the password confirmation.");
+          window.alert("User canceled entering the password confirmation.");
+        }
+      } else {
+        console.log("User canceled entering the new password.");
+        window.alert("User canceled entering the new password.");
+      }
+    } else {
+      console.log("User canceled entering the email.");
+      window.alert("User canceled entering the email.");
+    }
+  };
 
   const doLogin = async (event, token) => {
     event.preventDefault();
@@ -84,7 +167,7 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
 
       var res = JSON.parse(await response.text());
 
-      if(res.msg === "Please verify email at " + email){
+      if (res.msg === "Please verify email at " + email) {
         setMessage("Verify account from sent email.");
         return;
       }
@@ -200,7 +283,9 @@ const LoginModal = ({ isOpen, onClose, onOpenSignup, className }) => {
           >
             Login
           </button>
-          <button id="forgot">Forgot Password?</button>
+          <button id="forgot" onClick={handleForgotPasswordClick}>
+            Forgot Password?
+          </button>
         </form>
         <span id="loginResult">{message}</span>
       </div>
