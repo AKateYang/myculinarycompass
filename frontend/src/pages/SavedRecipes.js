@@ -1,17 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import Saved from '../components/Saved';
-import CookpalDesign from '../components/Cookpal';
+import Cookpal from "../components/Cookpal.js";
 
-const Cookpal = () => {
-
-  return(
+const CookPalPage = () => {
+  return (
     <div>
-      <Saved />
-      <CookpalDesign />
+      <Cookpal />
     </div>
   );
+};
 
-}
-
-export default Cookpal;
+export default CookPalPage;

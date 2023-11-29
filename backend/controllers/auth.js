@@ -76,7 +76,7 @@ export const register = async (req, res) => {
           res.status(500).json({ error: err.message, msg: "Sign up error" });
         }
       }
-      console.log("Email sent:", info.response);
+      // console.log("Email sent:", info.response);
 
       const savedUser = await newUser.save();
       res.status(201).json(savedUser);

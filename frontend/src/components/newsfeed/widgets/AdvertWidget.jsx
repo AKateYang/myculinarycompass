@@ -8,8 +8,8 @@ const AdvertWidget = () => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const serverBaseUrl =
-    "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
+  const serverBaseUrl = "https://www.myculinarycompass.com/assets";
+  // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
 
   return (
     <WidgetWrapper>

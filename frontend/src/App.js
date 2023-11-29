@@ -10,7 +10,7 @@ import { themeSettings } from "./components/newsfeed/theme.js";
 
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
-import SavedRecipes from "./pages/SavedRecipes";
+import CookPalPage from "./pages/SavedRecipes";
 import HomePage from "./pages/homePage.jsx";
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
-          <Route path="/savedRecipes" element={<SavedRecipes />} />
+          <Route path="/savedRecipes" element={<CookPalPage />} />
           {/* <Route
             path="/home"
             element={isAuth ? <HomePage /> : <Navigate to="/" />}
