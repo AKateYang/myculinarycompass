@@ -23,6 +23,16 @@ export const getUserName = async (req, res) => {
   }
 };
 
+export const isVerified = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    res.status(200).json(user.verified);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 export const updateProfile = async (req, res) => {
   const { userId, firstname, lastname } = req.body;
   const userObjectId = toObjectId(userId);
@@ -88,6 +98,9 @@ export const addRemoveUserFollowings = async (req, res) => {
     const user = await User.findById(id);
     const follower = await User.findById(friendId);
 
+    console.log(id);
+    console.log(friendId);
+
     // (id != friendId) was added so that we can get the total followers/follow of current user by passing in the id for
     // both id and friend with out affecting follower table.
     if (user.following.includes(friendId) && id != friendId) {
@@ -111,24 +124,14 @@ export const addRemoveUserFollowings = async (req, res) => {
     // const otherUserFollowing = follower.following.length;
     // const otherUserFollowers = follower.followers.length;
 
-    const following = await Promise.all(
-      user.following.map((id) => User.findById(id))
-    );
-    const formattedFollowing = following.map(
-      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-        return { _id, firstName, lastName, occupation, location, picturePath };
-      }
-    );
-
     res.status(200).json({
-      nowFollowing: formattedFollowing,
       currentUserFollowing: currentUserFollowing,
       currentUserFollowers: currentUserFollowers,
       // otherUserFollowing: otherUserFollowing,
       // otherUserFollowers: otherUserFollowers,
     });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 

@@ -6,6 +6,7 @@ import crypto from "crypto";
 
 ///////////////////////////////////////////////////
 // REGISTER USER
+
 export const register = async (req, res) => {
   let data = new User(req.body);
   let existingUser = await User.findOne({ email: data.email });
@@ -28,6 +29,13 @@ export const register = async (req, res) => {
       const { firstName, lastName, email, password, picturePath, friends } =
         req.body;
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        console.error("Invalid email format");
+        res.status(403).json({ msg: "Invalid email format" });
+        return;
+      }
+
       // genSalt() is used to generate a random salt that is then used for hashing pw
       // salt is a random string to make the hash unpredictable
       const salt = await bcrypt.genSalt();
@@ -45,12 +53,13 @@ export const register = async (req, res) => {
         impressions: Math.floor(Math.random() * 10000),
       });
       const savedUser = await newUser.save();
+      link = "http://localhost:5000/auth/verification/" + number + "/" + email;
       const info = await transporter.sendMail({
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
         subject: "Verification Email", // Subject line
         text: "Welcome to your Culinary Compass!",
-        html: `<div>Here is your verification token:\n ${number}\n 
+        html: `<div>Here is your verification token:\n ${link}\n 
         You will use this when you log in for the first time!</div>`,
       });
 
@@ -88,19 +97,19 @@ export const login = async (req, res) => {
 
 export const verification = async (req, res) => {
   try {
-    const { verification_token, email } = req.body;
+    const { token, email } = req.params;
 
     // Use await to get the user object from the query
     const user = await User.findOne({ email: email });
 
-    if (user && verification_token === user.token) {
+    if (user && token === user.token) {
       // Use await to make sure the update operation is completed before responding
       await User.updateOne({ email: email }, { $set: { verified: true } });
-      res.status(200).json({ msg: "Email verified successfully." });
-    } else {
       res
-        .status(400)
-        .json({ msg: "Verification token is wrong or user not found." });
+        .status(200)
+        .json({ msg: "Your email has been verified! You can now log in!" });
+    } else {
+      res.status(400).json({ msg: "Verification token is wrong!" });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });

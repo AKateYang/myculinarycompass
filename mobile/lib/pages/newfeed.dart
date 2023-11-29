@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class News extends StatelessWidget {
   const News({super.key});
@@ -27,6 +29,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   Set<String> _loadedStoryIds = {};
   bool _loadingMore = false;
   int _currentPage = 1;
+  String currentId = "";
 
   static const String backendUrl =
       'https://myculinarycompass-0c8901cce626.herokuapp.com/assets';
@@ -34,6 +37,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   @override
   void initState() {
     super.initState();
+    setUser();
     _loadStories();
   }
 
@@ -94,6 +98,22 @@ class _NewsFeedPage extends State<NewsFeedPage> {
                               ),
                             ],
                           ),
+                          SizedBox(width: 125.0),
+                          if (currentId != _stories[index].userId)
+                            ElevatedButton(
+                              onPressed: () {
+                                _becomeFollower(_stories[index]);
+                              },
+                              child: Text(
+                                style: TextStyle(
+                                  color: Colors
+                                      .green, // Set the text color of the button
+                                ),
+                                _stories[index].isFollowing
+                                    ? '- Unfollow'
+                                    : '+ Follow',
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -355,7 +375,8 @@ class _NewsFeedPage extends State<NewsFeedPage> {
         List<dynamic> data = jsonDecode(response.body);
         List<Story> stories = data.map((item) {
           return Story(
-            userName: item["firstName"],
+            userId: item['userId'],
+            userName: item["firstName"] + " " + item["lastName"],
             id: item['_id'],
             title: item['caption'],
             picturePath: item['picturePath'],
@@ -434,7 +455,8 @@ class _NewsFeedPage extends State<NewsFeedPage> {
         List<dynamic> data = jsonDecode(response.body);
         List<Story> newStories = data.map((item) {
           return Story(
-            userName: item["firstName"],
+            userId: item['userId'],
+            userName: item["firstName"] + " " + item["lastName"],
             id: item['_id'],
             title: item['caption'],
             picturePath: item['picturePath'],
@@ -683,6 +705,9 @@ class _NewsFeedPage extends State<NewsFeedPage> {
       postData.lastName = LastName;
     }
 
+    File? imageName;
+    File? image;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -693,6 +718,21 @@ class _NewsFeedPage extends State<NewsFeedPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      File? image = await _pickImage();
+                      if (image != null) {
+                        setState(() {
+                          imageName = image;
+                          postData.picturePath =
+                              getLastSegment(imageName!.path);
+                        });
+                      }
+                    },
+                    child: Text('Select Image'),
+                  ),
+                  if (image != null)
+                    Image.file(image!, height: 100, width: 100),
                   TextField(
                     decoration: InputDecoration(labelText: 'Caption'),
                     onChanged: (value) {
@@ -702,7 +742,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      await _createPost(postData, recipeId);
+                      await _createPost(postData, recipeId, imageName, image);
                     },
                     child: Text('Create Post'),
                   ),
@@ -715,7 +755,21 @@ class _NewsFeedPage extends State<NewsFeedPage> {
     );
   }
 
-  Future<void> _createPost(PostCreateData postData, String recipeId) async {
+  String getLastSegment(String inputString) {
+    List<String> segments = inputString.split('/');
+
+    // Check if there is more than one segment
+    if (segments.length > 1) {
+      // Return the last segment
+      return segments.last;
+    } else {
+      // If there is only one segment, return the original string
+      return inputString;
+    }
+  }
+
+  Future<void> _createPost(PostCreateData postData, String recipeId,
+      File? selectedImage, File? image) async {
     const apiUrl =
         'https://myculinarycompass-0c8901cce626.herokuapp.com/posts/createPost';
 
@@ -735,7 +789,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
           'recipeId':
               recipeId, // Use the recipeId obtained from the previous step
           'caption': postData.caption,
-          'picturePath': '', // Leave it blank for now
+          'picturePath': postData.picturePath, // Leave it blank for now
         }),
       );
 
@@ -751,38 +805,92 @@ class _NewsFeedPage extends State<NewsFeedPage> {
       print('Error: $error');
     }
   }
+
+  void _becomeFollower(Story story) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      var id = userData['id'];
+
+      var postId = story.id;
+
+      final postUrl = "http://10.0.2.2:5000/posts/getPost/$postId";
+
+      final Response_post = await http.get(Uri.parse(postUrl));
+
+      if (Response_post.statusCode == 200) {
+        Map<String, dynamic> postData = jsonDecode(Response_post.body);
+
+        var userId = postData["userId"];
+
+        final apiUrl = "http://10.0.2.2:5000/users/$id/$userId";
+
+        final Response = await http.patch(Uri.parse(apiUrl));
+
+        if (Response.statusCode == 200) {
+          setState(() {
+            story.isFollowing = !story.isFollowing; // Toggle the follow state
+          });
+          print("You followed someone!");
+        } else {
+          // Handle error
+          print('Failed to follow user');
+        }
+      } else {
+        // Handle error
+        print('Failed to follow user');
+      }
+    }
+  }
+
+  void setUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      var id = userData['id'];
+
+      currentId = id;
+    }
+  }
+
+  Future<File?> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    } else {
+      return null;
+    }
+  }
 }
 
 class Story {
   final String userName;
+  final String userId;
   final String id;
   final String title;
   final String picturePath;
   bool isLiked;
   bool isBookmarked;
   List<String> comments;
+  bool isFollowing;
 
   Story({
     required this.userName,
+    required this.userId,
     required this.id,
     required this.title,
     required this.picturePath,
     this.isLiked = false,
     this.isBookmarked = false,
+    this.isFollowing = false,
     this.comments = const [],
   });
-
-  factory Story.fromJson(Map<String, dynamic> json) {
-    return Story(
-      userName: json['firstName'],
-      id: json['id'],
-      title: json['title'],
-      picturePath: json['picturePath'],
-      isLiked: json['isLiked'],
-      isBookmarked: json['isBookmarked'],
-      comments: List<String>.from(json['comments']),
-    );
-  }
 }
 
 class Recipe {

@@ -194,7 +194,14 @@ class SignupPage extends StatelessWidget {
           "password": passController.text,
         }),
       );
-
+      if (response.statusCode == 403) {
+        Get.snackbar(
+          'Email Invalid!',
+          'It appears you typed an invalid email address!',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
       if (response.statusCode == 201) {
         // Post created successfully
         print('User registered');

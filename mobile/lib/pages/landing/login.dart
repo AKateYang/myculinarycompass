@@ -6,6 +6,9 @@ import 'package:mobile/pages/landing/signup.dart';
 import 'package:mobile/utils/helper.dart';
 import 'package:mobile/widgets/background_widget.dart';
 import 'package:mobile/widgets/inputbox_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import '../../navbar.dart';
 import 'homepage.dart';
@@ -203,17 +206,43 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-void loginUser(emailController, passController) {
-  loginUserWithEmail(
-    emailController.text.trim(),
-    passController.text.trim(),
-  ).then((value) => {
-        if (value)
-          {
-            emailController.clear(),
-            passController.clear(),
-            Future.delayed(const Duration(seconds: 2),
-                () => {Get.offAll(() => const DashboardPage())})
-          }
-      });
+void loginUser(emailController, passController) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? userDataString = prefs.getString('user_data');
+
+  if (userDataString != null) {
+    Map<String, dynamic> userData = jsonDecode(userDataString);
+    var id = userData['id'];
+
+    final apiUrl = "http://10.0.2.2:5000/users/isVerified/$id";
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      bool isVerified = jsonDecode(response.body);
+      if (!isVerified) {
+        Get.snackbar(
+          'Seems like you are not verified',
+          'Check your inbox for your verification email!',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        loginUserWithEmail(
+          emailController.text.trim(),
+          passController.text.trim(),
+        ).then((value) => {
+              if (value)
+                {
+                  emailController.clear(),
+                  passController.clear(),
+                  Future.delayed(const Duration(seconds: 2),
+                      () => {Get.offAll(() => const DashboardPage())})
+                }
+            });
+      }
+    } else {
+      // Handle error
+      print('Failed to follow user');
+    }
+  }
 }
