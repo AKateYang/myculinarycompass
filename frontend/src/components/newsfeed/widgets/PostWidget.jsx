@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../../state/index.jsx";
 import { addCommentToPost } from "../../../state/index.jsx";
 import {
@@ -25,7 +25,7 @@ const PostWidget = ({
   picturePath,
   userPicturePath,
   likes,
-  comments,
+  // comments,
   // ...other props if needed
 }) => {
   // Base URL for your server
@@ -47,16 +47,21 @@ const PostWidget = ({
       body: JSON.stringify({ userId }),
     });
     const updatedPost = await response.json();
-    dispatch(
-      addCommentToPost({ postId: _id, comment: updatedPost.newComment })
-    );
+    dispatch(setPost({ post: updatedPost }));
   };
 
-  const [localComments, setLocalComments] = useState(comments || []);
+  // const [localComments, setLocalComments] = useState(comments || []);
   const [newComment, setNewComment] = useState(""); // This is for the input value
 
+  const post = useSelector((state) =>
+    state.auth.posts.find((post) => post._id === _id)
+  );
+
+  // When you want to access the comments' length, use optional chaining and nullish coalescing:
+  const commentsLength = post?.comments?.length ?? 0;
+
   const handleAddComment = async (e) => {
-    e.preventDefault(); // This line should prevent the default form submission
+    e.preventDefault();
     try {
       var bp = require("../../Path.js");
       const response = await fetch(bp.buildPath(`posts/${_id}/addComment`), {
@@ -72,14 +77,18 @@ const PostWidget = ({
       }
 
       const updatedPost = await response.json();
-      dispatch(setPost({ post: updatedPost })); // If using Redux to manage state
-      // Update local state for immediate feedback
-      setLocalComments([...localComments, updatedPost.newComment]);
+      dispatch(setPost({ post: updatedPost })); // Dispatching the entire updated post
+
       setNewComment(""); // Clear the comment input
     } catch (error) {
       console.error("Failed to add comment:", error);
     }
   };
+
+  // useEffect(() => {
+  //   // This effect will run whenever the `post` changes, including its `comments`.
+  //   // This is where you would handle any logic that needs to happen when `post` updates.
+  // }, [post]);
 
   return (
     <Card sx={{ marginBottom: 2 }}>
@@ -141,7 +150,7 @@ const PostWidget = ({
           <IconButton aria-label="like" onClick={patchLike}>
             <FavoriteBorderIcon />
             <Typography variant="body2" style={{ marginLeft: "5px" }}>
-              {Object.keys(likes).length}
+              {likes ? Object.keys(likes).length : 0}
             </Typography>
           </IconButton>
 
@@ -153,21 +162,23 @@ const PostWidget = ({
           >
             <ChatBubbleOutlineIcon />
             <Typography variant="body2" style={{ marginLeft: "5px" }}>
-              {comments.length}
+              {commentsLength}
             </Typography>
           </IconButton>
         </Box>
         {isComments && (
           <>
             <Box mt="0.5rem">
-              {comments.map((comment, i) => (
-                <React.Fragment key={i}>
-                  <Divider />
-                  <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
-                    {comment}
-                  </Typography>
-                </React.Fragment>
-              ))}
+              {Array.isArray(post?.comments) &&
+                post.comments.map((comment, i) => (
+                  <React.Fragment key={i}>
+                    <Divider />
+                    <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
+                      {comment.text}{" "}
+                      {/* Access the text property of the comment object */}
+                    </Typography>
+                  </React.Fragment>
+                ))}
             </Box>
             <form onSubmit={handleAddComment}>
               <input

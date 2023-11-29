@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
   mode: "light",
   user: null,
   token: null,
   posts: [],
+  likes: {},
 };
 
 export const authSlice = createSlice({
@@ -29,25 +30,41 @@ export const authSlice = createSlice({
         console.error("user friends non-existent :(");
       }
     },
-    setPosts: (state, action) => {
-      state.posts = action.payload.posts;
-    },
+    // Merge the logic of both setPost reducers here
     setPost: (state, action) => {
-      const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
-        return post;
-      });
-      state.posts = updatedPosts;
-    },
-    addCommentToPost: (state, action) => {
-      const { postId, comment } = action.payload;
-      const postIndex = state.posts.findIndex((post) => post._id === postId);
+      const updatedPost = action.payload.post;
+      const postIndex = state.posts.findIndex(
+        (post) => post._id === updatedPost._id
+      );
       if (postIndex !== -1) {
-        state.posts[postIndex].comments.push(comment); // Adds new comment to the comments array
+        // Replace the post with the updated one from the action payload
+        state.posts[postIndex] = {
+          ...updatedPost,
+          comments: updatedPost.comments || [], // ensure comments is always an array
+        };
+      } else {
+        state.posts.push({
+          ...updatedPost,
+          comments: [], // initialize comments as an empty array
+        });
       }
+    },
+
+    // Add the missing setPosts reducer
+    setPosts: (state, action) => {
+      state.posts = action.payload.posts.map((post) => ({
+        ...post,
+        comments: post.comments || [], // ensure comments is always an array
+      }));
     },
   },
 });
+
+// export const store = configureStore({
+//   reducer: {
+//     auth: authSlice.reducer,
+//   },
+// });
 
 export const {
   setMode,

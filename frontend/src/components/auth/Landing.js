@@ -66,14 +66,15 @@ export const Landing = () => {
         </div>
         <div className="custom-content-wrapper">
           <p className="custom-tagline">
-            Lets Put A Good Tagline
+            Elevating Your
             <br />
-            here. It Could Work.
+            Culinary Experience.
           </p>
           <p className="custom-description">
-            We can put a more subtle description here. We can change around the
-            background into one that work better. This page could look like this
-            or maybe not..
+            Join us in a world where every dish is a canvas, and every recipe is
+            an opportunity to create something beautiful. From gourmet feasts to
+            homemade comfort food, we're all about the pleasure of savoring
+            flavors and elevating your dining experience.
           </p>
         </div>
       </div>

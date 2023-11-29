@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.js";
-import authReducer from "./state";
+import authReducer from "./state/index";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import {
@@ -17,11 +17,15 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
+import { combineReducers } from "redux";
 
-const persistConfig = { key: "root", storage, version: 1 };
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistConfig = { key: "root", storage, version: 1, whitelist: ["auth"] };
+const rootReducer = combineReducers({
+  auth: authReducer,
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: persistedReducer, // This should be your combined reducer
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
