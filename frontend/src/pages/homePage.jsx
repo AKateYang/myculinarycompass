@@ -36,7 +36,7 @@ const HomePage = () => {
         <div className="overlap">
           <div className="text-wrapper-3">
             <button className="newsfeed-button" onClick={GoToRecipes}>
-              Saved Recipes
+              User Recipes
             </button>
           </div>
           <div className="overlap-group">

@@ -94,7 +94,7 @@ const PostWidget = ({
               {`${firstName} ${lastName}`}
             </Typography>
           </Box>
-          <Typography variant="subtitle2">{"MM/DD/YYYY"}</Typography>
+          <Typography variant="subtitle2">{""}</Typography>
         </Box>
 
         <Typography variant="h5" style={{ marginTop: "1rem" }}>
