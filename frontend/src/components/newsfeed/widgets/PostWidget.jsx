@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../../state/index.jsx";
-import { addCommentToPost } from "../../../state/index.jsx";
 import {
   Card,
   CardContent,
@@ -16,7 +15,6 @@ import FlexBetween from "../FlexBetween.jsx";
 
 const PostWidget = ({
   _id,
-  // userId,
   firstName,
   lastName,
   caption,
@@ -25,13 +23,9 @@ const PostWidget = ({
   picturePath,
   userPicturePath,
   likes,
-  // comments,
-  // ...other props if needed
 }) => {
-  // Base URL for your server
   const serverBaseUrl =
     "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
-
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
 
@@ -40,7 +34,6 @@ const PostWidget = ({
 
   const patchLike = async () => {
     var bp = require("../../Path.js");
-    console.log(_id);
     const response = await fetch(bp.buildPath(`posts/${_id}/like`), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -50,14 +43,11 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
-  // const [localComments, setLocalComments] = useState(comments || []);
-  const [newComment, setNewComment] = useState(""); // This is for the input value
-
+  const [newComment, setNewComment] = useState("");
   const post = useSelector((state) =>
     state.auth.posts.find((post) => post._id === _id)
   );
 
-  // When you want to access the comments' length, use optional chaining and nullish coalescing:
   const commentsLength = post?.comments?.length ?? 0;
 
   const handleAddComment = async (e) => {
@@ -66,9 +56,7 @@ const PostWidget = ({
       var bp = require("../../Path.js");
       const response = await fetch(bp.buildPath(`posts/${_id}/addComment`), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: userData._id, text: newComment }),
       });
 
@@ -77,23 +65,15 @@ const PostWidget = ({
       }
 
       const updatedPost = await response.json();
-      dispatch(setPost({ post: updatedPost })); // Dispatching the entire updated post
-
-      setNewComment(""); // Clear the comment input
+      dispatch(setPost({ post: updatedPost }));
+      setNewComment("");
     } catch (error) {
       console.error("Failed to add comment:", error);
     }
   };
 
-  // useEffect(() => {
-  //   // This effect will run whenever the `post` changes, including its `comments`.
-  //   // This is where you would handle any logic that needs to happen when `post` updates.
-  // }, [post]);
-
   return (
     <Card sx={{ marginBottom: 2 }}>
-      {" "}
-      {/* Added gap between posts */}
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
@@ -112,7 +92,6 @@ const PostWidget = ({
               {`${firstName} ${lastName}`}
             </Typography>
           </Box>
-          {/* Placeholder for created date */}
           <Typography variant="subtitle2">{"MM/DD/YYYY"}</Typography>
         </Box>
 
@@ -166,6 +145,7 @@ const PostWidget = ({
             </Typography>
           </IconButton>
         </Box>
+
         {isComments && (
           <>
             <Box mt="0.5rem">

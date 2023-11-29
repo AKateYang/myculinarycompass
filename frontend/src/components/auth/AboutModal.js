@@ -25,8 +25,8 @@ const AboutModal = ({ isOpen, onClose, className }) => {
         <div className="about-box">
           <h1 className="tagline">Meet the Team</h1>
           <p className="description">
-            We are a group of passionate individuals dedicated to delivering the
-            best culinary experiences. Our mission is to connect food lovers and
+            We are a group of individuals dedicated to delivering the best
+            culinary experiences. Our mission is to connect food lovers and
             explorers from all over the world.
           </p>
           <div className="team-member">
@@ -46,7 +46,7 @@ const AboutModal = ({ isOpen, onClose, className }) => {
           </div>
           {/* ... */}
           <a
-            href="https://github.com/Ahal122/COP4331CLargeProjectWeb"
+            href="https://github.com/AKateYang/myculinarycompass"
             className="github-link"
           >
             <span className="github-text">Visit our GitHub</span>

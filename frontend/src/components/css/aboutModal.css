@@ -115,7 +115,7 @@
 .text-wrapper-13,
 .text-wrapper-14 {
   font-size: 1.5rem; /* make names stand out more */
-  color: #333;
+  color: #ffffff;
   margin-bottom: 0.75rem;
   font-family: "Overpass-Medium", Helvetica;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* subtle shadow for depth */
@@ -163,6 +163,7 @@
   .text-wrapper-12,
   .text-wrapper-13,
   .text-wrapper-14 {
+    color: #ffffff;
     font-size: 1.25rem;
   }
 }

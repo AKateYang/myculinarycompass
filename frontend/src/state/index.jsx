@@ -30,14 +30,12 @@ export const authSlice = createSlice({
         console.error("user friends non-existent :(");
       }
     },
-    // Merge the logic of both setPost reducers here
     setPost: (state, action) => {
       const updatedPost = action.payload.post;
       const postIndex = state.posts.findIndex(
         (post) => post._id === updatedPost._id
       );
       if (postIndex !== -1) {
-        // Replace the post with the updated one from the action payload
         state.posts[postIndex] = {
           ...updatedPost,
           comments: updatedPost.comments || [], // ensure comments is always an array
@@ -49,22 +47,29 @@ export const authSlice = createSlice({
         });
       }
     },
+    // setPosts: (state, action) => {
+    //   console.log("hi");
+    //   state.posts = action.payload.posts;
+    //   console.log("hi");
+    // },
 
-    // Add the missing setPosts reducer
     setPosts: (state, action) => {
-      state.posts = action.payload.posts.map((post) => ({
-        ...post,
-        comments: post.comments || [], // ensure comments is always an array
-      }));
+      if (Array.isArray(action.payload?.posts)) {
+        // If it's an array, map over the posts to ensure 'comments' are arrays
+        state.posts = action.payload.posts.map((post) => ({
+          ...post,
+          comments: post.comments || [],
+        }));
+      } else {
+        // If 'posts' is not an array, log an error and handle as you see fit
+        console.error(
+          "setPosts action payload is not an array:",
+          action.payload
+        );
+      }
     },
   },
 });
-
-// export const store = configureStore({
-//   reducer: {
-//     auth: authSlice.reducer,
-//   },
-// });
 
 export const {
   setMode,
