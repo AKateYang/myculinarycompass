@@ -32,8 +32,8 @@ const postSchema = mongoose.Schema(
       of: Boolean,
     },
     comments: {
-      type: Array,
-      default: [commentSchema],
+      type: [commentSchema], // Define as an array of commentSchema
+      default: [], // Default to an empty array
     },
   },
   { timestamps: true }

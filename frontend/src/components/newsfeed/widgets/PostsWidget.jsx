@@ -3,21 +3,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../../state/index.jsx";
 import PostWidget from "./PostWidget";
 
-const PostsWidget = ({ isProfile, userId }) => {
+const PostsWidget = ({ isProfile, _id, userId }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector((state) => state.auth.posts);
 
-  // Fetch posts
+  // UPDATED getPosts
+  // Loading in all posts
+  const getPosts = async () => {
+    var bp = require("../../Path.js");
+    const response = await fetch(bp.buildPath("posts/"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    dispatch(setPosts({ posts: data }));
+  };
+
+  // UPDATED getUserPosts
+  const getUserPosts = async () => {
+    var bp = require("../../Path.js");
+    const response = await fetch(bp.buildPath(`posts/getPost/${_id}`), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    dispatch(setPosts({ posts: data }));
+  };
+
   useEffect(() => {
-    // Define your fetch logic here based on 'isProfile' and 'userId'
-    // Example: fetchPosts(isProfile ? `posts/user/${userId}` : 'posts/')
-  }, [isProfile, userId, dispatch]);
+    if (isProfile) {
+      getUserPosts();
+    } else {
+      getPosts();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
-      {posts.map((post) => (
-        <PostWidget key={post._id} {...post} />
-      ))}
+      {Array.isArray(posts) &&
+        posts.map((post) => <PostWidget key={post._id} {...post} />)}
     </div>
   );
 };

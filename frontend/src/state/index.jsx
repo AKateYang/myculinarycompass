@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
   mode: "light",
   user: null,
   token: null,
   posts: [],
+  likes: {},
 };
 
 export const authSlice = createSlice({
@@ -29,21 +30,42 @@ export const authSlice = createSlice({
         console.error("user friends non-existent :(");
       }
     },
-    setPosts: (state, action) => {
-      state.posts = action.payload.posts;
-    },
     setPost: (state, action) => {
-      const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
-        return post;
-      });
-      state.posts = updatedPosts;
-    },
-    addCommentToPost: (state, action) => {
-      const { postId, comment } = action.payload;
-      const postIndex = state.posts.findIndex((post) => post._id === postId);
+      const updatedPost = action.payload.post;
+      const postIndex = state.posts.findIndex(
+        (post) => post._id === updatedPost._id
+      );
       if (postIndex !== -1) {
-        state.posts[postIndex].comments.push(comment); // Adds new comment to the comments array
+        state.posts[postIndex] = {
+          ...updatedPost,
+          comments: updatedPost.comments || [], // ensure comments is always an array
+        };
+      } else {
+        state.posts.push({
+          ...updatedPost,
+          comments: [], // initialize comments as an empty array
+        });
+      }
+    },
+    // setPosts: (state, action) => {
+    //   console.log("hi");
+    //   state.posts = action.payload.posts;
+    //   console.log("hi");
+    // },
+
+    setPosts: (state, action) => {
+      if (Array.isArray(action.payload?.posts)) {
+        // If it's an array, map over the posts to ensure 'comments' are arrays
+        state.posts = action.payload.posts.map((post) => ({
+          ...post,
+          comments: post.comments || [],
+        }));
+      } else {
+        // If 'posts' is not an array, log an error and handle as you see fit
+        console.error(
+          "setPosts action payload is not an array:",
+          action.payload
+        );
       }
     },
   },

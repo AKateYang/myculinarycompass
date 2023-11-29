@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../../state/index.jsx";
-import { addCommentToPost } from "../../../state/index.jsx";
 import {
   Card,
   CardContent,
@@ -16,7 +15,6 @@ import FlexBetween from "../FlexBetween.jsx";
 
 const PostWidget = ({
   _id,
-  // userId,
   firstName,
   lastName,
   caption,
@@ -25,8 +23,6 @@ const PostWidget = ({
   picturePath,
   userPicturePath,
   likes,
-  comments,
-  // ...other props if needed
 }) => {
   // Base URL for your server
   const serverBaseUrl = "https://www.myculinarycompass.com/assets/";
@@ -40,30 +36,29 @@ const PostWidget = ({
 
   const patchLike = async () => {
     var bp = require("../../Path.js");
-    console.log(_id);
     const response = await fetch(bp.buildPath(`posts/${_id}/like`), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
     });
     const updatedPost = await response.json();
-    dispatch(
-      addCommentToPost({ postId: _id, comment: updatedPost.newComment })
-    );
+    dispatch(setPost({ post: updatedPost }));
   };
 
-  const [localComments, setLocalComments] = useState(comments || []);
-  const [newComment, setNewComment] = useState(""); // This is for the input value
+  const [newComment, setNewComment] = useState("");
+  const post = useSelector((state) =>
+    state.auth.posts.find((post) => post._id === _id)
+  );
+
+  const commentsLength = post?.comments?.length ?? 0;
 
   const handleAddComment = async (e) => {
-    e.preventDefault(); // This line should prevent the default form submission
+    e.preventDefault();
     try {
       var bp = require("../../Path.js");
       const response = await fetch(bp.buildPath(`posts/${_id}/addComment`), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: userData._id, text: newComment }),
       });
 
@@ -72,10 +67,8 @@ const PostWidget = ({
       }
 
       const updatedPost = await response.json();
-      dispatch(setPost({ post: updatedPost })); // If using Redux to manage state
-      // Update local state for immediate feedback
-      setLocalComments([...localComments, updatedPost.newComment]);
-      setNewComment(""); // Clear the comment input
+      dispatch(setPost({ post: updatedPost }));
+      setNewComment("");
     } catch (error) {
       console.error("Failed to add comment:", error);
     }
@@ -83,8 +76,6 @@ const PostWidget = ({
 
   return (
     <Card sx={{ marginBottom: 2 }}>
-      {" "}
-      {/* Added gap between posts */}
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
@@ -103,7 +94,6 @@ const PostWidget = ({
               {`${firstName} ${lastName}`}
             </Typography>
           </Box>
-          {/* Placeholder for created date */}
           <Typography variant="subtitle2">{"MM/DD/YYYY"}</Typography>
         </Box>
 
@@ -141,7 +131,7 @@ const PostWidget = ({
           <IconButton aria-label="like" onClick={patchLike}>
             <FavoriteBorderIcon />
             <Typography variant="body2" style={{ marginLeft: "5px" }}>
-              {Object.keys(likes).length}
+              {likes ? Object.keys(likes).length : 0}
             </Typography>
           </IconButton>
 
@@ -153,21 +143,24 @@ const PostWidget = ({
           >
             <ChatBubbleOutlineIcon />
             <Typography variant="body2" style={{ marginLeft: "5px" }}>
-              {comments.length}
+              {commentsLength}
             </Typography>
           </IconButton>
         </Box>
+
         {isComments && (
           <>
             <Box mt="0.5rem">
-              {comments.map((comment, i) => (
-                <React.Fragment key={i}>
-                  <Divider />
-                  <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
-                    {comment}
-                  </Typography>
-                </React.Fragment>
-              ))}
+              {Array.isArray(post?.comments) &&
+                post.comments.map((comment, i) => (
+                  <React.Fragment key={i}>
+                    <Divider />
+                    <Typography sx={{ m: "0.5rem 0", pl: "1rem" }}>
+                      {comment.text}{" "}
+                      {/* Access the text property of the comment object */}
+                    </Typography>
+                  </React.Fragment>
+                ))}
             </Box>
             <form onSubmit={handleAddComment}>
               <input
