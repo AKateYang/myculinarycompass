@@ -830,9 +830,9 @@ class _NewsFeedPage extends State<NewsFeedPage> {
         final Response = await http.patch(Uri.parse(apiUrl));
 
         if (Response.statusCode == 200) {
-          setState(() {
+          if (mounted) {
             story.isFollowing = !story.isFollowing; // Toggle the follow state
-          });
+          }
           print("You followed someone!");
         } else {
           // Handle error
