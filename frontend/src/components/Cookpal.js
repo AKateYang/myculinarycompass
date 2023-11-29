@@ -179,6 +179,34 @@ const Cookpal = () => {
         {/* Render suggested recipes */}
         <div className="overlap-8">
           <div className="overlap-9">
+          <div className="suggested-recipes-title" id="responsiveDiv">Suggested Recipes</div>
+              {recipes.map((recipe, index) => (
+                  <div data-key={index} key={index} className="group-2">
+                    <img className="img" src={`${serverBaseURL}${recipe.picturePath}`} alt={recipe.name} />
+                    <button id="addbutton" className="frame-6-1" onClick={changeButton(index, "Added", "#F05E1633", userId, recipe._id)}>Add</button>
+                    <div id="recipeName" className="recipe-name">{recipe.recipeName}</div>
+                    <div className="time-image"></div>
+                    <div className="time-length">{recipe.timeToMake}</div>
+		    {/*<div className="recipe-likes-img" />
+                    <div className="comments-img" />
+                    <div className="recipe-likes">{recipe.likes}</div>
+                    <div className="recipe-comments">{recipe.comments}</div>*/}
+                  </div>
+              ))}
+            <div className="saved-recipes-title"></div>
+            {filteredData.map((recipe, index) => (
+                  <div data-key={index} key={index} className="group-2" id="savedGroup">
+                    <img className="img" src={`${serverBaseURL}${recipe.picturePath}`} alt={recipe.name} />
+                    <button id="addbutton" className="frame-6-1-1" onClick={changeButtonBack(index, "Add", "#078e1433", userId, recipe._id)}>Added</button>
+                    <div id="recipeName" className="recipe-name">{recipe.recipeName}</div>
+                    <div className="time-image"></div>
+                    <div className="time-length">{recipe.timeToMake}</div>
+                    <div className="recipe-likes-img" />
+                    <div className="comments-img" />
+                    <div className="recipe-likes">{recipe.likes}</div>
+                    <div className="recipe-comments">{recipe.comments}</div>
+                  </div>
+              ))}
             <div className="suggested-recipes-title" id="responsiveDiv">
               Suggested Recipes
             </div>
