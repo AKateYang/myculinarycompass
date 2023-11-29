@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setPost } from "../../../state/index.jsx";
 import { addCommentToPost } from "../../../state/index.jsx";
@@ -16,27 +16,44 @@ import FlexBetween from "../FlexBetween.jsx";
 
 const PostWidget = ({
   _id,
-  // userId,
+  userId,
   firstName,
   lastName,
   caption,
   location,
   videoPath,
   picturePath,
-  userPicturePath,
   likes,
   comments,
-  // ...other props if needed
 }) => {
-  // Base URL for your server
   const serverBaseUrl = "https://www.myculinarycompass.com/assets/";
-  // "https://myculinarycompass-0c8901cce626.herokuapp.com/assets/";
-
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
+  const [userPicturePath, setUserPicturePath] = useState(""); // Use useState to store user picture path
+  const userData = JSON.parse(localStorage.getItem("user_data"));
+  const uid = userData._id;
+  useEffect(() => {
+    const getUserProfile = async () => {
+      try {
+        const getUser = await fetch(`https://www.myculinarycompass.com/users/${userId}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-  var userData = JSON.parse(localStorage.getItem("user_data"));
-  var userId = userData._id;
+        if (!getUser.ok) {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        const getUserResponse = await getUser.json();
+        console.log(userId);
+        setUserPicturePath(getUserResponse.picturePath);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    getUserProfile(); // Call the function when the component mounts
+  }, []); // Empty dependency array to run once on moun
 
   const patchLike = async () => {
     var bp = require("../../Path.js");

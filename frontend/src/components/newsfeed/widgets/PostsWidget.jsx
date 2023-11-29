@@ -32,6 +32,15 @@ const PostsWidget = ({ isProfile, userId }) => {
       const data = await response.json();
       dispatch(setPosts({ posts: data }));
     };
+
+    const getUserProfile = async () => {
+      const response = await fetch((serverBaseUrl+ `posts/getPost/${userId}`), {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      dispatch(setPosts({ posts: data }));
+    };
     // Define your fetch logic here based on 'isProfile' and 'userId'
     // Example: fetchPosts(isProfile ? `posts/user/${userId}` : 'posts/')
   }, [isProfile, userId, dispatch]);
