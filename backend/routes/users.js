@@ -15,6 +15,7 @@ import {
   getUser,
   addRemoveUserFollowers,
   getUserName,
+  isVerified,
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/verifytoken.js";
 
@@ -23,6 +24,8 @@ const router = express.Router();
 router.get("/:id", getUser);
 
 router.get("/getUserName/:userId", getUserName);
+
+router.get("/isVerified/:userId", isVerified);
 
 // Route to block a user
 router.post("/blockUser", blockUser);

@@ -46,6 +46,7 @@ dependencies:
   chewie: ^1.7.1
   cached_network_image: ^3.3.0
   transparent_image: ^2.0.1
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

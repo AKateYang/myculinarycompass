@@ -23,6 +23,16 @@ export const getUserName = async (req, res) => {
   }
 };
 
+export const isVerified = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    res.status(200).json(user.verified);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 export const updateProfile = async (req, res) => {
   const { userId, firstname, lastname } = req.body;
   const userObjectId = toObjectId(userId);
