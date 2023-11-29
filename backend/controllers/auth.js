@@ -20,7 +20,15 @@ export const register = async (req, res) => {
     },
   });
 
-  // The outer if loop checks to see if there is an existing user with same email
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(data.email)) {
+    console.error("Invalid email format");
+    res.status(403).json({ msg: "Invalid email format" });
+    return;
+  }
+
+  // The outer if loop checks to see if there is an existing user with the same email
   if (existingUser == null) {
     // This if statement checks the confirm password. This is to make sure the user is correctly typing the password
     // that they actually want.
@@ -44,16 +52,33 @@ export const register = async (req, res) => {
         viewedProfile: Math.floor(Math.random() * 10000),
         impressions: Math.floor(Math.random() * 10000),
       });
-      const savedUser = await newUser.save();
-      const info = await transporter.sendMail({
-        from: process.env.EMAIL, // sender address
-        to: email, // list of receivers
-        subject: "Verification Email", // Subject line
-        text: "Welcome to your Culinary Compass!",
-        html: `<div>Here is your verification token:\n ${number}\n 
-        You will use this when you log in for the first time!</div>`,
-      });
 
+      let info; // Declare the 'info' variable outside the try block
+
+      try {
+        // Send email
+        info = await transporter.sendMail({
+          from: process.env.EMAIL,
+          to: email,
+          subject: "Verification Email",
+          text: "Welcome to your Culinary Compass!",
+          html: `<div>Here is your verification token:\n ${number}\n 
+          You will use this when you log in for the first time!</div>`,
+        });
+      } catch (err) {
+        // Handle specific error cases if needed
+        if (error.code === "ENOTFOUND") {
+          console.error("SMTP server not found");
+          res
+            .status(404)
+            .json({ error: err.message, msg: "SMTP server not found" });
+        } else {
+          res.status(500).json({ error: err.message, msg: "Sign up error" });
+        }
+      }
+      console.log("Email sent:", info.response);
+
+      const savedUser = await newUser.save();
       res.status(201).json(savedUser);
     } catch (err) {
       res.status(500).json({ error: err.message, msg: "Sign up error" });

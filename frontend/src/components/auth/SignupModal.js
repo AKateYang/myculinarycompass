@@ -51,6 +51,8 @@ const SignupModal = ({ isOpen, onClose, onOpenLogin, className }) => {
 
       if (res.msg === "User already registered") {
         setMessage("User already registered");
+      } else if (res.msg === "Invalid email format") {
+        setMessage("Invalid email format");
       } else if (res.msg != "Sign up error") {
         setMessage("Successfully registered, please validate email");
 

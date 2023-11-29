@@ -48,6 +48,7 @@ app.use((req, res, next) => {
 
   // Call next after setting all headers
   next();
+  console.log("testing dns");
 });
 
 // Server static assets if in production
