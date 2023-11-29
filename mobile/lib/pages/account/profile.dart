@@ -32,8 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _profileImageUrlFuture = fetchProfileImgUrl();
   }
 
-  static const String backendUrl =
-      'https://myculinarycompass-0c8901cce626.herokuapp.com/assets';
+  static const String backendUrl = 'https://www.myculinarycompass.com/assets';
 
   @override
   Widget build(BuildContext context) {
